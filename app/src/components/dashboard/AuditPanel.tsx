@@ -71,25 +71,12 @@ export function AuditPanel() {
       const client = createPublicClient({ chain: qdayAevum, transport: http(qdayAevum.rpcUrls.default.http[0]) });
 
       const head = await client.getBlockNumber();
-      const from = head > 8000n ? head - 8000n : 0n;
+      // QDay RPC caps eth_getLogs at 1000 blocks per request — chunk history.
+      const from = head > 10000n ? head - 10000n : 0n;
+      const STEP = 900n; // stay under the 1000-block cap
 
-      // history — params typed loosely: viem's ABI-log overload union is stricter than our usage
-      const guardLogs: Log[] = (await (client as never as {
-        getLogs: (p: never) => Promise<Log[]>;
-      }).getLogs({
-        abi: GUARD_ABI,
-        address: GUARD_ADDRESS,
-        fromBlock: from,
-        toBlock: head,
-      } as never)) as unknown as Log[];
-      const registryLogs: Log[] = (await (client as never as {
-        getLogs: (p: never) => Promise<Log[]>;
-      }).getLogs({
-        abi: REGISTRY_ABI,
-        address: REGISTRY_ADDRESS,
-        fromBlock: from,
-        toBlock: head,
-      } as never)) as unknown as Log[];
+      const guardLogs = await fetchLogsChunked(client, GUARD_ABI, GUARD_ADDRESS, from, head, STEP);
+      const registryLogs = await fetchLogsChunked(client, REGISTRY_ABI, REGISTRY_ADDRESS, from, head, STEP);
       const mapped = [...mapGuard(guardLogs), ...mapRegistry(registryLogs)];
       if (stop) return;
       setRows((r) => mergeRows(r, mapped, seen.current));
@@ -219,6 +206,39 @@ function shortHash(h: string) {
 }
 
 // ---------------------------------------------------------------- mapping
+
+/**
+ * Fetch logs over a wide block range in chunks, because public RPCs (QDay included)
+ * cap eth_getLogs per-request range (1000 blocks here). Returns concatenated raw logs.
+ */
+async function fetchLogsChunked(
+  client: { getLogs: (p: never) => Promise<Log[]> },
+  abi: readonly unknown[],
+  address: string,
+  from: bigint,
+  to: bigint,
+  step: bigint
+): Promise<Log[]> {
+  const out: Log[] = [];
+  let start = from;
+  while (start <= to) {
+    const end = start + step - 1n;
+    const toBlock = end > to ? to : end;
+    try {
+      const chunk = await client.getLogs({
+        abi,
+        address: address as `0x${string}`,
+        fromBlock: start,
+        toBlock,
+      } as never);
+      out.push(...(chunk as unknown as Log[]));
+    } catch {
+      // skip unreadable chunk rather than failing the whole audit load
+    }
+    start = toBlock + 1n;
+  }
+  return out;
+}
 
 function mapGuard(logs: Log[]): AuditRow[] {
   const out: AuditRow[] = [];
