@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+lib/
+
+# Foundry
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+contracts/deployments/
+
+# Secrets — NEVER commit
+.env
+.env.local
+.env*.local
+*.pem
+
+# Next.js
+app/.next/
+app/out/
+app/build/
+next-env.d.ts
+
+# Misc
+.DS_Store
+*.log
+.vscode/
+.idea/
