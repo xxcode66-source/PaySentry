@@ -31,3 +31,7 @@ next-env.d.ts
 *.log
 .vscode/
 .idea/
+
+# paysentry-sdk (built output + deps)
+sdk/dist/
+sdk/node_modules/
