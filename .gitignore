@@ -1,6 +1,8 @@
 # Dependencies
 node_modules/
 lib/
+!app/src/lib/
+!app/src/lib/**
 
 # Foundry
 contracts/out/
