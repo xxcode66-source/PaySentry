@@ -8,7 +8,21 @@ Check first. Pay second. Always.
 
 Built for the **[QDay Aevum Builder Challenge #1](https://dorahacks.io/hackathon/qday)** · Confirmation of Payee track · QDay Aevum Testnet (chain 44005) · tUSD8
 
-[Live Demo](https://paysentry.vercel.app) · [Guided Demo Flow](#-demo-day-script) · [Architecture](#-architecture) · [Deploy](#-deploy-your-own)
+[Live Demo](https://paysentry-gold.vercel.app) · [Guided Demo Flow](#-demo-day-script) · [Architecture](#-architecture) · [Deploy](#-deploy-your-own)
+
+---
+
+## 🔴 Live deployment
+
+Contracts are **deployed and running on QDay Aevum Testnet** (chain 44005).
+
+| Contract | Address |
+|---|---|
+| **PayeeRegistry** | [`0xfFB0288590944e42aFF84033a8FF5A6c35d34b22`](https://explorer-test.qday.info/address/0xfFB0288590944e42aFF84033a8FF5A6c35d34b22) |
+| **PaymentGuard** | [`0x47e29aB215712b887F3A642d9ba60Df8d6F83828`](https://explorer-test.qday.info/address/0x47e29aB215712b887F3A642d9ba60Df8d6F83828) |
+| **Deployer / first verifier** | `0x5225c6c5e6CB3DD353b2355AeE2850592892D7F2` |
+
+Verified live via RPC: `registry.isVerifier(deployer) == true` and `guard.registry() == registry`. Add the chain to your wallet (chain ID **44005**, RPC `https://rpc-test.qday.info`) and claim test tokens from the [faucet](https://faucet.qday.info/en) to try the console against the live contracts.
 
 </div>
 
@@ -150,7 +164,18 @@ node scripts/agent.mjs pay --session 0 --payee 0x<PAYEE> --name "Warung Maju Jay
 
 ### 6. Ship the frontend
 
-Deploy `app/` to Vercel (root directory: `app`), set the `NEXT_PUBLIC_*` env vars in the project settings. No server, no database — a static Next.js app reading public RPC.
+Deploy `app/` to Vercel (root directory: `app`). Set these env vars in **Vercel → Settings → Environment Variables** (all environments) — they are read at build time, so `.env.local` alone will not reach a Vercel deploy:
+
+```
+NEXT_PUBLIC_CHAIN_ID=44005
+NEXT_PUBLIC_RPC_URL=https://rpc-test.qday.info
+NEXT_PUBLIC_EXPLORER_URL=https://explorer-test.qday.info
+NEXT_PUBLIC_REGISTRY_ADDRESS=0xfFB0288590944e42aFF84033a8FF5A6c35d34b22
+NEXT_PUBLIC_GUARD_ADDRESS=0x47e29aB215712b887F3A642d9ba60Df8d6F83828
+NEXT_PUBLIC_TUSD8_ADDRESS=0x456569838f1d43009A91ebA4263147Afd7233483
+```
+
+Then redeploy. Without the two address vars the UI shows "Contracts not configured yet". No server, no database — a static Next.js app reading public RPC.
 
 ---
 
@@ -164,6 +189,9 @@ Open **`/demo`** in the app — a 6-step guided flow with copy-paste commands:
 4. **Verify** — a `FULL MATCH` verdict… then a one-character typo drops it to `CLOSE MATCH`.
 5. **Agent session** — bounded session (e.g. max 5 tUSD8/tx, 50 total, 7 days). Run the agent: it pre-flight-checks the payee, sees `FULL MATCH`, pays — receipt lands on-chain.
 6. **The scam attempt** — same command with an impostor name. The agent *self-aborts*; with `--force` the guard **reverts the transaction on-chain**. Open the Audit tab: the blocked attempt is permanent public evidence.
+
+> 📋 A condensed, judge-facing runbook with exact commands, one-liners and backup
+> talking points is in **[`docs/demo-cheatsheet.md`](docs/demo-cheatsheet.md)**.
 
 ---
 
