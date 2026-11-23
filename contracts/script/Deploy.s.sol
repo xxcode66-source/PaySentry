@@ -19,8 +19,8 @@ import {PaymentGuard} from "../src/PaymentGuard.sol";
  */
 contract Deploy is Script {
     function run() external returns (address registryAddr, address guardAddr) {
-        uint256 pk = vm.envOr("DEPLOYER_PRIVATE_KEY", uint256(0));
-        uint256 deployerKey = pk != 0 ? pk : vm.envUint("PRIVATE_KEY");
+        // vm.envUint parses a 0x-prefixed hex string into a uint256 private key.
+        uint256 deployerKey = vm.envUint("DEPLOYER_PRIVATE_KEY");
         address deployer = vm.addr(deployerKey);
 
         console2.log("== PaySentry deployment ==");
