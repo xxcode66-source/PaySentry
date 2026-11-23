@@ -113,6 +113,9 @@ paysentry/
     ├── src/lib/cop/simulate.ts # TS mirror of the on-chain matcher (live predictions)
     ├── src/components/         # landing (3D hero), dashboard panels, demo wizard
     └── scripts/agent.mjs       # the autonomous-agent CLI
+└── sdk/                        # paysentry-sdk — drop-in CoP guard (pure viem)
+    ├── src/index.ts            # guardPay, checkPayee, createAgentSession, …
+    └── README.md               # usage + API reference
 ```
 
 ---

@@ -352,6 +352,87 @@ export function BuiltOn() {
   );
 }
 
+// ------------------------------------------------------------------ SDK
+
+export function SDKSection() {
+  return (
+    <section className="border-y border-white/5 bg-ink-900/40 py-28" id="sdk">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <Reveal>
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-cyan">For builders</p>
+          <h2 className="font-display mt-3 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            Drop CoP into any checkout with <span className="text-gradient">one function</span>.
+          </h2>
+          <p className="mt-4 max-w-2xl text-slate-400">
+            The <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-xs text-neon-cyan">paysentry-sdk</code>{" "}
+            wraps the on-chain guard in a single call. No ABI wrangling, no wagmi dependency —
+            works in any dapp, script, or agent. Defaults to the live testnet deployment.
+          </p>
+        </Reveal>
+
+        <div className="mt-12 grid gap-6 lg:grid-cols-5">
+          <Reveal className="lg:col-span-2">
+            <div className="glass flex h-full flex-col justify-between rounded-2xl p-6">
+              <div>
+                <h3 className="font-display text-lg font-semibold text-white">What you get</h3>
+                <ul className="mt-4 space-y-3 text-sm text-slate-400">
+                  {[
+                    "Verdict before payment — not after",
+                    "Mismatched payees revert on-chain",
+                    "Optional Warn / Enforce modes",
+                    "Bounded agent sessions out of the box",
+                    "Zero infra: pure viem + public RPC",
+                  ].map((t) => (
+                    <li key={t} className="flex items-start gap-2.5">
+                      <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-neon-green/20">
+                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
+                          <path d="M2 5l2 2 4-4" stroke="#34d399" strokeWidth="1.6" strokeLinecap="round" />
+                        </svg>
+                      </span>
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <p className="mt-6 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 font-mono text-[11px] text-slate-400">
+                npm i paysentry-sdk
+              </p>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.1} className="lg:col-span-3">
+            <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/60">
+              <div className="flex items-center gap-1.5 border-b border-white/10 px-4 py-3">
+                <span className="h-2.5 w-2.5 rounded-full bg-neon-red/70" />
+                <span className="h-2.5 w-2.5 rounded-full bg-neon-amber/70" />
+                <span className="h-2.5 w-2.5 rounded-full bg-neon-green/70" />
+                <span className="ml-3 font-mono text-[11px] text-slate-500">checkout.ts</span>
+              </div>
+              <pre className="overflow-x-auto p-5 font-mono text-[12.5px] leading-relaxed text-slate-300">
+                <code>{`const result = await guardPay({
+  payee: form.address,
+  expectedName: form.recipientName,
+  amount: cart.total,   // tUSD8
+  signer,
+});
+
+if (!result.paid) {
+  // NO MATCH / NOT FOUND — tell the user,
+  // abort the checkout before money moves.
+  throw new Error(result.message);
+}
+
+// ✓ paid — verdict on the audit trail
+console.log(result.verdictLabel, result.txHash);`}</code>
+              </pre>
+            </div>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // ------------------------------------------------------------------ CTA
 
 export function CTA() {

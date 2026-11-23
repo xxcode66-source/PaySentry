@@ -1,6 +1,6 @@
 import { Hero } from "@/components/landing/Hero";
 import { Nav } from "@/components/landing/Nav";
-import { BuiltOn, CTA, Features, HowItWorks, Problem } from "@/components/landing/Sections";
+import { BuiltOn, CTA, Features, HowItWorks, Problem, SDKSection } from "@/components/landing/Sections";
 import { Footer } from "@/components/landing/Footer";
 
 export default function LandingPage() {
@@ -12,6 +12,7 @@ export default function LandingPage() {
       <HowItWorks />
       <Features />
       <BuiltOn />
+      <SDKSection />
       <CTA />
       <Footer />
     </div>

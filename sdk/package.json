@@ -1,0 +1,36 @@
+{
+  "name": "paysentry-sdk",
+  "version": "0.1.0",
+  "description": "Drop-in Confirmation-of-Payee guard for any stablecoin payment flow on QDay Aevum. Call guardPay() before moving funds — mismatched payees revert on-chain.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "keywords": [
+    "qday",
+    "aevum",
+    "confirmation-of-payee",
+    "stablecoin",
+    "erc-20",
+    "web3",
+    "ethereum"
+  ],
+  "peerDependencies": {
+    "viem": ">=2"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "viem": "^2.21.19"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit"
+  }
+}
