@@ -16,7 +16,6 @@ import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
 import org.web3j.protocol.core.methods.request.Transaction
 import org.web3j.protocol.http.HttpService
-import org.web3j.tx.FastRawTransactionManager
 import org.web3j.tx.gas.DefaultGasProvider
 import java.math.BigInteger
 
@@ -270,14 +269,34 @@ class PaySentryClient(
 
     private suspend fun send(fn: Function, to: String): String {
         val cred = requireNotNull(credentials)
-        // FastRawTransactionManager waits for the receipt and always returns a hash,
-        // avoiding the "getTransactionHash() must not be null" from a bare send.
-        val manager = org.web3j.tx.FastRawTransactionManager(web3j, cred, ChainConfig.CHAIN_ID)
         val encoded = FunctionEncoder.encode(fn)
-        val ethSend = manager.sendTransaction(DefaultGasProvider.GAS_PRICE, DefaultGasProvider.GAS_LIMIT, to, encoded, BigInteger.ZERO)
-        val hash = ethSend.transactionHash
-        if (hash != null) return hash
-        throw IllegalStateException("RPC did not return a transaction hash")
+
+        // Get the next nonce for this account.
+        val nonce = web3j
+            .ethGetTransactionCount(cred.address, DefaultBlockParameterName.PENDING)
+            .send()
+            .transactionCount
+
+        // Build + sign the raw transaction ourselves. We derive the hash from the
+        // signed bytes via keccak256, so we never depend on the RPC returning one.
+        val rawTx = org.web3j.crypto.RawTransaction.createTransaction(
+            nonce,
+            DefaultGasProvider.GAS_PRICE,
+            DefaultGasProvider.GAS_LIMIT,
+            to,
+            BigInteger.ZERO,
+            encoded,
+        )
+        val signed = org.web3j.crypto.TransactionEncoder.signMessage(rawTx, cred)
+        // Tx hash = keccak256 of the signed raw transaction bytes.
+        val txHash = org.web3j.utils.Numeric.toHexString(
+            org.web3j.crypto.Hash.sha3(signed)
+        )
+        val rawHex = org.web3j.utils.Numeric.toHexString(signed)
+
+        // Submit to the mempool. Even if the response omits the hash, we already have it.
+        web3j.ethSendRawTransaction(rawHex).send()
+        return txHash
     }
 
     /** Read the native token (tQDAY) balance for an address. */
