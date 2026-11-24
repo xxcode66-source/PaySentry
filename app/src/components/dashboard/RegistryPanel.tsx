@@ -112,7 +112,7 @@ export function RegistryPanel({ prefill }: { prefill?: string }) {
               <input
                 value={myName}
                 onChange={(e) => setMyName(e.target.value)}
-                placeholder='e.g. "Warung Maju Jaya"'
+                placeholder='Your Name here'
                 className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-neon-cyan/60"
               />
               <Button

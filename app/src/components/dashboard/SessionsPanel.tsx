@@ -226,7 +226,7 @@ function SessionCard({ id }: { id: bigint }) {
   const pct = cap > 0n ? Number((spent * 100n) / cap) : 0;
   const expired = expiry > 0 && expiry <= Math.floor(Date.now() / 1000);
 
-  const cmd = `node scripts/agent.mjs pay --session ${id.toString()} --payee 0xPAYEE --name "Warung Maju Jaya" --amount 2`;
+  const cmd = `node scripts/agent.mjs pay --session ${id.toString()} --payee 0xPAYEE --name "Your Name here" --amount 2`;
 
   return (
     <motion.div

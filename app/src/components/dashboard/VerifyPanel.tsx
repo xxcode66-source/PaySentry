@@ -111,7 +111,7 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder='e.g. "Warung Maju Jaya"'
+            placeholder='Your Name here'
             className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors focus:border-neon-cyan/60 focus:bg-ink-800"
           />
           <div className="mt-1 flex items-center gap-2">
@@ -127,10 +127,22 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
 
       {/* Result card */}
       <motion.div layout className={`mt-6 rounded-2xl border p-6 transition-colors duration-500 ${cardBorder}`}>
-        {result === undefined ? (
-          <div className="flex items-center gap-3 text-sm text-slate-500">
-            <Search className="h-4 w-4" />
-            Enter an address and a name to run the check.
+        {checkLoading && contractsConfigured && enabled ? (
+          <div className="flex items-center gap-4 text-sm text-slate-400">
+            <span className="h-2 w-2 animate-ping rounded-full bg-neon-cyan" />
+            Querying the registry on-chain…
+          </div>
+        ) : result === undefined ? (
+          <div className="flex flex-col items-center gap-2 py-2 text-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
+              <Search className="h-5 w-5 text-slate-500" />
+            </div>
+            <p className="text-sm text-slate-500">
+              Enter an address and a name to run the check.
+            </p>
+            <p className="text-xs text-slate-600">
+              Verdicts come straight from <span className="font-mono">PayeeRegistry.checkPayee</span>.
+            </p>
           </div>
         ) : (
           <div>

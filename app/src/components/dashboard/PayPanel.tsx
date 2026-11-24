@@ -167,7 +167,7 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder='e.g. "Warung Maju Jaya"'
+            placeholder='Your Name here'
             className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-neon-cyan/60 focus:bg-ink-800"
           />
           <div className="mt-1.5 flex items-center gap-2">

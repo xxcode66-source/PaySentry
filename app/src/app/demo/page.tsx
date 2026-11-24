@@ -162,7 +162,7 @@ function StepLinkRow({ href, label }: { href: string; label: string }) {
 function StepFour() {
   const { address } = useAccount();
   const [payee, setPayee] = useState(DEMO_PAYEE);
-  const [name, setName] = useState("Warung Maju Jaya");
+  const [name, setName] = useState("Your Name here");
 
   const { data: identity } = useContractRead({
     abi: REGISTRY_ABI,
@@ -209,7 +209,7 @@ function StepFour() {
 }
 
 function StepFive() {
-  const cmd = `cd app\nexport AGENT_PRIVATE_KEY=0x<agent key>\nexport GUARD_ADDRESS=0x<guard>\nexport REGISTRY_ADDRESS=0x<registry>\nnode scripts/agent.mjs inspect --session 0\nnode scripts/agent.mjs pay --session 0 --payee 0x<PAYEE> --name "Warung Maju Jaya" --amount 2`;
+  const cmd = `cd app\nexport AGENT_PRIVATE_KEY=0x<agent key>\nexport GUARD_ADDRESS=0x<guard>\nexport REGISTRY_ADDRESS=0x<registry>\nnode scripts/agent.mjs inspect --session 0\nnode scripts/agent.mjs pay --session 0 --payee 0x<PAYEE> --name "Your Name here" --amount 2`;
   return (
     <div className="grid gap-4">
       <StepLinkRow href="/dashboard?tab=sessions" label="Open Sessions tab → create a bounded session" />
@@ -225,7 +225,7 @@ function StepFive() {
 }
 
 function StepSix() {
-  const cmd = `node scripts/agent.mjs pay --session 0 --payee 0x<PAYEE> --name "Warung Maju Jaya TRADING" --amount 2\n# → reverted: BlockedByGuard(NoMatch) — funds never moved\n# → AgentPaymentBlocked event = permanent fraud evidence`;
+  const cmd = `node scripts/agent.mjs pay --session 0 --payee 0x<PAYEE> --name "Your Name here TRADING" --amount 2\n# → reverted: BlockedByGuard(NoMatch) — funds never moved\n# → AgentPaymentBlocked event = permanent fraud evidence`;
   return (
     <div className="grid gap-4">
       <div>

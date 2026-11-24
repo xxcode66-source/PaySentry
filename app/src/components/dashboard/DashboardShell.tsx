@@ -53,13 +53,29 @@ export function DashboardShell() {
       </header>
 
       <main className="mx-auto max-w-6xl px-4 pb-24 pt-8 sm:px-6">
-        <div className="mb-6">
-          <h1 className="font-display text-2xl font-bold text-white sm:text-3xl">
-            <span className="text-gradient">PaySentry</span> console
-          </h1>
-          <p className="mt-1 text-sm text-slate-400">
-            QDay Aevum Testnet · tUSD8 · zero backend — everything you see is on-chain.
-          </p>
+        {/* Header hero */}
+        <div className="relative mb-6 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-neon-cyan/10 via-transparent to-neon-violet/15 p-6 sm:p-8">
+          <div className="absolute inset-0 grid-bg opacity-30" aria-hidden />
+          <div className="relative flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-neon-cyan">
+                Console
+              </p>
+              <h1 className="font-display mt-1 text-2xl font-bold text-white sm:text-3xl">
+                <span className="text-gradient">PaySentry</span>
+              </h1>
+              <p className="mt-1 text-sm text-slate-400">
+                QDay Aevum Testnet · tUSD8 · zero backend — everything on-chain.
+              </p>
+            </div>
+            <span className="inline-flex w-fit items-center gap-2 rounded-full border border-neon-green/30 bg-neon-green/10 px-3 py-1.5 text-[11px] font-medium text-neon-green">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon-green opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-neon-green" />
+              </span>
+              QDay Aevum · chain 44005
+            </span>
+          </div>
         </div>
 
         <WrongNetworkBanner visible={isConnected} />
