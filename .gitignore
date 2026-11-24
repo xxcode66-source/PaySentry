@@ -49,3 +49,5 @@ android/.kotlin/
 *.keystore
 *.jks
 .gradle/
+android/app/debug/
+android/app/build/
