@@ -15,8 +15,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -52,6 +54,8 @@ fun SessionsScreen(vm: PaySentryViewModel) {
     var maxPerTx by remember { mutableStateOf("5") }
     var capTotal by remember { mutableStateOf("50") }
     var days by remember { mutableStateOf("7") }
+    var confirmCreate by remember { mutableStateOf(false) }
+    var revokeId by remember { mutableStateOf<Long?>(null) }
     val wallet by vm.wallet.collectAsState()
     val sessions by vm.sessions.collectAsState()
     val toast by vm.toast.collectAsState()
@@ -113,8 +117,8 @@ fun SessionsScreen(vm: PaySentryViewModel) {
                             onClick = {
                                 val maxW = toWei(maxPerTx)
                                 val capW = toWei(capTotal)
-                                if (maxW != null && capW != null) {
-                                    vm.createSession(agent, maxW, capW, days.toLongOrNull() ?: 7)
+                                if (maxW != null && capW != null && agent.isNotBlank()) {
+                                    confirmCreate = true
                                 }
                             },
                             enabled = agent.isNotBlank() && toWei(maxPerTx) != null && toWei(capTotal) != null,
@@ -141,7 +145,7 @@ fun SessionsScreen(vm: PaySentryViewModel) {
                 }
             }
         } else {
-            items(sessions, key = { it.id }) { s -> SessionCard(s, onRevoke = { vm.revokeSession(s.id) }) }
+            items(sessions, key = { it.id }) { s -> SessionCard(s, onRevoke = { revokeId = s.id }) }
         }
 
         if (toast != null) {
@@ -151,6 +155,45 @@ fun SessionsScreen(vm: PaySentryViewModel) {
             }
         }
         item { Spacer(Modifier.height(24.dp)) }
+    }
+
+    // ---- confirm create session ----
+    if (confirmCreate) {
+        AlertDialog(
+            onDismissRequest = { confirmCreate = false },
+            title = { Text("Create agent session?") },
+            text = {
+                Text(
+                    "Agent $agent will be allowed to spend up to ${formatWei(toWei(capTotal)?.toLong() ?: 0)} tUSD8 total, " +
+                        "max ${formatWei(toWei(maxPerTx)?.toLong() ?: 0)} per transaction, expiring in $days day(s).\n\n" +
+                        "The contract enforces these limits — the agent cannot overspend."
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    val maxW = toWei(maxPerTx)
+                    val capW = toWei(capTotal)
+                    if (maxW != null && capW != null) {
+                        vm.createSession(agent, maxW, capW, days.toLongOrNull() ?: 7)
+                    }
+                    confirmCreate = false
+                }) { Text("Confirm") }
+            },
+            dismissButton = { TextButton(onClick = { confirmCreate = false }) { Text("Cancel") } },
+        )
+    }
+
+    // ---- confirm revoke ----
+    revokeId?.let { id ->
+        AlertDialog(
+            onDismissRequest = { revokeId = null },
+            title = { Text("Revoke session #$id?") },
+            text = { Text("The agent's remaining budget will be locked immediately. This cannot be undone.") },
+            confirmButton = {
+                TextButton(onClick = { vm.revokeSession(id); revokeId = null }) { Text("Revoke") }
+            },
+            dismissButton = { TextButton(onClick = { revokeId = null }) { Text("Cancel") } },
+        )
     }
 }
 

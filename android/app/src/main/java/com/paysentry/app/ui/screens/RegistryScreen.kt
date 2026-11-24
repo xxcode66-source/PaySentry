@@ -92,7 +92,7 @@ fun RegistryScreen(vm: PaySentryViewModel) {
                     color = TextMuted,
                 )
                 Spacer(Modifier.height(14.dp))
-                PayInput(myName, { myName = it }, "Display name", "e.g. Warung Maju Jaya")
+                PayInput(myName, { myName = it }, "Display name", "Your Name here")
                 Spacer(Modifier.height(14.dp))
                 GradientButton(
                     "Register identity",

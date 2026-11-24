@@ -14,9 +14,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -48,6 +50,7 @@ fun PayScreen(vm: PaySentryViewModel) {
     var name by remember { mutableStateOf("") }
     var amount by remember { mutableStateOf("") }
     var enforce by remember { mutableStateOf(true) }
+    var confirmSend by remember { mutableStateOf(false) }
     val wallet by vm.wallet.collectAsState()
     val balance by vm.tusd8.collectAsState()
     val toast by vm.toast.collectAsState()
@@ -99,7 +102,7 @@ fun PayScreen(vm: PaySentryViewModel) {
             Column(Modifier.padding(16.dp)) {
                 PayInput(payee, { payee = it }, "Payee address", "0x…", monospace = true)
                 Spacer(Modifier.height(12.dp))
-                PayInput(name, { name = it }, "Payee name as intended", "e.g. Warung Maju Jaya")
+                PayInput(name, { name = it }, "Payee name as intended", "Your Name here")
                 Spacer(Modifier.height(12.dp))
                 PayInput(amount, { amount = it }, "Amount (tUSD8)", "10.00")
             }
@@ -143,7 +146,9 @@ fun PayScreen(vm: PaySentryViewModel) {
             text = if (enforce) "Send ${amount.ifBlank { "0" }} tUSD8 · ENFORCED" else "Send ${amount.ifBlank { "0" }} tUSD8 · WARN",
             onClick = {
                 val w = amountWei ?: return@GradientButton
-                vm.guardPay(payee, name, w, enforce)
+                if (wallet != null && payee.isNotBlank() && name.isNotBlank() && w > BigInteger.ZERO) {
+                    confirmSend = true
+                }
             },
             enabled = wallet != null && payee.isNotBlank() && name.isNotBlank() && amountWei != null && amountWei > BigInteger.ZERO,
         )
@@ -173,6 +178,33 @@ fun PayScreen(vm: PaySentryViewModel) {
             }
         }
         Spacer(Modifier.height(24.dp))
+    }
+
+    // ---- payment confirmation dialog ----
+    if (confirmSend) {
+        AlertDialog(
+            onDismissRequest = { confirmSend = false },
+            title = { Text(if (enforce) "Send payment? (Enforced)" else "Send payment? (Warn)") },
+            text = {
+                Text(
+                    "Send $amount tUSD8 to\n\"$name\"\n(${payee.take(10)}…)?\n\n" +
+                        if (enforce) "The CoP check runs on-chain — a name mismatch reverts before any token moves." else "Warn mode pays even on mismatch, but flags it on the audit trail."
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    val w = runCatching {
+                        val parts = amount.trim().split(".")
+                        BigInteger(parts.getOrElse(0) { "0" }.ifEmpty { "0" } + parts.getOrElse(1) { "" }.padEnd(6, '0').take(6))
+                    }.getOrNull()
+                    if (w != null) vm.guardPay(payee, name, w, enforce)
+                    confirmSend = false
+                }) { Text("Confirm") }
+            },
+            dismissButton = {
+                TextButton(onClick = { confirmSend = false }) { Text("Cancel") }
+            },
+        )
     }
 }
 

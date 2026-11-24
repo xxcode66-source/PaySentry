@@ -81,7 +81,7 @@ fun VerifyScreen(vm: PaySentryViewModel) {
             Column(Modifier.padding(16.dp)) {
                 PayInput(payee, { payee = it }, "Payee address", "0x…", monospace = true)
                 Spacer(Modifier.height(12.dp))
-                PayInput(name, { name = it }, "Name you intend to pay", "e.g. Warung Maju Jaya")
+                PayInput(name, { name = it }, "Name you intend to pay", "Your Name here")
                 Spacer(Modifier.height(16.dp))
                 GradientButton(
                     "Run CoP check",
