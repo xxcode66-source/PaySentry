@@ -51,3 +51,4 @@ android/.kotlin/
 .gradle/
 android/app/debug/
 android/app/build/
+out/
