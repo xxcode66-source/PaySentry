@@ -1,5 +1,7 @@
 package com.paysentry.app.ui.screens
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.weight
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -74,8 +77,8 @@ fun SessionsScreen(vm: PaySentryViewModel) {
                         PayInput(agent, { agent = it }, "Agent address", "0x…", monospace = true)
                         Spacer(Modifier.height(10.dp))
                         Row(horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(10.dp)) {
-                            PayInput(maxPerTx, { maxPerTx = it }, "Max / tx", "5", Modifier.weight(1f))
-                            PayInput(capTotal, { capTotal = it }, "Cap total", "50", Modifier.weight(1f))
+                            PayInput(maxPerTx, { maxPerTx = it }, "Max / tx", "5", modifier = Modifier.weight(1f))
+                            PayInput(capTotal, { capTotal = it }, "Cap total", "50", modifier = Modifier.weight(1f))
                         }
                         Spacer(Modifier.height(10.dp))
                         PayInput(days, { days = it }, "Expires after (days)", "7")

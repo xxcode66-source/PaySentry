@@ -44,6 +44,7 @@ import com.paysentry.app.ui.theme.Green
 import com.paysentry.app.ui.theme.Red
 import com.paysentry.app.ui.theme.TextMuted
 import com.paysentry.app.ui.theme.TextPrimary
+import com.paysentry.app.ui.theme.Violet
 
 /** Section header used at the top of each screen. */
 @Composable
