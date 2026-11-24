@@ -9,27 +9,8 @@ import { useEffect, useState } from "react";
 export function Logo({ size = 28 }: { size?: number }) {
   return (
     <span className="inline-flex items-center gap-2.5">
-      <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden>
-        <defs>
-          <linearGradient id="lg" x1="0" y1="0" x2="32" y2="32">
-            <stop offset="0%" stopColor="#22d3ee" />
-            <stop offset="100%" stopColor="#8b5cf6" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M16 2L28 7v8c0 8.2-5.1 13.5-12 16C9.1 28.5 4 23.2 4 15V7l12-5z"
-          stroke="url(#lg)"
-          strokeWidth="2"
-          fill="rgba(34,211,238,0.08)"
-        />
-        <path
-          d="M10.5 16.2l3.6 3.6 7.4-7.6"
-          stroke="url(#lg)"
-          strokeWidth="2.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/paysentry.png" alt="PaySentry" width={size} height={size} className="rounded-lg" />
       <span className="font-display text-lg font-bold tracking-tight">
         <span className="text-white">Pay</span>
         <span className="text-gradient">Sentry</span>

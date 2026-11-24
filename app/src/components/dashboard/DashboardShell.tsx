@@ -57,7 +57,7 @@ export function DashboardShell() {
 
       <div className="mx-auto flex max-w-7xl">
         {/* sidebar (desktop) */}
-        <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-white/5 px-4 py-6 lg:flex">
+        <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-white/10 bg-gradient-to-b from-ink-900/80 via-transparent to-transparent px-4 py-6 lg:flex">
           <Link href="/" className="mb-8 px-2 transition hover:opacity-85">
             <Logo />
           </Link>
@@ -88,7 +88,7 @@ export function DashboardShell() {
             ))}
           </nav>
 
-          <div className="mt-4 border-t border-white/5 pt-4">
+          <div className="mt-4 border-t border-white/10 pt-4">
             <div className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5">
               <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">Network</p>
               <p className="mt-1 flex items-center gap-2 text-xs text-neon-green">
