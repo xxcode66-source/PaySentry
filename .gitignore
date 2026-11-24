@@ -35,3 +35,17 @@ next-env.d.ts
 # paysentry-sdk (built output + deps)
 sdk/dist/
 sdk/node_modules/
+
+# Android build outputs
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/captures/
+android/.kotlin/
+*.apk
+*.aab
+*.keystore
+*.jks
+.gradle/
