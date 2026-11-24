@@ -13,8 +13,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -43,6 +45,7 @@ fun RegistryScreen(vm: PaySentryViewModel) {
     var myName by remember { mutableStateOf("") }
     var attestAddr by remember { mutableStateOf("") }
     var attestName by remember { mutableStateOf("") }
+    var pendingAction by remember { mutableStateOf<String?>(null) } // "register" | "attest"
     val wallet by vm.wallet.collectAsState()
     val toast by vm.toast.collectAsState()
 
@@ -93,7 +96,7 @@ fun RegistryScreen(vm: PaySentryViewModel) {
                 Spacer(Modifier.height(14.dp))
                 GradientButton(
                     "Register identity",
-                    onClick = { vm.registerPayee(myName) },
+                    onClick = { pendingAction = "register" },
                     enabled = myName.isNotBlank(),
                 )
             }
@@ -126,7 +129,7 @@ fun RegistryScreen(vm: PaySentryViewModel) {
                 Spacer(Modifier.height(14.dp))
                 GradientButton(
                     "Attest identity",
-                    onClick = { vm.attest(attestAddr, attestName) },
+                    onClick = { pendingAction = "attest" },
                     enabled = attestAddr.isNotBlank() && attestName.isNotBlank(),
                 )
             }
@@ -152,6 +155,33 @@ fun RegistryScreen(vm: PaySentryViewModel) {
             }
         }
         Spacer(Modifier.height(24.dp))
+    }
+
+    // ---- confirmation dialog ----
+    when (pendingAction) {
+        "register" -> AlertDialog(
+            onDismissRequest = { pendingAction = null },
+            title = { Text("Register identity?") },
+            text = { Text("This will claim \"$myName\" on-chain for your address. This is a permanent, public record — paid for with your tQDAY gas.") },
+            confirmButton = {
+                TextButton(onClick = { vm.registerPayee(myName); pendingAction = null }) { Text("Confirm") }
+            },
+            dismissButton = {
+                TextButton(onClick = { pendingAction = null }) { Text("Cancel") }
+            },
+        )
+        "attest" -> AlertDialog(
+            onDismissRequest = { pendingAction = null },
+            title = { Text("Attest identity?") },
+            text = { Text("Endorse $attestAddr as \"$attestName\"? This raises their identity level to ATTESTED and is a public, permanent record.") },
+            confirmButton = {
+                TextButton(onClick = { vm.attest(attestAddr, attestName); pendingAction = null }) { Text("Confirm") }
+            },
+            dismissButton = {
+                TextButton(onClick = { pendingAction = null }) { Text("Cancel") }
+            },
+        )
+        else -> {}
     }
 }
 

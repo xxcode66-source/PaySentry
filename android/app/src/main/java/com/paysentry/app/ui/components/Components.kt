@@ -79,7 +79,7 @@ fun ScreenHeader(title: String, subtitle: String, modifier: Modifier = Modifier)
 // ---------------------------------------------------------------------------
 
 @Composable
-fun WalletTopBar(address: String, onRefresh: () -> Unit, modifier: Modifier = Modifier) {
+fun WalletTopBar(address: String, onRefresh: () -> Unit, onLogout: () -> Unit, modifier: Modifier = Modifier) {
     val transition = rememberInfiniteTransition(label = "topbar")
     val dot by transition.animateFloat(
         initialValue = 0.4f,
@@ -103,16 +103,28 @@ fun WalletTopBar(address: String, onRefresh: () -> Unit, modifier: Modifier = Mo
                     .background(Green.copy(alpha = dot), CircleShape)
             )
             Spacer(Modifier.width(10.dp))
-            Column(Modifier.weight(1f)) {
-                Text("CONNECTED", fontSize = 9.sp, letterSpacing = 2.sp, color = TextMuted, fontWeight = FontWeight.Bold)
-                Text(
-                    address.take(6) + "…" + address.takeLast(4),
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 14.sp,
-                    color = TextPrimary,
-                    fontWeight = FontWeight.SemiBold,
-                )
+            // address — tap to copy
+            Surface(
+                onClick = {
+                    androidx.compose.ui.platform.LocalClipboardManager.current.setText(
+                        androidx.compose.ui.text.AnnotatedString(address)
+                    )
+                },
+                shape = RoundedCornerShape(12.dp),
+                color = Color.Transparent,
+            ) {
+                Column(Modifier.weight(1f).padding(vertical = 2.dp)) {
+                    Text("CONNECTED · TAP TO COPY", fontSize = 9.sp, letterSpacing = 2.sp, color = TextMuted, fontWeight = FontWeight.Bold)
+                    Text(
+                        address.take(6) + "…" + address.takeLast(4),
+                        fontFamily = FontFamily.Monospace,
+                        fontSize = 14.sp,
+                        color = TextPrimary,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                }
             }
+            Spacer(Modifier.width(8.dp))
             Surface(
                 onClick = onRefresh,
                 shape = CircleShape,
@@ -120,8 +132,22 @@ fun WalletTopBar(address: String, onRefresh: () -> Unit, modifier: Modifier = Mo
             ) {
                 Text(
                     "Refresh",
-                    Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
+                    Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                     color = Cyan,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 12.sp,
+                )
+            }
+            Spacer(Modifier.width(8.dp))
+            Surface(
+                onClick = onLogout,
+                shape = CircleShape,
+                color = Red.copy(alpha = 0.15f),
+            ) {
+                Text(
+                    "Lock",
+                    Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                    color = Red,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 12.sp,
                 )

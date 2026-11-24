@@ -57,6 +57,30 @@ class PaySentryViewModel : ViewModel() {
         refreshBalance()
     }
 
+    /** Restore a persisted key at startup (no-op if none saved). */
+    fun restoreWallet(ctx: android.content.Context) {
+        val key = com.paysentry.app.data.WalletStorage.loadKey(ctx) ?: return
+        setWalletKey(key)
+    }
+
+    /** Persist the key so the app unlocks automatically next launch. */
+    fun setWalletKeyPersisted(ctx: android.content.Context, key: String) {
+        com.paysentry.app.data.WalletStorage.saveKey(ctx, key)
+        setWalletKey(key)
+    }
+
+    /** Explicit logout — clears the stored key and state. */
+    fun logout(ctx: android.content.Context) {
+        com.paysentry.app.data.WalletStorage.clear(ctx)
+        client.setPrivateKey(null)
+        _wallet.value = null
+        _tusd8.value = BigInteger.ZERO
+        _tqday.value = BigInteger.ZERO
+        _sessions.value = emptyList()
+        _verdict.value = null
+        _identity.value = null
+    }
+
     fun clearToast() { _toast.value = null }
 
     fun refreshBalance() {

@@ -39,7 +39,7 @@ enum class AppTab(val label: String, val icon: ImageVector) {
 
 /** Root scaffold with bottom navigation + shared ViewModel. */
 @Composable
-fun PaySentryApp(vm: PaySentryViewModel, onSetWallet: (String?) -> Unit) {
+fun PaySentryApp(vm: PaySentryViewModel, onSetWallet: (String?) -> Unit, onLogout: () -> Unit) {
     var tab by remember { mutableStateOf(AppTab.Home) }
     val wallet by vm.wallet.collectAsState()
 
@@ -74,7 +74,7 @@ fun PaySentryApp(vm: PaySentryViewModel, onSetWallet: (String?) -> Unit) {
                 Modifier.padding(innerPadding).fillMaxSize()
             ) {
                 when (tab) {
-                    AppTab.Home -> HomeScreen(vm)
+                    AppTab.Home -> HomeScreen(vm, onLogout)
                     AppTab.Verify -> VerifyScreen(vm)
                     AppTab.Pay -> PayScreen(vm)
                     AppTab.Sessions -> SessionsScreen(vm)

@@ -16,7 +16,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             PaySentryTheme {
                 val vm: PaySentryViewModel = viewModel()
-                PaySentryApp(vm = vm, onSetWallet = {})
+                // Restore a previously saved key so the user doesn't re-enter it.
+                vm.restoreWallet(applicationContext)
+                PaySentryApp(
+                    vm = vm,
+                    onSetWallet = { key ->
+                        if (!key.isNullOrBlank()) vm.setWalletKeyPersisted(applicationContext, key)
+                    },
+                    onLogout = { vm.logout(applicationContext) },
+                )
             }
         }
     }

@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -35,16 +34,14 @@ import com.paysentry.app.ui.components.GlassCard
 import com.paysentry.app.ui.components.StatLabel
 import com.paysentry.app.ui.components.WalletTopBar
 import com.paysentry.app.ui.theme.Cyan
-import com.paysentry.app.ui.theme.Green
-import com.paysentry.app.ui.theme.Ink
 import com.paysentry.app.ui.theme.TextMuted
 import com.paysentry.app.ui.theme.TextPrimary
 import com.paysentry.app.ui.theme.Violet
 import java.math.BigInteger
 
-/** Dashboard home — total balance hero, token breakdown, quick actions. */
+/** Dashboard home — total balance, separate tQDAY + tUSD8 cards, info. */
 @Composable
-fun HomeScreen(vm: com.paysentry.app.ui.PaySentryViewModel) {
+fun HomeScreen(vm: com.paysentry.app.ui.PaySentryViewModel, onLogout: () -> Unit) {
     val tusd8 by vm.tusd8.collectAsState()
     val tqday by vm.tqday.collectAsState()
     val wallet by vm.wallet.collectAsState()
@@ -52,7 +49,7 @@ fun HomeScreen(vm: com.paysentry.app.ui.PaySentryViewModel) {
     val transition = rememberInfiniteTransition(label = "hero")
     val sheen by transition.animateFloat(
         initialValue = 0.10f,
-        targetValue = 0.28f,
+        targetValue = 0.26f,
         animationSpec = infiniteRepeatable(tween(2200), RepeatMode.Reverse),
         label = "sheen",
     )
@@ -70,9 +67,9 @@ fun HomeScreen(vm: com.paysentry.app.ui.PaySentryViewModel) {
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 20.dp, vertical = 16.dp)
         ) {
-            // wallet chip
+            // wallet chip — tap address to copy, Lock to logout
             wallet?.let { addr ->
-                WalletTopBar(address = addr, onRefresh = { vm.refreshBalance() })
+                WalletTopBar(address = addr, onRefresh = { vm.refreshBalance() }, onLogout = onLogout)
             }
             Spacer(Modifier.height(22.dp))
 
@@ -86,90 +83,34 @@ fun HomeScreen(vm: com.paysentry.app.ui.PaySentryViewModel) {
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                "in stablecoin value · QDay Aevum Testnet",
+                "stablecoin value · QDay Aevum Testnet",
                 style = MaterialTheme.typography.bodyMedium,
                 color = TextMuted,
             )
 
-            Spacer(Modifier.height(26.dp))
+            Spacer(Modifier.height(24.dp))
 
-            // hero gradient card
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-                    .background(
-                        Brush.linearGradient(listOf(Cyan.copy(alpha = 0.16f), Violet.copy(alpha = 0.20f))),
-                        RoundedCornerShape(22.dp),
-                    )
-            ) {
-                // animated sheen strip
-                Box(
-                    Modifier
-                        .matchParentSize()
-                        .background(
-                            Brush.linearGradient(
-                                0f to Color.Transparent,
-                                0.5f to Color.White.copy(alpha = sheen * 0.5f),
-                                1f to Color.Transparent,
-                            )
-                        )
-                )
-                Row(
-                    Modifier
-                        .matchParentSize()
-                        .padding(horizontal = 22.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    Column {
-                        StatLabel("tUSD8 · STABLECOIN", Cyan)
-                        Spacer(Modifier.height(6.dp))
-                        Text(
-                            formatUsd(tusd8),
-                            fontSize = 26.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = TextPrimary,
-                        )
-                        Text("6 decimals · ERC-20", fontSize = 11.sp, color = TextMuted)
-                    }
-                    Column(horizontalAlignment = Alignment.End) {
-                        StatLabel("tQDAY · GAS", Violet)
-                        Spacer(Modifier.height(6.dp))
-                        Text(
-                            formatToken(tqday, 18),
-                            fontSize = 26.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = TextPrimary,
-                        )
-                        Text("for transaction gas", fontSize = 11.sp, color = TextMuted)
-                    }
-                }
-            }
-
-            Spacer(Modifier.height(26.dp))
-
-            // quick actions
-            Text("Quick actions", style = MaterialTheme.typography.titleMedium, color = TextPrimary)
-            Spacer(Modifier.height(12.dp))
-
-            QuickAction(
-                title = "Verify a payee",
-                desc = "Check a recipient's on-chain identity before paying",
-                accent = Cyan,
-            )
-            QuickAction(
-                title = "Guarded payment",
-                desc = "Send tUSD8 with CoP enforcement",
+            // --- tQDAY card (top)
+            TokenCard(
+                label = "tQDAY",
+                sub = "GAS · native",
+                value = formatToken(tqday, 18),
                 accent = Violet,
-            )
-            QuickAction(
-                title = "Agent sessions",
-                desc = "Budget-capped autonomous spending",
-                accent = Green,
+                sheen = sheen,
             )
 
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(14.dp))
+
+            // --- tUSD8 card (below)
+            TokenCard(
+                label = "tUSD8",
+                sub = "STABLECOIN · ERC-20",
+                value = formatUsd(tusd8),
+                accent = Cyan,
+                sheen = sheen,
+            )
+
+            Spacer(Modifier.height(24.dp))
 
             GlassCard(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(16.dp)) {
@@ -188,31 +129,52 @@ fun HomeScreen(vm: com.paysentry.app.ui.PaySentryViewModel) {
 }
 
 @Composable
-private fun QuickAction(title: String, desc: String, accent: Color) {
-    GlassCard(Modifier.fillMaxWidth().padding(vertical = 5.dp)) {
+private fun TokenCard(
+    label: String,
+    sub: String,
+    value: String,
+    accent: Color,
+    sheen: Float,
+) {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .background(
+                Brush.linearGradient(listOf(accent.copy(alpha = 0.13f), Color(0xFF0A0E1A))),
+                RoundedCornerShape(20.dp),
+            )
+            .background(Color(0xFF0A0E1A), RoundedCornerShape(20.dp))
+    ) {
+        // animated sheen
+        Box(
+            Modifier
+                .matchParentSize()
+                .background(
+                    Brush.linearGradient(
+                        0f to Color.Transparent,
+                        0.5f to Color.White.copy(alpha = sheen * 0.4f),
+                        1f to Color.Transparent,
+                    )
+                )
+        )
         Row(
-            Modifier.padding(16.dp),
+            Modifier
+                .matchParentSize()
+                .padding(horizontal = 20.dp, vertical = 18.dp),
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Box(
-                Modifier
-                    .size(44.dp)
-                    .background(accent.copy(alpha = 0.14f), RoundedCornerShape(12.dp)),
-                contentAlignment = Alignment.Center,
-            ) {
-                Box(
-                    Modifier
-                        .size(10.dp)
-                        .background(accent, RoundedCornerShape(2.dp))
+            Column {
+                StatLabel(label, accent)
+                Spacer(Modifier.height(6.dp))
+                Text(
+                    value,
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = TextPrimary,
                 )
             }
-            Spacer(Modifier.size(14.dp))
-            Column(Modifier.weight(1f)) {
-                Text(title, style = MaterialTheme.typography.titleMedium, color = TextPrimary)
-                Spacer(Modifier.height(2.dp))
-                Text(desc, style = MaterialTheme.typography.bodyMedium, color = TextMuted, fontSize = 12.sp)
-            }
-            Text("→", color = accent, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+            Text(sub, fontSize = 11.sp, color = TextMuted, letterSpacing = 1.sp)
         }
     }
 }
