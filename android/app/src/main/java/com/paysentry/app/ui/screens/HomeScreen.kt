@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.weight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -112,16 +111,16 @@ fun HomeScreen(onCheckBalance: () -> Unit) {
 
             // Feature chips
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                FeatureChip("Verify", Cyan)
-                FeatureChip("Guard", Violet)
-                FeatureChip("Agent", MaterialTheme.colorScheme.primary)
+                FeatureChip("Verify", Cyan, Modifier.weight(1f))
+                FeatureChip("Guard", Violet, Modifier.weight(1f))
+                FeatureChip("Agent", MaterialTheme.colorScheme.primary, Modifier.weight(1f))
             }
 
             Spacer(Modifier.height(12.dp))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                FeatureChip("Sessions", MaterialTheme.colorScheme.primary)
-                FeatureChip("Audit", Cyan)
-                FeatureChip("Wallet", Violet)
+                FeatureChip("Sessions", MaterialTheme.colorScheme.primary, Modifier.weight(1f))
+                FeatureChip("Audit", Cyan, Modifier.weight(1f))
+                FeatureChip("Wallet", Violet, Modifier.weight(1f))
             }
         }
     }
@@ -175,7 +174,7 @@ private fun ShieldLogo(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun FeatureChip(label: String, color: Color) {
+private fun FeatureChip(label: String, color: Color, modifier: Modifier = Modifier) {
     val transition = rememberInfiniteTransition(label = "chip")
     val a by transition.animateFloat(
         initialValue = 0.55f,
@@ -184,8 +183,7 @@ private fun FeatureChip(label: String, color: Color) {
         label = "chipA",
     )
     Surface(
-        modifier = Modifier
-            .weight(1f)
+        modifier = modifier
             .height(40.dp),
         shape = MaterialTheme.shapes.medium,
         color = color.copy(alpha = 0.12f),
