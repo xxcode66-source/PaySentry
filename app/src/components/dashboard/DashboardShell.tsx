@@ -69,14 +69,14 @@ export function DashboardShell() {
                 onClick={() => setTab(t.id)}
                 className={`group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-all duration-200 ${
                   tab === t.id
-                    ? "bg-neon-cyan/10 text-white"
+                    ? "bg-gradient-to-r from-neon-cyan/15 via-neon-violet/10 to-transparent text-white shadow-glow-cyan"
                     : "text-slate-400 hover:bg-white/5 hover:text-slate-200"
                 }`}
               >
                 {tab === t.id && (
                   <motion.span
                     layoutId="side-active"
-                    className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-full bg-gradient-to-b from-neon-cyan to-neon-violet"
+                    className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-full bg-gradient-to-b from-neon-cyan to-neon-violet shadow-glow-cyan"
                   />
                 )}
                 <t.icon className={`h-4 w-4 ${tab === t.id ? "text-neon-cyan" : "text-slate-500 group-hover:text-slate-300"}`} />
@@ -109,13 +109,14 @@ export function DashboardShell() {
         </aside>
 
         {/* main content */}
-        <main className="min-w-0 flex-1 px-4 pb-28 pt-6 sm:px-6 lg:px-8 lg:pb-16">
-          <WrongNetworkBanner visible={isConnected} />
-          <ContractsMissingBanner />
+        <main className="min-w-0 flex-1 px-4 pb-28 pt-6 sm:px-6 lg:px-10 lg:pb-16">
+          <div className="mx-auto max-w-4xl">
+            <WrongNetworkBanner visible={isConnected} />
+            <ContractsMissingBanner />
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={tab}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={tab}
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
@@ -129,6 +130,7 @@ export function DashboardShell() {
               {tab === "audit" && <AuditPanel />}
             </motion.div>
           </AnimatePresence>
+          </div>
         </main>
       </div>
 
