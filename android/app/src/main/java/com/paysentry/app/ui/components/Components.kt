@@ -9,7 +9,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
@@ -30,8 +31,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,22 +44,96 @@ import com.paysentry.app.ui.theme.Cyan
 import com.paysentry.app.ui.theme.GlassBorder
 import com.paysentry.app.ui.theme.GlassFill
 import com.paysentry.app.ui.theme.Green
+import com.paysentry.app.ui.theme.Ink
 import com.paysentry.app.ui.theme.Red
 import com.paysentry.app.ui.theme.TextMuted
 import com.paysentry.app.ui.theme.TextPrimary
 import com.paysentry.app.ui.theme.Violet
 
-/** Section header used at the top of each screen. */
+// ---------------------------------------------------------------------------
+// Screen header — title + subtitle with a subtle accent bar
+// ---------------------------------------------------------------------------
+
 @Composable
 fun ScreenHeader(title: String, subtitle: String, modifier: Modifier = Modifier) {
-    Column(modifier.fillMaxWidth().padding(bottom = 18.dp)) {
-        Text(title, style = MaterialTheme.typography.headlineMedium, color = TextPrimary)
-        Spacer(Modifier.height(4.dp))
-        Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = TextMuted)
+    Row(modifier.fillMaxWidth().padding(bottom = 20.dp)) {
+        Box(
+            Modifier
+                .padding(top = 4.dp, end = 12.dp)
+                .size(width = 4.dp, height = 42.dp)
+                .background(
+                    Brush.verticalGradient(listOf(Cyan, Violet)),
+                    RoundedCornerShape(2.dp),
+                )
+        )
+        Column {
+            Text(title, style = MaterialTheme.typography.headlineMedium, color = TextPrimary)
+            Spacer(Modifier.height(3.dp))
+            Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = TextMuted)
+        }
     }
 }
 
-/** A reusable dark input field with cyan focus. */
+// ---------------------------------------------------------------------------
+// Top bar with wallet chip (used on the Home dashboard)
+// ---------------------------------------------------------------------------
+
+@Composable
+fun WalletTopBar(address: String, onRefresh: () -> Unit, modifier: Modifier = Modifier) {
+    val transition = rememberInfiniteTransition(label = "topbar")
+    val dot by transition.animateFloat(
+        initialValue = 0.4f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(tween(1200), RepeatMode.Reverse),
+        label = "dot",
+    )
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(18.dp),
+        color = GlassFill,
+        border = androidx.compose.foundation.BorderStroke(1.dp, GlassBorder),
+    ) {
+        Row(
+            Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Box(
+                Modifier
+                    .size(10.dp)
+                    .background(Green.copy(alpha = dot), CircleShape)
+            )
+            Spacer(Modifier.width(10.dp))
+            Column(Modifier.weight(1f)) {
+                Text("CONNECTED", fontSize = 9.sp, letterSpacing = 2.sp, color = TextMuted, fontWeight = FontWeight.Bold)
+                Text(
+                    address.take(6) + "…" + address.takeLast(4),
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 14.sp,
+                    color = TextPrimary,
+                    fontWeight = FontWeight.SemiBold,
+                )
+            }
+            Surface(
+                onClick = onRefresh,
+                shape = CircleShape,
+                color = Cyan.copy(alpha = 0.15f),
+            ) {
+                Text(
+                    "Refresh",
+                    Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
+                    color = Cyan,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 12.sp,
+                )
+            }
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Dark input field
+// ---------------------------------------------------------------------------
+
 @Composable
 fun PayInput(
     value: String,
@@ -69,8 +146,8 @@ fun PayInput(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(label) },
-        placeholder = { Text(placeholder, color = TextMuted.copy(alpha = 0.6f)) },
+        label = { Text(label, color = TextMuted) },
+        placeholder = { Text(placeholder, color = TextMuted.copy(alpha = 0.5f)) },
         singleLine = true,
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(14.dp),
@@ -80,26 +157,32 @@ fun PayInput(
             focusedContainerColor = Color(0xFF0A0E1A),
             unfocusedContainerColor = Color(0xFF0A0E1A),
             cursorColor = Cyan,
+            focusedLabelColor = Cyan,
         ),
         textStyle = androidx.compose.ui.text.TextStyle(
             color = TextPrimary,
-            fontFamily = if (monospace) androidx.compose.ui.text.font.FontFamily.Monospace else androidx.compose.ui.text.font.FontFamily.Default,
-            fontSize = if (monospace) 13.sp else 16.sp,
+            fontFamily = if (monospace) FontFamily.Monospace else FontFamily.Default,
+            fontSize = if (monospace) 13.sp else 15.sp,
         ),
     )
 }
 
-/** Verdict pill matching the on-chain MatchResult. */
+// ---------------------------------------------------------------------------
+// Verdict pill
+// ---------------------------------------------------------------------------
+
+private fun verdictColors(r: MatchResult): Pair<Color, Color> = when (r) {
+    MatchResult.FULL_MATCH -> Color(0x1A34D399) to Green
+    MatchResult.CLOSE_MATCH -> Color(0x1AFBBF24) to Amber
+    MatchResult.NO_MATCH -> Color(0x1AF87171) to Red
+    MatchResult.NOT_FOUND -> Color(0x0A64748B) to TextMuted
+}
+
 @Composable
 fun VerdictPill(result: MatchResult?, modifier: Modifier = Modifier, loading: Boolean = false) {
-    AnimatedVisibility(visible = result != null, enter = fadeIn(), exit = fadeOut()) {
+    AnimatedVisibility(visible = result != null || loading, enter = fadeIn(), exit = fadeOut()) {
         val r = result ?: MatchResult.NOT_FOUND
-        val (bg, fg) = when (r) {
-            MatchResult.FULL_MATCH -> Color(0x1A34D399) to Green
-            MatchResult.CLOSE_MATCH -> Color(0x1AFBBF24) to Amber
-            MatchResult.NO_MATCH -> Color(0x1AF87171) to Red
-            MatchResult.NOT_FOUND -> Color(0x0A64748B) to TextMuted
-        }
+        val (bg, fg) = verdictColors(r)
         Surface(
             modifier = modifier,
             shape = CircleShape,
@@ -130,7 +213,10 @@ fun VerdictPill(result: MatchResult?, modifier: Modifier = Modifier, loading: Bo
     }
 }
 
-/** Card container with glass styling. */
+// ---------------------------------------------------------------------------
+// Glass card
+// ---------------------------------------------------------------------------
+
 @Composable
 fun GlassCard(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     Surface(
@@ -143,7 +229,10 @@ fun GlassCard(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     }
 }
 
-/** Animated primary button. */
+// ---------------------------------------------------------------------------
+// Premium gradient button with animated sheen
+// ---------------------------------------------------------------------------
+
 @Composable
 fun GradientButton(
     text: String,
@@ -154,52 +243,94 @@ fun GradientButton(
 ) {
     val transition = rememberInfiniteTransition(label = "btn")
     val glow by transition.animateFloat(
-        initialValue = 0.18f,
-        targetValue = 0.42f,
-        animationSpec = infiniteRepeatable(tween(1400), RepeatMode.Reverse),
+        initialValue = 0.12f,
+        targetValue = 0.35f,
+        animationSpec = infiniteRepeatable(tween(1600), RepeatMode.Reverse),
         label = "glow",
     )
     Surface(
         onClick = onClick,
         enabled = enabled && !loading,
-        modifier = modifier.fillMaxWidth().height(52.dp),
+        modifier = modifier.fillMaxWidth().height(54.dp),
         shape = RoundedCornerShape(16.dp),
         color = Color.Transparent,
     ) {
         Box(
             Modifier
                 .background(
-                    Brush.horizontalGradient(listOf(Cyan, Color(0xFF7C6CF0), Violet))
+                    if (enabled) Brush.horizontalGradient(listOf(Color(0xFF22D3EE), Color(0xFF7C6CF0), Violet))
+                    else Brush.horizontalGradient(listOf(Color(0xFF1A2138), Color(0xFF1A2138)))
                 )
         ) {
-            Box(
-                Modifier.matchParentSize().background(
-                    Brush.horizontalGradient(listOf(Color.Transparent, Color.White.copy(alpha = glow), Color.Transparent))
+            // animated sheen
+            if (enabled) {
+                Box(
+                    Modifier
+                        .matchParentSize()
+                        .background(
+                            Brush.horizontalGradient(
+                                0f to Color.Transparent,
+                                0.5f to Color.White.copy(alpha = glow),
+                                1f to Color.Transparent,
+                            )
+                        )
                 )
-            )
-            androidx.compose.foundation.layout.Box(Modifier.matchParentSize(), contentAlignment = Alignment.Center) {
+            }
+            Box(Modifier.matchParentSize(), contentAlignment = Alignment.Center) {
                 if (loading) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(22.dp),
                         strokeWidth = 2.5.dp,
-                        color = Color(0xFF05070D),
+                        color = Ink,
                     )
                 } else {
-                    Text(text, color = Color(0xFF05070D), fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                    Text(
+                        text,
+                        color = if (enabled) Ink else TextMuted,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 15.sp,
+                        letterSpacing = 0.3.sp,
+                    )
                 }
             }
         }
     }
 }
 
-/** Key-value info row for detail cards. */
+// ---------------------------------------------------------------------------
+// Info row
+// ---------------------------------------------------------------------------
+
 @Composable
 fun InfoRow(label: String, value: String, valueColor: Color = TextPrimary) {
     Row(
         Modifier.fillMaxWidth().padding(vertical = 5.dp),
-        horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Text(label, style = MaterialTheme.typography.labelSmall, color = TextMuted)
-        Text(value, style = MaterialTheme.typography.bodyMedium, color = valueColor, fontWeight = FontWeight.Medium)
+        Text(
+            value,
+            style = MaterialTheme.typography.bodyMedium,
+            color = valueColor,
+            fontWeight = FontWeight.Medium,
+            fontFamily = if (value.length > 20) FontFamily.Monospace else FontFamily.Default,
+            fontSize = if (value.length > 20) 12.sp else 14.sp,
+        )
     }
+}
+
+// ---------------------------------------------------------------------------
+// Small labelled stat chip (used in balance cards)
+// ---------------------------------------------------------------------------
+
+@Composable
+fun StatLabel(text: String, color: Color, modifier: Modifier = Modifier) {
+    Text(
+        text,
+        modifier = modifier,
+        color = color,
+        fontSize = 11.sp,
+        letterSpacing = 1.5.sp,
+        fontWeight = FontWeight.Bold,
+    )
 }

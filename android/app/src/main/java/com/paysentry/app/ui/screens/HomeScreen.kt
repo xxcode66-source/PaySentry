@@ -2,7 +2,6 @@ package com.paysentry.app.ui.screens
 
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
@@ -18,231 +17,213 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.paysentry.app.ui.components.GlassCard
+import com.paysentry.app.ui.components.StatLabel
+import com.paysentry.app.ui.components.WalletTopBar
 import com.paysentry.app.ui.theme.Cyan
+import com.paysentry.app.ui.theme.Green
 import com.paysentry.app.ui.theme.Ink
+import com.paysentry.app.ui.theme.TextMuted
+import com.paysentry.app.ui.theme.TextPrimary
 import com.paysentry.app.ui.theme.Violet
+import java.math.BigInteger
 
-/**
- * Landing / home screen with an animated gradient hero.
- * Self-contained so it compiles standalone.
- */
+/** Dashboard home — total balance hero, token breakdown, quick actions. */
 @Composable
 fun HomeScreen(vm: com.paysentry.app.ui.PaySentryViewModel) {
     val tusd8 by vm.tusd8.collectAsState()
     val tqday by vm.tqday.collectAsState()
     val wallet by vm.wallet.collectAsState()
+
     val transition = rememberInfiniteTransition(label = "hero")
-    val pulse by transition.animateFloat(
-        initialValue = 0.55f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(tween(1200), RepeatMode.Reverse),
-        label = "pulse",
+    val sheen by transition.animateFloat(
+        initialValue = 0.10f,
+        targetValue = 0.28f,
+        animationSpec = infiniteRepeatable(tween(2200), RepeatMode.Reverse),
+        label = "sheen",
     )
 
     Box(
         Modifier
             .fillMaxSize()
             .background(
-                Brush.verticalGradient(
-                    listOf(Color(0xFF05070D), Color(0xFF0A0E1A), Color(0xFF05070D))
-                )
+                Brush.verticalGradient(listOf(Color(0xFF05070D), Color(0xFF070B14), Color(0xFF05070D)))
             )
     ) {
-        // animated radial glow behind the shield
-        Box(
-            Modifier
-                .size(260.dp)
-                .align(Alignment.TopCenter)
-                .padding(top = 90.dp)
-                .clip(MaterialTheme.shapes.extraLarge)
-                .background(
-                    Brush.radialGradient(
-                        listOf(Cyan.copy(alpha = pulse * 0.35f), Color.Transparent),
-                        center = androidx.compose.ui.geometry.Offset(130f, 130f),
-                        radius = 130f,
-                    )
-                )
-        )
-
         Column(
             Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
+                .padding(horizontal = 20.dp, vertical = 16.dp)
         ) {
-            Spacer(Modifier.height(60.dp))
+            // wallet chip
+            wallet?.let { addr ->
+                WalletTopBar(address = addr, onRefresh = { vm.refreshBalance() })
+            }
+            Spacer(Modifier.height(22.dp))
 
-            ShieldLogo(Modifier.size(84.dp))
+            Text("Total balance", style = MaterialTheme.typography.bodyMedium, color = TextMuted)
+            Spacer(Modifier.height(6.dp))
+            Text(
+                "$" + formatUsd(tusd8),
+                fontSize = 46.sp,
+                fontWeight = FontWeight.Bold,
+                color = TextPrimary,
+            )
+            Spacer(Modifier.height(4.dp))
+            Text(
+                "in stablecoin value · QDay Aevum Testnet",
+                style = MaterialTheme.typography.bodyMedium,
+                color = TextMuted,
+            )
+
+            Spacer(Modifier.height(26.dp))
+
+            // hero gradient card
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
+                    .background(
+                        Brush.linearGradient(listOf(Cyan.copy(alpha = 0.16f), Violet.copy(alpha = 0.20f))),
+                        RoundedCornerShape(22.dp),
+                    )
+            ) {
+                // animated sheen strip
+                Box(
+                    Modifier
+                        .matchParentSize()
+                        .background(
+                            Brush.linearGradient(
+                                0f to Color.Transparent,
+                                0.5f to Color.White.copy(alpha = sheen * 0.5f),
+                                1f to Color.Transparent,
+                            )
+                        )
+                )
+                Row(
+                    Modifier
+                        .matchParentSize()
+                        .padding(horizontal = 22.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Column {
+                        StatLabel("tUSD8 · STABLECOIN", Cyan)
+                        Spacer(Modifier.height(6.dp))
+                        Text(
+                            formatUsd(tusd8),
+                            fontSize = 26.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = TextPrimary,
+                        )
+                        Text("6 decimals · ERC-20", fontSize = 11.sp, color = TextMuted)
+                    }
+                    Column(horizontalAlignment = Alignment.End) {
+                        StatLabel("tQDAY · GAS", Violet)
+                        Spacer(Modifier.height(6.dp))
+                        Text(
+                            formatToken(tqday, 18),
+                            fontSize = 26.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = TextPrimary,
+                        )
+                        Text("for transaction gas", fontSize = 11.sp, color = TextMuted)
+                    }
+                }
+            }
+
+            Spacer(Modifier.height(26.dp))
+
+            // quick actions
+            Text("Quick actions", style = MaterialTheme.typography.titleMedium, color = TextPrimary)
+            Spacer(Modifier.height(12.dp))
+
+            QuickAction(
+                title = "Verify a payee",
+                desc = "Check a recipient's on-chain identity before paying",
+                accent = Cyan,
+            )
+            QuickAction(
+                title = "Guarded payment",
+                desc = "Send tUSD8 with CoP enforcement",
+                accent = Violet,
+            )
+            QuickAction(
+                title = "Agent sessions",
+                desc = "Budget-capped autonomous spending",
+                accent = Green,
+            )
 
             Spacer(Modifier.height(20.dp))
 
-            Text(
-                "PaySentry",
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Bold,
-            )
-            Text(
-                "Check first. Pay second.",
-                color = Cyan,
-                fontWeight = FontWeight.SemiBold,
-            )
+            GlassCard(Modifier.fillMaxWidth()) {
+                Column(Modifier.padding(16.dp)) {
+                    Text("How PaySentry protects you", style = MaterialTheme.typography.titleMedium, color = TextPrimary)
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        "Every payment runs a Confirmation-of-Payee check first. If the recipient name doesn't match the on-chain identity, the transaction reverts — before any token moves.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = TextMuted,
+                    )
+                }
+            }
+            Spacer(Modifier.height(24.dp))
+        }
+    }
+}
 
-            Spacer(Modifier.height(14.dp))
-            if (wallet != null) {
-                val addr = wallet!!
-                Text(
-                    addr.take(6) + "…" + addr.takeLast(4),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.labelSmall,
+@Composable
+private fun QuickAction(title: String, desc: String, accent: Color) {
+    GlassCard(Modifier.fillMaxWidth().padding(vertical = 5.dp)) {
+        Row(
+            Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Box(
+                Modifier
+                    .size(44.dp)
+                    .background(accent.copy(alpha = 0.14f), RoundedCornerShape(12.dp)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Box(
+                    Modifier
+                        .size(10.dp)
+                        .background(accent, RoundedCornerShape(2.dp))
                 )
             }
-
-            Spacer(Modifier.height(24.dp))
-
-            // Balance cards
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                BalanceCard("tUSD8", formatToken(tusd8, 6), Cyan, Modifier.weight(1f))
-                BalanceCard("tQDAY", formatToken(tqday, 18), Violet, Modifier.weight(1f))
+            Spacer(Modifier.size(14.dp))
+            Column(Modifier.weight(1f)) {
+                Text(title, style = MaterialTheme.typography.titleMedium, color = TextPrimary)
+                Spacer(Modifier.height(2.dp))
+                Text(desc, style = MaterialTheme.typography.bodyMedium, color = TextMuted, fontSize = 12.sp)
             }
-
-            Spacer(Modifier.height(18.dp))
-
-            Text(
-                "Trustless Confirmation of Payee for stablecoin payments on QDay Aevum. Every name is verified on-chain before any token moves.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-            )
-
-            Spacer(Modifier.height(28.dp))
-
-            // Feature chips
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                FeatureChip("Verify", Cyan, Modifier.weight(1f))
-                FeatureChip("Guard", Violet, Modifier.weight(1f))
-                FeatureChip("Agent", MaterialTheme.colorScheme.primary, Modifier.weight(1f))
-            }
-
-            Spacer(Modifier.height(12.dp))
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                FeatureChip("Sessions", MaterialTheme.colorScheme.primary, Modifier.weight(1f))
-                FeatureChip("Audit", Cyan, Modifier.weight(1f))
-                FeatureChip("Wallet", Violet, Modifier.weight(1f))
-            }
+            Text("→", color = accent, fontWeight = FontWeight.Bold, fontSize = 18.sp)
         }
     }
 }
 
-@Composable
-private fun ShieldLogo(modifier: Modifier = Modifier) {
-    androidx.compose.foundation.Canvas(modifier) {
-        val w = size.width
-        val h = size.height
-        val cx = w / 2
-        val cy = h / 2
-        val top = cy - h * 0.42f
-        val left = cx - w * 0.40f
-        val right = cx + w * 0.40f
-        val bottom = cy + h * 0.44f
-
-        // shield outline
-        val path = androidx.compose.ui.graphics.Path().apply {
-            moveTo(cx, top)
-            lineTo(right, cy - h * 0.26f)
-            lineTo(right, cy + h * 0.06f)
-            quadraticBezierTo(right, bottom, cx, bottom)
-            quadraticBezierTo(left, bottom, left, cy + h * 0.06f)
-            lineTo(left, cy - h * 0.26f)
-            close()
-        }
-        drawPath(
-            path,
-            color = Color(0xFF05070D),
-            style = androidx.compose.ui.graphics.drawscope.Stroke(width = 3.dp.toPx()),
-        )
-        drawPath(path, color = Cyan.copy(alpha = 0.08f))
-
-        // check
-        drawLine(
-            color = Violet,
-            start = androidx.compose.ui.geometry.Offset(cx - w * 0.20f, cy),
-            end = androidx.compose.ui.geometry.Offset(cx - w * 0.03f, cy + h * 0.14f),
-            strokeWidth = 5.dp.toPx(),
-            cap = androidx.compose.ui.graphics.StrokeCap.Round,
-        )
-        drawLine(
-            color = Violet,
-            start = androidx.compose.ui.geometry.Offset(cx - w * 0.03f, cy + h * 0.14f),
-            end = androidx.compose.ui.geometry.Offset(cx + w * 0.20f, cy - h * 0.16f),
-            strokeWidth = 5.dp.toPx(),
-            cap = androidx.compose.ui.graphics.StrokeCap.Round,
-        )
-    }
+private fun formatUsd(wei: BigInteger): String {
+    val value = wei.toDouble() / 1e6
+    return "%.2f".format(value)
 }
 
-@Composable
-private fun BalanceCard(label: String, value: String, color: Color, modifier: Modifier = Modifier) {
-    androidx.compose.material3.Surface(
-        modifier = modifier.height(84.dp),
-        shape = MaterialTheme.shapes.medium,
-        color = androidx.compose.ui.graphics.Color(0xFF0A0E1A),
-        border = androidx.compose.foundation.BorderStroke(1.dp, color.copy(alpha = 0.35f)),
-    ) {
-        Column(
-            Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-        ) {
-            Text(label, color = color, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
-            Spacer(Modifier.height(4.dp))
-            Text(value, color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-        }
-    }
-}
-
-private fun formatToken(wei: java.math.BigInteger, decimals: Int): String {
-    if (wei == java.math.BigInteger.ZERO) return "0"
+private fun formatToken(wei: BigInteger, decimals: Int): String {
+    if (wei == BigInteger.ZERO) return "0"
     val value = wei.toDouble() / Math.pow(10.0, decimals.toDouble())
-    return if (value >= 1000) "%.2f".format(value) else if (value >= 1) "%.2f".format(value) else "%.4f".format(value)
-}
-
-@Composable
-private fun FeatureChip(label: String, color: Color, modifier: Modifier = Modifier) {
-    val transition = rememberInfiniteTransition(label = "chip")
-    val a by transition.animateFloat(
-        initialValue = 0.55f,
-        targetValue = 0.25f,
-        animationSpec = infiniteRepeatable(tween(1600), RepeatMode.Reverse),
-        label = "chipA",
-    )
-    Surface(
-        modifier = modifier
-            .height(40.dp),
-        shape = MaterialTheme.shapes.medium,
-        color = color.copy(alpha = 0.12f),
-        border = androidx.compose.foundation.BorderStroke(1.dp, color.copy(alpha = a)),
-    ) {
-        Box(contentAlignment = Alignment.Center) {
-            Text(
-                label,
-                color = color,
-                fontWeight = FontWeight.SemiBold,
-                style = MaterialTheme.typography.labelSmall,
-            )
-        }
-    }
+    return if (value >= 1) "%.2f".format(value) else "%.4f".format(value)
 }

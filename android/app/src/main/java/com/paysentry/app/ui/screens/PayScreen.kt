@@ -1,5 +1,8 @@
 package com.paysentry.app.ui.screens
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -7,9 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -19,8 +25,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.paysentry.app.ui.PaySentryViewModel
+import com.paysentry.app.ui.components.GlassCard
 import com.paysentry.app.ui.components.GradientButton
 import com.paysentry.app.ui.components.InfoRow
 import com.paysentry.app.ui.components.PayInput
@@ -28,6 +38,8 @@ import com.paysentry.app.ui.components.ScreenHeader
 import com.paysentry.app.ui.theme.Cyan
 import com.paysentry.app.ui.theme.Green
 import com.paysentry.app.ui.theme.Red
+import com.paysentry.app.ui.theme.TextMuted
+import com.paysentry.app.ui.theme.TextPrimary
 import java.math.BigInteger
 
 @Composable
@@ -44,40 +56,79 @@ fun PayScreen(vm: PaySentryViewModel) {
         Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
+            .background(Color(0xFF05070D))
             .padding(20.dp)
     ) {
         ScreenHeader(
             "Guarded payment",
-            "The CoP check runs first. In Enforce mode a mismatch reverts on-chain."
+            "Enforce mode reverts a mismatched payment on-chain — before any token moves."
         )
 
-        // balance bar
-        Row(
-            Modifier.fillMaxWidth().padding(bottom = 12.dp),
-            horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+        // balance strip
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            color = Color(0xFF0A0E1A),
+            border = androidx.compose.foundation.BorderStroke(1.dp, Color(0x1A22D3EE)),
         ) {
-            Text("tUSD8 balance", style = MaterialTheme.typography.labelSmall, color = androidx.compose.ui.graphics.Color(0xFF64748B))
-            Text(
-                "%.2f".format(balance.toDouble() / 1e6),
-                style = MaterialTheme.typography.titleMedium,
-                color = Cyan,
+            Row(
+                Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column {
+                    Text("AVAILABLE", fontSize = 9.sp, letterSpacing = 2.sp, color = TextMuted, fontWeight = FontWeight.Bold)
+                    Text(
+                        formatUsd(balance) + " tUSD8",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Cyan,
+                    )
+                }
+                Text(
+                    "tUSD8 · ERC-20",
+                    fontSize = 11.sp,
+                    color = TextMuted,
+                )
+            }
+        }
+
+        Spacer(Modifier.height(16.dp))
+
+        GlassCard(Modifier.fillMaxWidth()) {
+            Column(Modifier.padding(16.dp)) {
+                PayInput(payee, { payee = it }, "Payee address", "0x…", monospace = true)
+                Spacer(Modifier.height(12.dp))
+                PayInput(name, { name = it }, "Payee name as intended", "e.g. Warung Maju Jaya")
+                Spacer(Modifier.height(12.dp))
+                PayInput(amount, { amount = it }, "Amount (tUSD8)", "10.00")
+            }
+        }
+
+        Spacer(Modifier.height(16.dp))
+
+        // mode selector
+        Text("Guard mode", style = MaterialTheme.typography.titleMedium, color = TextPrimary)
+        Spacer(Modifier.height(10.dp))
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            ModeCard(
+                "WARN",
+                "Pays but flags mismatches",
+                !enforce,
+                onClick = { enforce = false },
+                Modifier.weight(1f),
+            )
+            ModeCard(
+                "ENFORCE",
+                "Reverts on mismatch",
+                enforce,
+                onClick = { enforce = true },
+                Modifier.weight(1f),
+                recommended = true,
             )
         }
 
-        PayInput(payee, { payee = it }, "Payee address", "0x…", monospace = true)
-        Spacer(Modifier.height(10.dp))
-        PayInput(name, { name = it }, "Payee name as intended", "e.g. Warung Maju Jaya")
-        Spacer(Modifier.height(10.dp))
-        PayInput(amount, { amount = it }, "Amount (tUSD8)", "10.00")
-        Spacer(Modifier.height(14.dp))
-
-        // mode toggle
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(10.dp)) {
-            ModeChip("Warn", !enforce, onClick = { enforce = false }, Modifier.weight(1f))
-            ModeChip("Enforce", enforce, onClick = { enforce = true }, Modifier.weight(1f))
-        }
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(20.dp))
 
         val amountWei = remember(amount) {
             runCatching {
@@ -89,41 +140,83 @@ fun PayScreen(vm: PaySentryViewModel) {
         }
 
         GradientButton(
-            text = if (enforce) "Send ${amount.ifBlank { "0" }} tUSD8 · enforced" else "Send ${amount.ifBlank { "0" }} tUSD8 · warn",
+            text = if (enforce) "Send ${amount.ifBlank { "0" }} tUSD8 · ENFORCED" else "Send ${amount.ifBlank { "0" }} tUSD8 · WARN",
             onClick = {
                 val w = amountWei ?: return@GradientButton
                 vm.guardPay(payee, name, w, enforce)
             },
             enabled = wallet != null && payee.isNotBlank() && name.isNotBlank() && amountWei != null && amountWei > BigInteger.ZERO,
         )
+
         if (wallet == null) {
             Spacer(Modifier.height(8.dp))
-            Text("Connect a wallet to pay.", style = MaterialTheme.typography.bodyMedium, color = androidx.compose.ui.graphics.Color(0xFF64748B))
+            Text("Connect a wallet to pay.", color = TextMuted, style = MaterialTheme.typography.bodyMedium)
         }
 
-        // result / toast
         if (toast != null) {
             Spacer(Modifier.height(16.dp))
-            InfoRow(
-                "Last attempt",
-                toast ?: "",
-                if (toast?.startsWith("✓") == true) Green else Red,
-            )
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .background(
+                        if (toast?.startsWith("✓") == true) Green.copy(alpha = 0.12f) else Red.copy(alpha = 0.12f),
+                        RoundedCornerShape(16.dp),
+                    )
+            ) {
+                Text(
+                    toast ?: "",
+                    Modifier.padding(14.dp),
+                    color = if (toast?.startsWith("✓") == true) Green else Red,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                )
+            }
         }
+        Spacer(Modifier.height(24.dp))
     }
 }
 
 @Composable
-private fun ModeChip(label: String, active: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    androidx.compose.material3.Surface(
+private fun ModeCard(
+    title: String,
+    desc: String,
+    active: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    recommended: Boolean = false,
+) {
+    Surface(
         onClick = onClick,
-        modifier = modifier.height(46.dp),
-        shape = androidx.compose.foundation.shape.RoundedCornerShape(14.dp),
-        color = if (active) Cyan.copy(alpha = 0.18f) else androidx.compose.ui.graphics.Color(0xFF0A0E1A),
-        border = androidx.compose.foundation.BorderStroke(1.dp, if (active) Cyan else androidx.compose.ui.graphics.Color(0x1AFFFFFF)),
+        modifier = modifier,
+        shape = RoundedCornerShape(16.dp),
+        color = if (active) Cyan.copy(alpha = 0.14f) else Color(0xFF0A0E1A),
+        border = androidx.compose.foundation.BorderStroke(
+            1.dp,
+            if (active) Cyan else Color(0x1AFFFFFF),
+        ),
     ) {
-        androidx.compose.foundation.layout.Box(contentAlignment = androidx.compose.ui.Alignment.Center) {
-            Text(label, color = if (active) Cyan else androidx.compose.ui.graphics.Color(0xFFCBD5E1), style = MaterialTheme.typography.titleMedium)
+        Column(Modifier.padding(14.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    title,
+                    color = if (active) Cyan else TextPrimary,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 13.sp,
+                    letterSpacing = 1.sp,
+                )
+                if (recommended) {
+                    Spacer(Modifier.width(6.dp))
+                    Text(
+                        "★",
+                        color = if (active) Cyan else TextMuted,
+                        fontSize = 12.sp,
+                    )
+                }
+            }
+            Spacer(Modifier.height(4.dp))
+            Text(desc, fontSize = 11.sp, color = TextMuted)
         }
     }
 }
+
+private fun formatUsd(wei: BigInteger): String = "%.2f".format(wei.toDouble() / 1e6)
