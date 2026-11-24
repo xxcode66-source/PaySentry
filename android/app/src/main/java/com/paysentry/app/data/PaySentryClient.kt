@@ -22,7 +22,7 @@ import java.math.BigInteger
  * wrappers, so it stays light and the ABI lives in one place.
  */
 class PaySentryClient(
-    private val privateKey: String? = null,
+    private var privateKey: String? = null,
 ) {
     private val web3j: Web3j = Web3j.build(HttpService(ChainConfig.RPC_URL))
 
@@ -31,6 +31,14 @@ class PaySentryClient(
 
     private val credentials: Credentials?
         get() = privateKey?.let { Credentials.create(it) }
+
+    /** Set (or clear) the signer key. Call before any write. */
+    fun setPrivateKey(key: String?) {
+        privateKey = key
+    }
+
+    /** The signer's address, or null if no key is set. */
+    fun address(): String? = fromAddress
 
     // ------------------------------------------------------------------ registry
 

@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.paysentry.app.ui.screens.HomeScreen
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.paysentry.app.ui.PaySentryApp
+import com.paysentry.app.ui.PaySentryViewModel
 import com.paysentry.app.ui.theme.PaySentryTheme
 
 class MainActivity : ComponentActivity() {
@@ -13,9 +15,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PaySentryTheme {
-                HomeScreen(
-                    onCheckBalance = {},
-                )
+                val vm: PaySentryViewModel = viewModel()
+                PaySentryApp(vm = vm, onSetWallet = {})
             }
         }
     }
