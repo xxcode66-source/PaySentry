@@ -141,7 +141,7 @@ fun SessionsScreen(vm: PaySentryViewModel) {
                 }
             }
         } else {
-            items(sessions, key = { it.id }) { s -> SessionCard(s) }
+            items(sessions, key = { it.id }) { s -> SessionCard(s, onRevoke = { vm.revokeSession(s.id) }) }
         }
 
         if (toast != null) {
@@ -155,7 +155,7 @@ fun SessionsScreen(vm: PaySentryViewModel) {
 }
 
 @Composable
-private fun SessionCard(s: AgentSession) {
+private fun SessionCard(s: AgentSession, onRevoke: () -> Unit) {
     GlassCard(Modifier.fillMaxWidth().padding(vertical = 6.dp)) {
         Column(Modifier.padding(16.dp)) {
             Row(
@@ -218,7 +218,7 @@ private fun SessionCard(s: AgentSession) {
                 Spacer(Modifier.height(12.dp))
                 Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
                     androidx.compose.material3.Surface(
-                        onClick = { vm.revokeSession(s.id) },
+                        onClick = { onRevoke() },
                         shape = RoundedCornerShape(12.dp),
                         color = Red.copy(alpha = 0.15f),
                         border = androidx.compose.foundation.BorderStroke(1.dp, Red.copy(alpha = 0.4f)),
