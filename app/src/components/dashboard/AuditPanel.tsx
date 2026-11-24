@@ -65,41 +65,47 @@ export function AuditPanel() {
     let unwatchFns: Array<() => void> = [];
 
     async function boot() {
-      // dynamic import to avoid SSR issues with viem client typing
-      const { createPublicClient, http } = await import("viem");
-      const { qdayAevum } = await import("@/lib/web3/chain");
-      const client = createPublicClient({ chain: qdayAevum, transport: http(qdayAevum.rpcUrls.default.http[0]) });
+      try {
+        // dynamic import to avoid SSR issues with viem client typing
+        const { createPublicClient, http } = await import("viem");
+        const { qdayAevum } = await import("@/lib/web3/chain");
+        const client = createPublicClient({ chain: qdayAevum, transport: http(qdayAevum.rpcUrls.default.http[0]) });
 
-      const head = await client.getBlockNumber();
-      // QDay RPC caps eth_getLogs at 1000 blocks per request — chunk history.
-      const from = head > 10000n ? head - 10000n : 0n;
-      const STEP = 900n; // stay under the 1000-block cap
+        const head = await client.getBlockNumber();
+        // QDay RPC caps eth_getLogs at 1000 blocks per request — chunk history.
+        const from = head > 30000n ? head - 30000n : 0n;
+        const STEP = 900n; // stay under the 1000-block cap
 
-      const guardLogs = await fetchLogsChunked(client, GUARD_ABI, GUARD_ADDRESS, from, head, STEP);
-      const registryLogs = await fetchLogsChunked(client, REGISTRY_ABI, REGISTRY_ADDRESS, from, head, STEP);
-      const mapped = [...mapGuard(guardLogs), ...mapRegistry(registryLogs)];
-      if (stop) return;
-      setRows((r) => mergeRows(r, mapped, seen.current));
+        const guardLogs = await fetchLogsChunked(client, GUARD_ABI, GUARD_ADDRESS, from, head, STEP);
+        const registryLogs = await fetchLogsChunked(client, REGISTRY_ABI, REGISTRY_ADDRESS, from, head, STEP);
+        const mapped = [...mapGuard(guardLogs), ...mapRegistry(registryLogs)];
+        if (stop) return;
+        setRows((r) => mergeRows(r, mapped, seen.current));
 
-      // live
-      const uw1 = client.watchContractEvent({
-        abi: GUARD_ABI,
-        address: GUARD_ADDRESS,
-        onLogs: (logs) => {
-          if (stop) return;
-          setRows((r) => mergeRows(r, mapGuard(logs as unknown as Log[]), seen.current));
-        },
-      });
-      const uw2 = client.watchContractEvent({
-        abi: REGISTRY_ABI,
-        address: REGISTRY_ADDRESS,
-        onLogs: (logs) => {
-          if (stop) return;
-          setRows((r) => mergeRows(r, mapRegistry(logs as unknown as Log[]), seen.current));
-        },
-      });
-      unwatchFns = [uw1, uw2];
-      setLive(true);
+        // live
+        const uw1 = client.watchContractEvent({
+          abi: GUARD_ABI,
+          address: GUARD_ADDRESS,
+          onLogs: (logs) => {
+            if (stop) return;
+            setRows((r) => mergeRows(r, mapGuard(logs as unknown as Log[]), seen.current));
+          },
+          onError: () => {},
+        });
+        const uw2 = client.watchContractEvent({
+          abi: REGISTRY_ABI,
+          address: REGISTRY_ADDRESS,
+          onLogs: (logs) => {
+            if (stop) return;
+            setRows((r) => mergeRows(r, mapRegistry(logs as unknown as Log[]), seen.current));
+          },
+          onError: () => {},
+        });
+        unwatchFns = [uw1, uw2];
+        setLive(true);
+      } catch (e) {
+        console.error("AuditPanel boot failed:", e);
+      }
     }
 
     boot();

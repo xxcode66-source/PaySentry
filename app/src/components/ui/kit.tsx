@@ -274,9 +274,14 @@ export function ToastHost() {
 
 export function PanelHeader({ title, desc }: { title: string; desc: string }) {
   return (
-    <div className="mb-5">
-      <h2 className="font-display text-xl font-semibold text-white">{title}</h2>
-      <p className="mt-1 text-sm text-slate-400">{desc}</p>
+    <div className="mb-7 border-b border-white/10 pb-4">
+      <div className="flex items-center gap-3">
+        <span className="h-7 w-1.5 shrink-0 rounded-full bg-gradient-to-b from-neon-cyan to-neon-violet" />
+        <div>
+          <h2 className="font-display text-xl font-semibold text-white">{title}</h2>
+          <p className="mt-0.5 text-sm text-slate-400">{desc}</p>
+        </div>
+      </div>
     </div>
   );
 }
