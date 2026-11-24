@@ -16,7 +16,7 @@ import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
 import org.web3j.protocol.core.methods.request.Transaction
 import org.web3j.protocol.http.HttpService
-import org.web3j.tx.RawTransactionManager
+import org.web3j.tx.FastRawTransactionManager
 import org.web3j.tx.gas.DefaultGasProvider
 import java.math.BigInteger
 
@@ -270,9 +270,18 @@ class PaySentryClient(
 
     private suspend fun send(fn: Function, to: String): String {
         val cred = requireNotNull(credentials)
-        val manager = RawTransactionManager(web3j, cred, ChainConfig.CHAIN_ID)
+        // FastRawTransactionManager waits for the receipt and always returns a hash,
+        // avoiding the "getTransactionHash() must not be null" from a bare send.
+        val manager = org.web3j.tx.FastRawTransactionManager(web3j, cred, ChainConfig.CHAIN_ID)
         val encoded = FunctionEncoder.encode(fn)
-        val hash = manager.sendTransaction(DefaultGasProvider.GAS_PRICE, DefaultGasProvider.GAS_LIMIT, to, encoded, BigInteger.ZERO)
-        return hash.transactionHash
+        val ethSend = manager.sendTransaction(DefaultGasProvider.GAS_PRICE, DefaultGasProvider.GAS_LIMIT, to, encoded, BigInteger.ZERO)
+        val hash = ethSend.transactionHash
+        if (hash != null) return hash
+        throw IllegalStateException("RPC did not return a transaction hash")
+    }
+
+    /** Read the native token (tQDAY) balance for an address. */
+    suspend fun nativeBalance(owner: String): BigInteger = withContext(Dispatchers.IO) {
+        web3j.ethGetBalance(owner, DefaultBlockParameterName.LATEST).send().balance
     }
 }

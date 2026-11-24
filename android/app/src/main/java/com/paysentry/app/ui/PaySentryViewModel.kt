@@ -32,6 +32,8 @@ class PaySentryViewModel : ViewModel() {
     // --- balance
     private val _tusd8 = MutableStateFlow<BigInteger>(BigInteger.ZERO)
     val tusd8: StateFlow<BigInteger> = _tusd8.asStateFlow()
+    private val _tqday = MutableStateFlow<BigInteger>(BigInteger.ZERO)
+    val tqday: StateFlow<BigInteger> = _tqday.asStateFlow()
 
     // --- verify
     private val _verdict = MutableStateFlow<CoPVerdict?>(null)
@@ -61,6 +63,7 @@ class PaySentryViewModel : ViewModel() {
         val w = _wallet.value ?: return
         viewModelScope.launch {
             _tusd8.value = runCatching { client.tusd8Balance(w) }.getOrDefault(BigInteger.ZERO)
+            _tqday.value = runCatching { client.nativeBalance(w) }.getOrDefault(BigInteger.ZERO)
         }
     }
 

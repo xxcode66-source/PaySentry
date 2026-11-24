@@ -40,7 +40,10 @@ import com.paysentry.app.ui.theme.Violet
  * Self-contained so it compiles standalone.
  */
 @Composable
-fun HomeScreen(onCheckBalance: () -> Unit) {
+fun HomeScreen(vm: com.paysentry.app.ui.PaySentryViewModel) {
+    val tusd8 by vm.tusd8.collectAsState()
+    val tqday by vm.tqday.collectAsState()
+    val wallet by vm.wallet.collectAsState()
     val transition = rememberInfiniteTransition(label = "hero")
     val pulse by transition.animateFloat(
         initialValue = 0.55f,
@@ -97,6 +100,23 @@ fun HomeScreen(onCheckBalance: () -> Unit) {
                 color = Cyan,
                 fontWeight = FontWeight.SemiBold,
             )
+
+            Spacer(Modifier.height(14.dp))
+            wallet?.let { addr ->
+                Text(
+                    addr.take(6) + "…" + addr.takeLast(4),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.labelSmall,
+                )
+            }
+
+            Spacer(Modifier.height(24.dp))
+
+            // Balance cards
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                BalanceCard("tUSD8", formatToken(tusd8, 6), Cyan, Modifier.weight(1f))
+                BalanceCard("tQDAY", formatToken(tqday, 18), Violet, Modifier.weight(1f))
+            }
 
             Spacer(Modifier.height(18.dp))
 
@@ -171,6 +191,31 @@ private fun ShieldLogo(modifier: Modifier = Modifier) {
             cap = androidx.compose.ui.graphics.StrokeCap.Round,
         )
     }
+}
+
+@Composable
+private fun BalanceCard(label: String, value: String, color: Color, modifier: Modifier = Modifier) {
+    androidx.compose.material3.Surface(
+        modifier = modifier.height(84.dp),
+        shape = MaterialTheme.shapes.medium,
+        color = androidx.compose.ui.graphics.Color(0xFF0A0E1A),
+        border = androidx.compose.foundation.BorderStroke(1.dp, color.copy(alpha = 0.35f)),
+    ) {
+        Column(
+            Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Text(label, color = color, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.height(4.dp))
+            Text(value, color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+        }
+    }
+}
+
+private fun formatToken(wei: java.math.BigInteger, decimals: Int): String {
+    if (wei == java.math.BigInteger.ZERO) return "0"
+    val value = wei.toDouble() / Math.pow(10.0, decimals.toDouble())
+    return if (value >= 1000) "%.2f".format(value) else if (value >= 1) "%.2f".format(value) else "%.4f".format(value)
 }
 
 @Composable
