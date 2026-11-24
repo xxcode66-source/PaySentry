@@ -87,6 +87,7 @@ fun WalletTopBar(address: String, onRefresh: () -> Unit, onLogout: () -> Unit, m
         animationSpec = infiniteRepeatable(tween(1200), RepeatMode.Reverse),
         label = "dot",
     )
+    val clipboard = androidx.compose.ui.platform.LocalClipboardManager.current
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(18.dp),
@@ -106,7 +107,7 @@ fun WalletTopBar(address: String, onRefresh: () -> Unit, onLogout: () -> Unit, m
             // address — tap to copy
             Surface(
                 onClick = {
-                    androidx.compose.ui.platform.LocalClipboardManager.current.setText(
+                    clipboard.setText(
                         androidx.compose.ui.text.AnnotatedString(address)
                     )
                 },
