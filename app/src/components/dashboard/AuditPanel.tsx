@@ -3,7 +3,9 @@
 import { motion } from "framer-motion";
 import { Ban, Bot, FileSearch, Fingerprint, Receipt, XOctagon } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createPublicClient, http } from "viem";
 import { formatUsd, shortAddr, timeAgo } from "@/lib/format";
+import { qdayAevum } from "@/lib/web3/chain";
 import { GUARD_ADDRESS, REGISTRY_ADDRESS, contractsConfigured } from "@/lib/web3/addresses";
 import { txLink } from "@/lib/web3/chain";
 
@@ -102,9 +104,11 @@ const TOPIC_PAYMENT_EXECUTED =
 
 function decodeString(data: string, slot: number): string {
   if (data.length < 64) return "";
-  const offset = Number(BigInt("0x" + (data.slice(slot * 64, slot * 64 + 64) || "0")));
-  const length = Number(BigInt("0x" + (data.slice(64 + offset * 64, 64 + offset * 64 + 64) || "0")));
-  const rawStr = data.slice(64 + offset * 64 + 64, 64 + offset * 64 + 64 + length * 2);
+  // slot holds the byte offset to the string (ABI dynamic encoding).
+  const offsetBytes = Number(BigInt("0x" + (data.slice(slot * 64, slot * 64 + 64) || "0")));
+  const wordIdx = Math.floor(offsetBytes / 32);
+  const length = Number(BigInt("0x" + (data.slice(wordIdx * 64, wordIdx * 64 + 64) || "0")));
+  const rawStr = data.slice(wordIdx * 64 + 64, wordIdx * 64 + 64 + length * 2);
   let str = "";
   for (let i = 0; i < rawStr.length; i += 2) {
     const c = parseInt(rawStr.slice(i, i + 2), 16);
@@ -196,8 +200,6 @@ export function AuditPanel() {
 
     async function boot() {
       try {
-        const { createPublicClient, http } = await import("viem");
-        const { qdayAevum } = await import("@/lib/web3/chain");
         const client = createPublicClient({ chain: qdayAevum, transport: http(RPC_URL) });
 
         const head = await client.getBlockNumber();
