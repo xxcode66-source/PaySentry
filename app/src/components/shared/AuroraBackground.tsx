@@ -1,0 +1,71 @@
+"use client";
+
+import { useMemo } from "react";
+
+/**
+ * Living background: three slow-drifting aurora blobs + rising dust particles.
+ * `calm` is the dashboard variant — dimmer, fewer particles, so data stays
+ * readable. Pure CSS animations; disabled automatically by the global
+ * prefers-reduced-motion rule in globals.css.
+ */
+export function AuroraBackground({ calm = false }: { calm?: boolean }) {
+  const particles = useMemo(() => {
+    const count = calm ? 10 : 22;
+    return Array.from({ length: count }, (_, i) => {
+      // Deterministic pseudo-random placement (stable across renders).
+      const seed = (i * 2654435761) % 1000 / 1000;
+      const seed2 = (i * 40503 + 7) % 1000 / 1000;
+      return {
+        left: `${(seed * 100).toFixed(1)}%`,
+        bottom: `${(seed2 * 30 - 5).toFixed(1)}%`,
+        size: seed > 0.7 ? 3 : 2,
+        duration: `${14 + seed * 18}s`,
+        delay: `${-seed2 * 24}s`,
+        cyan: seed2 > 0.5,
+      };
+    });
+  }, [calm]);
+
+  return (
+    <div
+      className="pointer-events-none absolute inset-0 overflow-hidden"
+      aria-hidden
+    >
+      {/* Aurora blobs */}
+      <div
+        className={`animate-aurora-a absolute -top-32 left-[8%] h-[420px] w-[520px] rounded-full bg-neon-cyan/25 blur-[110px] ${
+          calm ? "opacity-40" : ""
+        }`}
+      />
+      <div
+        className={`animate-aurora-b absolute right-[-6%] top-[30%] h-[460px] w-[560px] rounded-full bg-neon-violet/25 blur-[120px] ${
+          calm ? "opacity-40" : ""
+        }`}
+      />
+      <div
+        className={`animate-aurora-c absolute bottom-[-10%] left-[30%] h-[380px] w-[480px] rounded-full bg-neon-green/15 blur-[120px] ${
+          calm ? "opacity-30" : ""
+        }`}
+      />
+      {/* Rising dust particles */}
+      {particles.map((p, i) => (
+        <span
+          key={i}
+          className="animate-particle-rise absolute rounded-full"
+          style={{
+            left: p.left,
+            bottom: p.bottom,
+            width: p.size,
+            height: p.size,
+            background: p.cyan ? "#22d3ee" : "#a78bfa",
+            boxShadow: p.cyan
+              ? "0 0 6px 1px rgba(34,211,238,0.7)"
+              : "0 0 6px 1px rgba(167,139,250,0.7)",
+            animationDuration: p.duration,
+            animationDelay: p.delay,
+          }}
+        />
+      ))}
+    </div>
+  );
+}

@@ -94,6 +94,54 @@ body {
     transform: translateY(-5px);
   }
 }
+/* Aurora background — slow-drifting color blobs */
+@keyframes aurora-a {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(6vw, -4vh) scale(1.15);
+  }
+  66% {
+    transform: translate(-4vw, 3vh) scale(0.92);
+  }
+}
+@keyframes aurora-b {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-7vw, 5vh) scale(1.2);
+  }
+}
+@keyframes aurora-c {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate(5vw, -6vh) scale(1.1) rotate(8deg);
+  }
+}
+/* Tiny rising dust particles */
+@keyframes particle-rise {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.9;
+  }
+  88% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-46vh);
+    opacity: 0;
+  }
+}
 @layer utilities {
   .animate-shine {
     animation: shine 4.5s ease-in-out infinite;
@@ -103,6 +151,18 @@ body {
   }
   .animate-float-y {
     animation: float-y 4s ease-in-out infinite;
+  }
+  .animate-aurora-a {
+    animation: aurora-a 26s ease-in-out infinite;
+  }
+  .animate-aurora-b {
+    animation: aurora-b 32s ease-in-out infinite;
+  }
+  .animate-aurora-c {
+    animation: aurora-c 38s ease-in-out infinite;
+  }
+  .animate-particle-rise {
+    animation: particle-rise linear infinite;
   }
 }
 

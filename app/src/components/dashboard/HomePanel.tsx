@@ -18,7 +18,8 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { isAddress } from "viem";
 import { useAccount, useBalance, useContractRead } from "wagmi";
-import { LevelBadge, PanelHeader } from "@/components/ui/kit";
+import { PanelHeader } from "@/components/ui/kit";
+import { TiltCard } from "@/components/shared/TiltCard";
 import { WalletButton } from "@/components/shared/WalletButton";
 import { shortAddr } from "@/lib/format";
 import { ERC20_ABI, REGISTRY_ABI } from "@/lib/web3/abis";
@@ -59,7 +60,6 @@ export function HomePanel() {
 
   const registered = identity ? Boolean(identity[1]) : false;
   const displayName = identity?.[0] ?? "";
-  const level = identity ? Number(identity[2]) : undefined;
   const attCount = identity ? Number(identity[3]) : undefined;
 
   const refresh = () => {
@@ -76,7 +76,8 @@ export function HomePanel() {
         desc="Your identity card and assets — all straight from the chain."
       />
 
-      {/* Identity card — like a name card / ID card */}
+      {/* Identity card — like a name card / ID card, with 3D tilt + glare */}
+      <TiltCard max={7} className="rounded-3xl">
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -196,12 +197,6 @@ export function HomePanel() {
             {isConnected && addr ? (
               registered ? (
                 <>
-                  {level !== undefined && (
-                    <span className="flex items-center gap-2">
-                      <span className="text-slate-500">Trust level</span>
-                      <LevelBadge level={level} />
-                    </span>
-                  )}
                   <span className="text-slate-400">
                     <span className="text-slate-500">Attestations · </span>
                     {attCount ?? 0}
@@ -269,6 +264,7 @@ export function HomePanel() {
           </div>
         </div>
       </motion.div>
+      </TiltCard>
 
       {/* Assets — fintech-style portfolio */}
       <div className="mt-6">

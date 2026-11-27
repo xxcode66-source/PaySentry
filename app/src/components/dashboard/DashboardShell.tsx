@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { ContractsMissingBanner, FaucetChip, WrongNetworkBanner } from "@/components/shared/Banners";
+import { AuroraBackground } from "@/components/shared/AuroraBackground";
 import { WalletButton } from "@/components/shared/WalletButton";
 import { Logo } from "@/components/landing/Nav";
 import { shortAddr } from "@/lib/format";
@@ -50,7 +51,8 @@ export function DashboardShell() {
   const registryPrefill = params.get("prefill") ?? undefined;
 
   return (
-    <div className="min-h-screen">
+    <div className="relative min-h-screen">
+      <AuroraBackground calm />
       {/* top bar (mobile) */}
       <header className="glass-strong sticky top-0 z-40 border-b border-white/5 lg:hidden">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
@@ -64,7 +66,7 @@ export function DashboardShell() {
         </div>
       </header>
 
-      <div className="mx-auto flex max-w-7xl">
+      <div className="relative mx-auto flex max-w-7xl">
         {/* sidebar (desktop) */}
         <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-white/10 bg-gradient-to-b from-ink-900/80 via-transparent to-transparent px-4 py-6 lg:flex">
           <Link href="/" className="mb-8 px-2 transition hover:opacity-85">
