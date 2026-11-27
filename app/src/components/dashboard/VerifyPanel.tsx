@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ExternalLink, Search } from "lucide-react";
+import { ArrowRight, ExternalLink, Search } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { isAddress } from "viem";
 import { useContractRead } from "wagmi";
@@ -187,16 +188,31 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
               </p>
             )}
 
-            {valid && (
-              <a
-                href={addressLink(address)}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-4 inline-flex items-center gap-1.5 text-xs text-neon-cyan hover:underline"
-              >
-                View address on explorer <ExternalLink className="h-3 w-3" />
-              </a>
-            )}
+            <div className="mt-5 flex flex-wrap items-center gap-4 border-t border-white/10 pt-4">
+              {valid && (
+                <a
+                  href={addressLink(address)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs text-neon-cyan hover:underline"
+                >
+                  View address on explorer <ExternalLink className="h-3 w-3" />
+                </a>
+              )}
+              {valid && name.trim() && (result === 2 || result === 3) && (
+                <Link
+                  href={`/dashboard?tab=pay&address=${encodeURIComponent(address)}&name=${encodeURIComponent(name.trim())}`}
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-violet px-3.5 py-2 text-xs font-semibold text-ink transition hover:brightness-110"
+                >
+                  Pay this payee <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              )}
+              {valid && name.trim() && result !== undefined && result < 2 && (
+                <span className="text-xs text-slate-500">
+                  Verdict is {MATCH_LABELS[result]} — paying in Enforce mode would revert; use Warn mode in the Pay tab.
+                </span>
+              )}
+            </div>
           </div>
         )}
       </motion.div>

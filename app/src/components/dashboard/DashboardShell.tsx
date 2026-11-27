@@ -4,10 +4,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Bot, Fingerprint, History, Home, Search, Send } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { ContractsMissingBanner, FaucetChip, WrongNetworkBanner } from "@/components/shared/Banners";
 import { Logo } from "@/components/landing/Nav";
+import { shortAddr } from "@/lib/format";
+import { GUARD_ADDRESS, REGISTRY_ADDRESS } from "@/lib/web3/addresses";
+import { AuditProvider } from "./AuditProvider";
 import { AuditPanel } from "./AuditPanel";
 import { HomePanel } from "./HomePanel";
 import { PayPanel } from "./PayPanel";
@@ -31,6 +34,13 @@ export function DashboardShell() {
   const { address, isConnected } = useAccount();
   const initialTab = (params.get("tab") as TabId) || "home";
   const [tab, setTab] = useState<TabId>(TABS.some((t) => t.id === initialTab) ? initialTab : "home");
+
+  // Deep-linking: /dashboard?tab=pay&address=…&name=… (e.g. Verify → Pay,
+  // Pay receipt → Audit) switches the tab even after the shell has mounted.
+  useEffect(() => {
+    const t = params.get("tab") as TabId;
+    if (t && TABS.some((x) => x.id === t)) setTab(t);
+  }, [params]);
 
   const prefill = {
     address: params.get("address") ?? undefined,
@@ -110,26 +120,43 @@ export function DashboardShell() {
 
         {/* main content */}
         <main className="min-w-0 flex-1 px-4 pb-28 pt-6 sm:px-6 lg:px-10 lg:pb-16">
-          <div className="mx-auto max-w-4xl">
+          <div className="mx-auto max-w-5xl">
             <WrongNetworkBanner visible={isConnected} />
             <ContractsMissingBanner />
 
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={tab}
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.28, ease: "easeOut" }}
-            >
-              {tab === "home" && <HomePanel />}
-              {tab === "verify" && <VerifyPanel prefill={prefill} />}
-              {tab === "pay" && <PayPanel prefill={prefill} />}
-              {tab === "sessions" && <SessionsPanel />}
-              {tab === "registry" && <RegistryPanel prefill={registryPrefill} />}
-              {tab === "audit" && <AuditPanel />}
-            </motion.div>
-          </AnimatePresence>
+            <AuditProvider>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={tab}
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.28, ease: "easeOut" }}
+              >
+                {tab === "home" && <HomePanel />}
+                {tab === "verify" && <VerifyPanel prefill={prefill} />}
+                {tab === "pay" && <PayPanel prefill={prefill} />}
+                {tab === "sessions" && <SessionsPanel />}
+                {tab === "registry" && <RegistryPanel prefill={registryPrefill} />}
+                {tab === "audit" && <AuditPanel />}
+              </motion.div>
+              </AnimatePresence>
+
+              {/* Status footer — same source of truth on every tab */}
+              <footer className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-white/10 pt-4 text-[11px] text-slate-500">
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-neon-green" />
+                  QDay Aevum · chain 44005
+                </span>
+                <span>
+                  Guard <span className="font-mono text-slate-400">{shortAddr(GUARD_ADDRESS)}</span>
+                </span>
+                <span>
+                  Registry <span className="font-mono text-slate-400">{shortAddr(REGISTRY_ADDRESS)}</span>
+                </span>
+                <span className="ml-auto">Data replayed from on-chain events since block 3931234</span>
+              </footer>
+            </AuditProvider>
           </div>
         </main>
       </div>

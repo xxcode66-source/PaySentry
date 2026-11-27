@@ -231,7 +231,11 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
               </div>
               <p className="mt-2 text-sm leading-relaxed text-slate-300">{blocked.desc}</p>
               <p className="mt-2 text-xs text-slate-500">
-                The revert is permanent, public evidence that this payment attempt was stopped — see the Audit tab.
+                The revert is permanent, public evidence that this payment attempt was stopped — see the{" "}
+                <Link href="/dashboard?tab=audit" className="text-neon-cyan hover:underline">
+                  Audit tab
+                </Link>
+                .
               </p>
             </motion.div>
           )}
@@ -253,9 +257,17 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
               <p className="mt-2 text-sm text-slate-300">
                 {formatUsd(parsed)} tUSD8 → “{name}”
               </p>
-              <Link href={txLink(hash)} target="_blank" className="mt-2 inline-block font-mono text-xs text-neon-cyan hover:underline">
-                {hash.slice(0, 26)}… ↗
-              </Link>
+              <div className="mt-3 flex flex-wrap items-center gap-4">
+                <Link href={txLink(hash)} target="_blank" className="inline-block font-mono text-xs text-neon-cyan hover:underline">
+                  {hash.slice(0, 26)}… ↗
+                </Link>
+                <Link
+                  href="/dashboard?tab=audit"
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-neon-green/40 bg-neon-green/10 px-3 py-1.5 text-xs font-semibold text-neon-green transition hover:bg-neon-green/20"
+                >
+                  View in Audit <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
