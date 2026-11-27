@@ -19,6 +19,7 @@ import { useEffect, useRef, useState } from "react";
 import { isAddress } from "viem";
 import { useAccount, useBalance, useContractRead } from "wagmi";
 import { LevelBadge, PanelHeader } from "@/components/ui/kit";
+import { WalletButton } from "@/components/shared/WalletButton";
 import { shortAddr } from "@/lib/format";
 import { ERC20_ABI, REGISTRY_ABI } from "@/lib/web3/abis";
 import { REGISTRY_ADDRESS, TUSD8_ADDRESS, contractsConfigured } from "@/lib/web3/addresses";
@@ -132,9 +133,30 @@ export function HomePanel() {
                     <p className="font-display text-2xl font-semibold leading-tight text-white">
                       PaySentry Identity
                     </p>
-                    <p className="mt-0.5 text-xs text-slate-400">
+                    <p className="mt-0.5 text-xs text-slate-300">
                       Connect your wallet to see your identity card.
                     </p>
+                    {/* Sample preview — a real on-chain identity, so the card
+                        never looks like an empty placeholder */}
+                    <div className="mt-3 flex items-center gap-3 rounded-xl border border-white/10 bg-ink-900/60 px-3 py-2.5">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-neon-cyan/15 font-display text-base font-bold text-neon-cyan">
+                        A
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-sm font-semibold text-white">
+                          au
+                          <span className="ml-2 rounded-full border border-neon-green/40 bg-neon-green/10 px-1.5 py-0.5 text-[9px] font-semibold text-neon-green">
+                            TERDAFTAR
+                          </span>
+                        </span>
+                        <span className="block font-mono text-[11px] text-slate-400">
+                          0x9f25…ef94 · paid 1 tUSD8, 24 Nov 2026
+                        </span>
+                      </span>
+                      <span className="shrink-0 text-[10px] uppercase tracking-wider text-slate-500">
+                        Contoh
+                      </span>
+                    </div>
                   </>
                 )}
               </div>
@@ -196,7 +218,12 @@ export function HomePanel() {
                 </span>
               )
             ) : (
-              <span className="text-slate-500">No wallet connected.</span>
+              <span className="flex flex-wrap items-center gap-3">
+                <WalletButton compact />
+                <span className="text-slate-400">
+                  Your card, balances and activity appear here once connected.
+                </span>
+              </span>
             )}
 
             <span className="ml-auto flex items-center gap-2">
@@ -230,7 +257,7 @@ export function HomePanel() {
               {isConnected && addr && !registered && (
                 <Link
                   href="/dashboard?tab=registry&prefill=register"
-                  className="relative inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-neon-cyan to-neon-violet px-3 py-1.5 text-xs font-semibold text-ink transition hover:brightness-110"
+                  className="relative inline-flex items-center gap-1.5 rounded-lg bg-neon-cyan px-3 py-1.5 text-xs font-semibold text-ink transition hover:bg-cyan-300"
                 >
                   <span className="absolute inset-0 animate-ping rounded-lg bg-neon-cyan/30 [animation-duration:2.5s]" />
                   <span className="relative flex items-center gap-1.5">
@@ -264,22 +291,26 @@ export function HomePanel() {
         <div className="grid gap-4 sm:grid-cols-2">
           <AssetCard
             symbol="tQDAY"
+            glyph="Q"
             name="QDay Token"
             desc="Gas · native token"
             value={tqday?.value ?? 0n}
             decimals={18}
             accent="violet"
             tokenAddr={null}
+            tokenAddrLabel="Token contract"
             delay={0.08}
           />
           <AssetCard
             symbol="tUSD8"
+            glyph="$"
             name="Test USD"
             desc="Stablecoin · ERC-20"
             value={tusd8 ?? 0n}
             decimals={6}
             accent="cyan"
             tokenAddr={TUSD8_ADDRESS}
+            tokenAddrLabel="Token contract"
             delay={0.16}
           />
         </div>
@@ -339,21 +370,25 @@ function useCountUp(target: number, duration = 900): number {
 
 function AssetCard({
   symbol,
+  glyph,
   name,
   desc,
   value,
   decimals,
   accent,
   tokenAddr,
+  tokenAddrLabel,
   delay = 0,
 }: {
   symbol: string;
+  glyph: string;
   name: string;
   desc: string;
   value: bigint;
   decimals: number;
   accent: "cyan" | "violet";
   tokenAddr: string | null;
+  tokenAddrLabel: string;
   delay?: number;
 }) {
   const numeric = Number(value) / Math.pow(10, decimals);
@@ -378,13 +413,13 @@ function AssetCard({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span
-              className={`flex h-11 w-11 items-center justify-center rounded-full font-display text-sm font-bold ring-1 ${
+              className={`flex h-11 w-11 items-center justify-center rounded-full font-display text-base font-bold ring-1 ${
                 isCyan
                   ? "bg-neon-cyan/15 text-neon-cyan ring-neon-cyan/30"
                   : "bg-neon-violet/15 text-neon-violet ring-neon-violet/30"
               }`}
             >
-              {symbol.charAt(0)}
+              {glyph}
             </span>
             <div>
               <p className="text-sm font-semibold text-white">{symbol}</p>
@@ -402,8 +437,12 @@ function AssetCard({
           <span className="ml-2 text-base font-medium text-slate-500">{symbol}</span>
         </p>
         <div className="mt-4 flex items-center justify-between border-t border-white/5 pt-3 text-[11px] text-slate-500">
-          <span>Balance on QDay Aevum</span>
-          {tokenAddr && <span className="font-mono">{shortAddr(tokenAddr, 6)}</span>}
+          <span>{tokenAddrLabel}</span>
+          {tokenAddr ? (
+            <span className="font-mono">{shortAddr(tokenAddr, 6)}</span>
+          ) : (
+            <span>Native token</span>
+          )}
         </div>
       </div>
     </motion.div>

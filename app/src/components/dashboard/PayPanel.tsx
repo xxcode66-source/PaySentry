@@ -134,10 +134,11 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
         <span>allowance to guard: <b className="text-slate-200">{formatUsd(allowance)}</b></span>
       </div>
 
-      <div className="grid gap-4">
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+      <div className="grid min-w-0 gap-4">
         <div className="grid gap-4 md:grid-cols-2">
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-slate-400">Payee address</label>
+            <label className="mb-1.5 block text-xs font-medium text-slate-300">Payee address</label>
             <input
               value={payee}
               onChange={(e) => setPayee(e.target.value)}
@@ -147,7 +148,7 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-slate-400">Amount (tUSD8)</label>
+            <label className="mb-1.5 block text-xs font-medium text-slate-300">Amount (tUSD8)</label>
             <input
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
@@ -162,7 +163,7 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
         </div>
 
         <div>
-          <label className="mb-1.5 block text-xs font-medium text-slate-400">
+          <label className="mb-1.5 block text-xs font-medium text-slate-300">
             Payee name as intended <span className="text-slate-500">(checked against the registry)</span>
           </label>
           <input
@@ -333,6 +334,48 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
             </motion.div>
           )}
         </AnimatePresence>
+      </div>
+
+      {/* Side panel — how the guard works */}
+      <aside className="space-y-4">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+            How the guard works
+          </p>
+          <ol className="mt-3 space-y-3">
+            {[
+              ["1", "Approve", "You approve the Guard to move exactly the amount you enter — nothing more."],
+              ["2", "Check", "The Guard checks the payee name against the on-chain registry before moving anything."],
+              ["3", "Execute or revert", "Match → tokens move. Mismatch in Enforce mode → the whole transaction reverts."],
+            ].map(([n, t, d]) => (
+              <li key={n} className="flex items-start gap-3">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-neon-cyan/15 font-display text-xs font-bold text-neon-cyan">
+                  {n}
+                </span>
+                <span>
+                  <span className="block text-sm font-semibold text-white">{t}</span>
+                  <span className="mt-0.5 block text-xs leading-relaxed text-slate-300">{d}</span>
+                </span>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+            Blocked attempts are evidence
+          </p>
+          <p className="mt-2 text-xs leading-relaxed text-slate-300">
+            A blocked payment reverts on-chain, so the attempt itself is permanent, public proof
+            that the Guard stopped a bad payment.
+          </p>
+          <Link
+            href="/dashboard?tab=audit"
+            className="mt-3 inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-slate-200 transition hover:text-neon-cyan"
+          >
+            See the audit trail <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
+      </aside>
       </div>
     </div>
   );

@@ -48,13 +48,13 @@ const PROBLEMS = [
 
 export function Problem() {
   return (
-    <section className="relative mx-auto max-w-6xl px-4 py-28 sm:px-6" id="problem">
+    <section className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6" id="problem">
       <Reveal>
         <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-cyan">The problem</p>
         <h2 className="font-display mt-3 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
           Crypto payments are the only rail where <span className="text-neon-red">nobody checks the name</span>.
         </h2>
-        <p className="mt-4 max-w-2xl text-slate-400">
+        <p className="mt-4 max-w-2xl text-slate-300">
           Banks solved this years ago with Confirmation of Payee. Blockchain — where transfers are
           irreversible and AI agents are starting to pay autonomously — still has nothing.
         </p>
@@ -69,7 +69,7 @@ export function Problem() {
                 <p.icon className="h-6 w-6" />
               </div>
               <h3 className="font-display mt-4 text-lg font-semibold text-white">{p.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-400">{p.body}</p>
+              <p className="mt-2 text-sm leading-relaxed text-slate-300">{p.body}</p>
             </div>
           </StaggerItem>
         ))}
@@ -112,7 +112,7 @@ const VERDICT_ROW = [
 
 export function HowItWorks() {
   return (
-    <section className="relative border-y border-white/5 bg-ink-900/40 py-28" id="how">
+    <section className="relative border-y border-white/5 bg-ink-900/40 py-20" id="how">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-cyan">How it works</p>
@@ -167,7 +167,7 @@ export function HowItWorks() {
                 </span>
                 <s.icon className="h-6 w-6 text-neon-cyan" />
                 <h3 className="font-display mt-4 text-base font-semibold text-white">{s.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-400">{s.body}</p>
+                <p className="mt-2 text-sm leading-relaxed text-slate-300">{s.body}</p>
               </div>
             </StaggerItem>
           ))}
@@ -265,7 +265,7 @@ const FEATURES = [
 
 export function Features() {
   return (
-    <section className="mx-auto max-w-6xl px-4 py-28 sm:px-6" id="features">
+    <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6" id="features">
       <Reveal>
         <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-cyan">Features</p>
         <h2 className="font-display mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
@@ -280,7 +280,7 @@ export function Features() {
                 <f.icon className="h-6 w-6" />
               </div>
               <h3 className="font-display mt-4 text-lg font-semibold text-white">{f.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-400">{f.body}</p>
+              <p className="mt-2 text-sm leading-relaxed text-slate-300">{f.body}</p>
             </div>
           </StaggerItem>
         ))}
@@ -293,7 +293,7 @@ export function Features() {
 
 export function BuiltOn() {
   return (
-    <section className="border-y border-white/5 bg-ink-900/40 py-28" id="qday">
+    <section className="border-y border-white/5 bg-ink-900/40 py-20" id="qday">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-violet">
@@ -302,7 +302,7 @@ export function BuiltOn() {
           <h2 className="font-display mt-3 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
             Post-quantum rails for the <span className="text-gradient">agentic economy</span>.
           </h2>
-          <p className="mt-4 max-w-2xl text-slate-400">
+          <p className="mt-4 max-w-2xl text-slate-300">
             PaySentry settles on QDay&apos;s Aevum testnet — an EVM-compatible chain designed for
             machine-driven commerce. Identity, guard and receipts live natively where agents
             already operate.
@@ -312,9 +312,9 @@ export function BuiltOn() {
         <Stagger className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
             { k: "Chain ID", v: "44005" },
-            { k: "RPC", v: RPC_URL },
-            { k: "Stablecoin", v: "tUSD8 (6 decimals)" },
-            { k: "Settlement", v: "sub-second @ mainnet" },
+            { k: "RPC", v: RPC_URL.replace("https://", "") },
+            { k: "Stablecoin", v: "tUSD8 · 6 decimals" },
+            { k: "Settlement", v: "Sub-second" },
           ].map((c) => (
             <StaggerItem key={c.k}>
               <div className="glass rounded-xl p-4">
@@ -356,14 +356,14 @@ export function BuiltOn() {
 
 export function SDKSection() {
   return (
-    <section className="border-y border-white/5 bg-ink-900/40 py-28" id="sdk">
+    <section className="py-20" id="sdk">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-cyan">For builders</p>
           <h2 className="font-display mt-3 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
             Drop CoP into any checkout with <span className="text-gradient">one function</span>.
           </h2>
-          <p className="mt-4 max-w-2xl text-slate-400">
+          <p className="mt-4 max-w-2xl text-slate-300">
             The <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-xs text-neon-cyan">paysentry-sdk</code>{" "}
             wraps the on-chain guard in a single call. No ABI wrangling, no wagmi dependency —
             works in any dapp, script, or agent. Defaults to the live testnet deployment.
@@ -375,7 +375,7 @@ export function SDKSection() {
             <div className="glass flex h-full flex-col justify-between rounded-2xl p-6">
               <div>
                 <h3 className="font-display text-lg font-semibold text-white">What you get</h3>
-                <ul className="mt-4 space-y-3 text-sm text-slate-400">
+                <ul className="mt-4 space-y-3 text-sm text-slate-300">
                   {[
                     "Verdict before payment — not after",
                     "Mismatched payees revert on-chain",
@@ -437,7 +437,7 @@ console.log(result.verdictLabel, result.txHash);`}</code>
 
 export function CTA() {
   return (
-    <section className="mx-auto max-w-6xl px-4 py-28 sm:px-6">
+    <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
       <Reveal>
         <div className="relative overflow-hidden rounded-3xl border border-neon-cyan/25 bg-gradient-to-br from-neon-cyan/10 via-transparent to-neon-violet/15 p-10 text-center sm:p-16">
           <div className="absolute inset-0 grid-bg opacity-40" aria-hidden />
@@ -445,7 +445,7 @@ export function CTA() {
             <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Check first. Pay second. <span className="text-gradient">Always.</span>
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-slate-400">
+            <p className="mx-auto mt-4 max-w-xl text-slate-300">
               Open the dashboard to verify a payee, run a guarded payment, or watch an agent get
               stopped mid-transaction by the guardrail.
             </p>

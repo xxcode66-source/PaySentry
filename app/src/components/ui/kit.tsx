@@ -35,7 +35,7 @@ export function Button({
   };
   const variants = {
     primary:
-      "bg-gradient-to-r from-neon-cyan to-neon-violet text-ink font-semibold hover:shadow-glow-cyan hover:brightness-110 active:scale-[0.98]",
+      "bg-neon-cyan text-ink font-semibold hover:bg-cyan-300 hover:shadow-glow-cyan active:scale-[0.98]",
     ghost: "text-slate-300 hover:text-white hover:bg-white/5",
     danger:
       "bg-gradient-to-r from-neon-red to-rose-600 text-white font-semibold hover:shadow-glow-red active:scale-[0.98]",

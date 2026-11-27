@@ -85,9 +85,11 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
         desc="The core Confirmation-of-Payee primitive: does this address really belong to the name you intend to pay?"
       />
 
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+      <div className="min-w-0">
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label className="mb-1.5 block text-xs font-medium text-slate-400">Payee address</label>
+          <label className="mb-1.5 block text-xs font-medium text-slate-300">Payee address</label>
           <input
             value={address}
             onChange={(e) => setAddress(e.target.value)}
@@ -106,7 +108,7 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
           </p>
         </div>
         <div>
-          <label className="mb-1.5 block text-xs font-medium text-slate-400">
+          <label className="mb-1.5 block text-xs font-medium text-slate-300">
             Name you intend to pay
           </label>
           <input
@@ -245,7 +247,7 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
               {valid && name.trim() && (result === 2 || result === 3) && (
                 <Link
                   href={`/dashboard?tab=pay&address=${encodeURIComponent(address)}&name=${encodeURIComponent(name.trim())}`}
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-violet px-3.5 py-2 text-xs font-semibold text-ink transition hover:brightness-110"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-neon-cyan px-3.5 py-2 text-xs font-semibold text-ink transition hover:bg-cyan-300"
                 >
                   Pay this payee <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
@@ -267,6 +269,48 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
           After deploy, verdicts come straight from the chain.
         </p>
       )}
+      </div>
+
+      {/* Side panel — verdict guide + a real example to try */}
+      <aside className="space-y-4">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+            What each verdict means
+          </p>
+          <ul className="mt-3 space-y-3">
+            {[
+              { r: 3 as const, text: "Exact match — the name is registered to this address." },
+              { r: 2 as const, text: "Close match — a typo or near-miss. Double-check before paying." },
+              { r: 1 as const, text: "No match — the address belongs to a different name." },
+              { r: 0 as const, text: "Not found — no identity registered for this address." },
+            ].map(({ r, text }) => (
+              <li key={r} className="flex items-start gap-2.5">
+                <VerdictPill result={r} size="sm" />
+                <span className="text-xs leading-relaxed text-slate-300">{text}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+            Try a real example
+          </p>
+          <p className="mt-2 text-xs leading-relaxed text-slate-300">
+            The payee <span className="font-semibold text-white">“au”</span> was paid 1 tUSD8 on
+            24 Nov 2026 — the first guarded payment on this chain.
+          </p>
+          <button
+            onClick={() => {
+              setAddress("0x9f25556d1a0acc49bb05dd9081e74bd4c0dcef94");
+              setName("au");
+            }}
+            className="mt-3 inline-flex items-center gap-1.5 rounded-xl border border-neon-cyan/40 bg-neon-cyan/10 px-3 py-2 text-xs font-semibold text-neon-cyan transition hover:bg-neon-cyan/20"
+          >
+            Fill in “au” <ArrowRight className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      </aside>
+      </div>
     </div>
   );
 }

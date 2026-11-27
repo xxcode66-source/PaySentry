@@ -22,7 +22,7 @@ export function WalletButton({ compact = false }: { compact?: boolean }) {
               className={`inline-flex items-center gap-2 rounded-xl text-sm font-semibold transition ${
                 connected
                   ? "border border-neon-cyan/40 bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan/20"
-                  : "bg-gradient-to-r from-neon-cyan to-neon-violet text-ink shadow-glow-cyan hover:brightness-110"
+                  : "bg-neon-cyan text-ink shadow-glow-cyan hover:bg-cyan-300"
               } ${compact ? "px-3 py-1.5 text-xs" : "px-4 py-2"}`}
             >
               {connected ? (
