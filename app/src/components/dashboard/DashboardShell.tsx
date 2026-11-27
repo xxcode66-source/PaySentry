@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { ContractsMissingBanner, FaucetChip, WrongNetworkBanner } from "@/components/shared/Banners";
+import { WalletButton } from "@/components/shared/WalletButton";
 import { Logo } from "@/components/landing/Nav";
 import { shortAddr } from "@/lib/format";
 import { GUARD_ADDRESS, REGISTRY_ADDRESS } from "@/lib/web3/addresses";
@@ -56,11 +57,9 @@ export function DashboardShell() {
           <Link href="/" className="transition hover:opacity-85">
             <Logo />
           </Link>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <FaucetChip address={address} />
-            <Link href="/demo" className="text-xs text-slate-400 transition hover:text-neon-cyan">
-              Guided demo →
-            </Link>
+            <WalletButton compact />
           </div>
         </div>
       </header>
@@ -99,6 +98,9 @@ export function DashboardShell() {
           </nav>
 
           <div className="mt-4 border-t border-white/10 pt-4">
+            <div className="mb-3 [&_button]:w-full [&_button]:justify-center">
+              <WalletButton />
+            </div>
             <div className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5">
               <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">Network</p>
               <p className="mt-1 flex items-center gap-2 text-xs text-neon-green">

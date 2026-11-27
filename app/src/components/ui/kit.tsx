@@ -279,7 +279,7 @@ export function PanelHeader({ title, desc }: { title: string; desc: string }) {
         <span className="h-7 w-1.5 shrink-0 rounded-full bg-gradient-to-b from-neon-cyan to-neon-violet" />
         <div>
           <h2 className="font-display text-xl font-semibold text-white">{title}</h2>
-          <p className="mt-0.5 text-sm text-slate-400">{desc}</p>
+          <p className="mt-0.5 text-sm text-slate-300">{desc}</p>
         </div>
       </div>
     </div>

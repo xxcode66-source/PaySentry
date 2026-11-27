@@ -9,6 +9,7 @@ import {
   useWriteContract,
 } from "wagmi";
 import { Button, LevelBadge, PanelHeader } from "@/components/ui/kit";
+import { WalletButton } from "@/components/shared/WalletButton";
 import { explainTxError, shortAddr } from "@/lib/format";
 import { toast } from "@/lib/store/toast";
 import { REGISTRY_ABI } from "@/lib/web3/abis";
@@ -164,7 +165,12 @@ export function RegistryPanel({ prefill }: { prefill?: string }) {
               </Button>
             </>
           ) : (
-            <p className="text-sm text-slate-500">Connect your wallet on the QDay network to manage identity.</p>
+            <div className="grid gap-3">
+              <p className="text-sm text-slate-500">Connect your wallet on the QDay network to manage identity.</p>
+              <div>
+                <WalletButton compact />
+              </div>
+            </div>
           )}
         </div>
         )}

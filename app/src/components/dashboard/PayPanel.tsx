@@ -12,6 +12,7 @@ import {
   useWriteContract,
 } from "wagmi";
 import { Button, PanelHeader, VerdictPill } from "@/components/ui/kit";
+import { WalletButton } from "@/components/shared/WalletButton";
 import { predictCheck } from "@/lib/cop/simulate";
 import { explainTxError, formatUsd, parseUsd, shortAddr } from "@/lib/format";
 import { toast } from "@/lib/store/toast";
@@ -274,7 +275,7 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
             Send {parsed ? formatUsd(parsed) : ""} tUSD8 {mode === 1 ? "· enforced" : "· warn only"}
             <ArrowRight className="h-4 w-4" />
           </Button>
-          {!me && <span className="text-xs text-slate-500">Connect your wallet to pay.</span>}
+          {!me && <WalletButton compact />}
         </div>
 
         {/* Blocked card */}

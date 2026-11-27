@@ -15,7 +15,7 @@ import {
   Wallet,
 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { isAddress } from "viem";
 import { useAccount, useBalance, useContractRead } from "wagmi";
 import { LevelBadge, PanelHeader } from "@/components/ui/kit";
@@ -79,8 +79,10 @@ export function HomePanel() {
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-neon-cyan/15 via-ink-800 to-neon-violet/15 p-6 sm:p-7"
+        className="animate-gradient-pan relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-neon-cyan/15 via-ink-800 to-neon-violet/15 bg-[length:200%_200%] p-6 sm:p-7"
       >
+        {/* light sweep across the card, every few seconds */}
+        <div className="animate-shine pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
         {/* decorative rings, like a card watermark */}
         <div className="pointer-events-none absolute -right-10 -top-16 h-48 w-48 rounded-full border-[22px] border-white/[0.04]" />
         <div className="pointer-events-none absolute -bottom-20 -right-4 h-40 w-40 rounded-full border-[18px] border-neon-violet/10" />
@@ -92,14 +94,20 @@ export function HomePanel() {
               <div
                 className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl font-display text-2xl font-bold ${
                   registered
-                    ? "bg-gradient-to-br from-neon-cyan to-neon-violet text-ink shadow-glow-cyan"
+                    ? "animate-float-y bg-gradient-to-br from-neon-cyan to-neon-violet text-ink shadow-glow-cyan"
                     : "border-2 border-dashed border-white/20 bg-white/5 text-slate-400"
                 }`}
               >
                 {registered ? (
                   displayName.charAt(0).toUpperCase()
                 ) : (
-                  <Fingerprint className="h-7 w-7" />
+                  <motion.span
+                    animate={{ scale: [1, 1.12, 1], opacity: [0.7, 1, 0.7] }}
+                    transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                    className="flex"
+                  >
+                    <Fingerprint className="h-7 w-7" />
+                  </motion.span>
                 )}
               </div>
               <div>
@@ -134,7 +142,10 @@ export function HomePanel() {
 
             {/* status chip */}
             {isConnected && addr && (
-              <span
+              <motion.span
+                initial={{ scale: 0.6, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 320, damping: 16, delay: 0.15 }}
                 className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-semibold ${
                   registered
                     ? "border-neon-green/40 bg-neon-green/10 text-neon-green"
@@ -147,10 +158,14 @@ export function HomePanel() {
                   </>
                 ) : (
                   <>
-                    <Circle className="h-3.5 w-3.5" /> Belum terdaftar
+                    <span className="relative flex h-2 w-2">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon-amber opacity-70" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-neon-amber" />
+                    </span>
+                    Belum terdaftar
                   </>
                 )}
-              </span>
+              </motion.span>
             )}
           </div>
 
@@ -215,9 +230,12 @@ export function HomePanel() {
               {isConnected && addr && !registered && (
                 <Link
                   href="/dashboard?tab=registry&prefill=register"
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-neon-cyan to-neon-violet px-3 py-1.5 text-xs font-semibold text-ink transition hover:brightness-110"
+                  className="relative inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-neon-cyan to-neon-violet px-3 py-1.5 text-xs font-semibold text-ink transition hover:brightness-110"
                 >
-                  Daftarkan identitas <ArrowRight className="h-3.5 w-3.5" />
+                  <span className="absolute inset-0 animate-ping rounded-lg bg-neon-cyan/30 [animation-duration:2.5s]" />
+                  <span className="relative flex items-center gap-1.5">
+                    Daftarkan identitas <ArrowRight className="h-3.5 w-3.5" />
+                  </span>
                 </Link>
               )}
             </span>
@@ -252,6 +270,7 @@ export function HomePanel() {
             decimals={18}
             accent="violet"
             tokenAddr={null}
+            delay={0.08}
           />
           <AssetCard
             symbol="tUSD8"
@@ -261,6 +280,7 @@ export function HomePanel() {
             decimals={6}
             accent="cyan"
             tokenAddr={TUSD8_ADDRESS}
+            delay={0.16}
           />
         </div>
       </div>
@@ -296,6 +316,27 @@ export function HomePanel() {
   );
 }
 
+/** Eased count-up for balances — numbers roll up on load instead of popping in. */
+function useCountUp(target: number, duration = 900): number {
+  const [display, setDisplay] = useState(0);
+  const fromRef = useRef(0);
+  useEffect(() => {
+    const from = fromRef.current;
+    const start = performance.now();
+    let raf = 0;
+    const step = (t: number) => {
+      const p = Math.min(1, (t - start) / duration);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setDisplay(from + (target - from) * eased);
+      if (p < 1) raf = requestAnimationFrame(step);
+      else fromRef.current = target;
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [target, duration]);
+  return display;
+}
+
 function AssetCard({
   symbol,
   name,
@@ -304,6 +345,7 @@ function AssetCard({
   decimals,
   accent,
   tokenAddr,
+  delay = 0,
 }: {
   symbol: string;
   name: string;
@@ -312,14 +354,17 @@ function AssetCard({
   decimals: number;
   accent: "cyan" | "violet";
   tokenAddr: string | null;
+  delay?: number;
 }) {
-  const valueStr = formatToken(value, decimals);
+  const numeric = Number(value) / Math.pow(10, decimals);
+  const animated = useCountUp(numeric);
+  const valueStr = formatNumber(animated);
   const isCyan = accent === "cyan";
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.08 }}
+      transition={{ delay }}
       className={`group relative overflow-hidden rounded-3xl border bg-ink-800/60 p-6 transition hover:-translate-y-px ${
         isCyan ? "border-neon-cyan/20 hover:border-neon-cyan/40" : "border-neon-violet/20 hover:border-neon-violet/40"
       }`}
@@ -393,8 +438,7 @@ function QuickAction({
   );
 }
 
-function formatToken(value: bigint, decimals: number): string {
-  if (!value) return "0.00";
-  const v = Number(value) / Math.pow(10, decimals);
+function formatNumber(v: number): string {
+  if (!v) return "0.00";
   return v >= 1000 ? v.toLocaleString("en-US", { maximumFractionDigits: 2 }) : v.toFixed(2);
 }

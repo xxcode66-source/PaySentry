@@ -1,10 +1,8 @@
 "use client";
 
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { motion } from "framer-motion";
-import { ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { WalletButton } from "@/components/shared/WalletButton";
 
 export function Logo({ size = 28 }: { size?: number }) {
   return (
@@ -57,27 +55,7 @@ export function Nav() {
           ))}
         </div>
         <div className="flex items-center gap-3">
-          <ConnectButton.Custom>
-            {({ account, openAccountModal, openConnectModal, mounted }) => {
-              const connected = mounted && account;
-              return (
-                <div aria-hidden={!mounted}>
-                  <motion.button
-                    whileTap={{ scale: 0.96 }}
-                    onClick={connected ? openAccountModal : openConnectModal}
-                    className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${
-                      connected
-                        ? "border border-neon-cyan/40 bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan/20"
-                        : "bg-gradient-to-r from-neon-cyan to-neon-violet text-ink hover:brightness-110"
-                    }`}
-                  >
-                    <ShieldCheck className="mr-1.5 inline h-4 w-4" />
-                    {connected ? account.displayName : "Connect Wallet"}
-                  </motion.button>
-                </div>
-              );
-            }}
-          </ConnectButton.Custom>
+          <WalletButton />
         </div>
       </nav>
     </header>

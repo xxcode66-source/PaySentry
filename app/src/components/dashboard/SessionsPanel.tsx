@@ -11,6 +11,7 @@ import {
   useWriteContract,
 } from "wagmi";
 import { Button, CopyButton, PanelHeader } from "@/components/ui/kit";
+import { WalletButton } from "@/components/shared/WalletButton";
 import { durationLeft, explainTxError, formatUsd, parseUsd, shortAddr } from "@/lib/format";
 import { toast } from "@/lib/store/toast";
 import { ERC20_ABI, GUARD_ABI } from "@/lib/web3/abis";
@@ -202,7 +203,7 @@ export function SessionsPanel() {
             >
               {needsApproval ? `1/2 · Approve ${formatUsd(parsedCap)} then create` : "Create session"}
             </Button>
-            {!me && <p className="text-xs text-slate-500">Connect your wallet to create sessions.</p>}
+            {!me && <WalletButton compact />}
           </div>
         </div>
 
