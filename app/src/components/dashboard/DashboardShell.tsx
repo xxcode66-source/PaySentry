@@ -124,10 +124,9 @@ export function DashboardShell() {
             <WrongNetworkBanner visible={isConnected} />
             <ContractsMissingBanner />
 
-            <AuditProvider>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={tab}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={tab}
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
@@ -138,9 +137,16 @@ export function DashboardShell() {
                 {tab === "pay" && <PayPanel prefill={prefill} />}
                 {tab === "sessions" && <SessionsPanel />}
                 {tab === "registry" && <RegistryPanel prefill={registryPrefill} />}
-                {tab === "audit" && <AuditPanel />}
+                {/* The audit scan (hundreds of eth_getLogs calls) runs only here,
+                    when the user actually opens the Audit tab — no chain scan
+                    on dashboard load, and no new network calls anywhere else. */}
+                {tab === "audit" && (
+                  <AuditProvider>
+                    <AuditPanel />
+                  </AuditProvider>
+                )}
               </motion.div>
-              </AnimatePresence>
+            </AnimatePresence>
 
               {/* Status footer — same source of truth on every tab */}
               <footer className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-white/10 pt-4 text-[11px] text-slate-500">
@@ -154,9 +160,8 @@ export function DashboardShell() {
                 <span>
                   Registry <span className="font-mono text-slate-400">{shortAddr(REGISTRY_ADDRESS)}</span>
                 </span>
-                <span className="ml-auto">Data replayed from on-chain events since block 3931234</span>
+                <span className="ml-auto">Audit data replayed from on-chain events since block 3931234</span>
               </footer>
-            </AuditProvider>
           </div>
         </main>
       </div>

@@ -3,32 +3,30 @@
 import { motion } from "framer-motion";
 import {
   ArrowRight,
+  BadgeCheck,
   CheckCircle2,
   Circle,
   Copy,
   ExternalLink,
   FileSearch,
   Fingerprint,
-  History,
-  Receipt,
   RefreshCw,
   Send,
-  ShieldAlert,
-  ShieldCheck,
+  Wallet,
 } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { isAddress } from "viem";
 import { useAccount, useBalance, useContractRead } from "wagmi";
 import { LevelBadge, PanelHeader } from "@/components/ui/kit";
-import { formatUsd, timeAgo } from "@/lib/format";
+import { shortAddr } from "@/lib/format";
 import { ERC20_ABI, REGISTRY_ABI } from "@/lib/web3/abis";
 import { REGISTRY_ADDRESS, TUSD8_ADDRESS, contractsConfigured } from "@/lib/web3/addresses";
-import { addressLink, txLink } from "@/lib/web3/chain";
-import { KIND_META } from "@/lib/audit/trail";
-import { useAuditTrail } from "./AuditProvider";
+import { addressLink } from "@/lib/web3/chain";
 
-/** Dashboard home: wallet summary — address, identity status, balances. */
+/** Dashboard home: identity card + asset portfolio.
+ *  No new network calls — only the identity + balance reads this panel
+ *  already made (payeeOf, balanceOf, native balance). */
 export function HomePanel() {
   const { address, isConnected } = useAccount();
   const [copied, setCopied] = useState(false);
@@ -61,6 +59,7 @@ export function HomePanel() {
   const registered = identity ? Boolean(identity[1]) : false;
   const displayName = identity?.[0] ?? "";
   const level = identity ? Number(identity[2]) : undefined;
+  const attCount = identity ? Number(identity[3]) : undefined;
 
   const refresh = () => {
     refetchIdentity();
@@ -73,111 +72,198 @@ export function HomePanel() {
     <div>
       <PanelHeader
         title="Overview"
-        desc="Your wallet, identity and balances — all straight from the chain."
+        desc="Your identity card and assets — all straight from the chain."
       />
 
-      {/* address card */}
+      {/* Identity card — like a name card / ID card */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass rounded-2xl p-5"
+        className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-neon-cyan/15 via-ink-800 to-neon-violet/15 p-6 sm:p-7"
       >
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-neon-cyan to-neon-violet text-ink">
-              <ShieldCheck className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
-                Connected wallet
-              </p>
-              <p className="font-mono text-sm text-slate-200">
-                {isConnected && addr ? addr : "Not connected"}
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => {
-                if (addr) {
-                  navigator.clipboard.writeText(addr);
-                  setCopied(true);
-                  setTimeout(() => setCopied(false), 1500);
-                }
-              }}
-              disabled={!addr}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:border-neon-cyan/50 hover:text-neon-cyan disabled:opacity-40"
-            >
-              {copied ? <CheckCircle2 className="h-3.5 w-3.5 text-neon-green" /> : <Copy className="h-3.5 w-3.5" />}
-              {copied ? "Copied" : "Copy address"}
-            </button>
-            {addr && (
-              <a
-                href={addressLink(addr)}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:text-neon-cyan"
-              >
-                <ExternalLink className="h-3.5 w-3.5" /> Explorer
-              </a>
-            )}
-            <button
-              onClick={refresh}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:text-neon-cyan"
-            >
-              <RefreshCw className="h-3.5 w-3.5" /> Refresh
-            </button>
-          </div>
-        </div>
+        {/* decorative rings, like a card watermark */}
+        <div className="pointer-events-none absolute -right-10 -top-16 h-48 w-48 rounded-full border-[22px] border-white/[0.04]" />
+        <div className="pointer-events-none absolute -bottom-20 -right-4 h-40 w-40 rounded-full border-[18px] border-neon-violet/10" />
 
-        {/* identity status */}
-        <div className="mt-4 flex flex-wrap items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3">
-          {contractsConfigured && valid ? (
-            registered ? (
-              <>
-                <CheckCircle2 className="h-4 w-4 text-neon-green" />
-                <p className="text-sm text-slate-300">
-                  Registered as <span className="font-semibold text-white">“{displayName}”</span>
-                </p>
-                {level !== undefined && <LevelBadge level={level} />}
-              </>
+        <div className="relative">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="flex items-center gap-4">
+              {/* avatar */}
+              <div
+                className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl font-display text-2xl font-bold ${
+                  registered
+                    ? "bg-gradient-to-br from-neon-cyan to-neon-violet text-ink shadow-glow-cyan"
+                    : "border-2 border-dashed border-white/20 bg-white/5 text-slate-400"
+                }`}
+              >
+                {registered ? (
+                  displayName.charAt(0).toUpperCase()
+                ) : (
+                  <Fingerprint className="h-7 w-7" />
+                )}
+              </div>
+              <div>
+                {isConnected && addr ? (
+                  registered ? (
+                    <>
+                      <p className="font-display text-2xl font-semibold leading-tight text-white">
+                        {displayName}
+                      </p>
+                      <p className="mt-0.5 font-mono text-xs text-slate-400">{addr}</p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="font-display text-2xl font-semibold leading-tight text-white">
+                        Belum terdaftar
+                      </p>
+                      <p className="mt-0.5 font-mono text-xs text-slate-400">{addr}</p>
+                    </>
+                  )
+                ) : (
+                  <>
+                    <p className="font-display text-2xl font-semibold leading-tight text-white">
+                      PaySentry Identity
+                    </p>
+                    <p className="mt-0.5 text-xs text-slate-400">
+                      Connect your wallet to see your identity card.
+                    </p>
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* status chip */}
+            {isConnected && addr && (
+              <span
+                className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-semibold ${
+                  registered
+                    ? "border-neon-green/40 bg-neon-green/10 text-neon-green"
+                    : "border-neon-amber/40 bg-neon-amber/10 text-neon-amber"
+                }`}
+              >
+                {registered ? (
+                  <>
+                    <BadgeCheck className="h-3.5 w-3.5" /> Terdaftar
+                  </>
+                ) : (
+                  <>
+                    <Circle className="h-3.5 w-3.5" /> Belum terdaftar
+                  </>
+                )}
+              </span>
+            )}
+          </div>
+
+          {/* card footer */}
+          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-white/10 pt-4 text-xs">
+            {isConnected && addr ? (
+              registered ? (
+                <>
+                  {level !== undefined && (
+                    <span className="flex items-center gap-2">
+                      <span className="text-slate-500">Trust level</span>
+                      <LevelBadge level={level} />
+                    </span>
+                  )}
+                  <span className="text-slate-400">
+                    <span className="text-slate-500">Attestations · </span>
+                    {attCount ?? 0}
+                  </span>
+                  <span className="text-slate-400">
+                    <span className="text-slate-500">Network · </span>
+                    QDay Aevum
+                  </span>
+                </>
+              ) : (
+                <span className="max-w-md leading-relaxed text-slate-400">
+                  Alamat ini belum punya nama di Registry — pembayaran ke alamat ini
+                  akan gagal di mode Enforce sampai identitas didaftarkan.
+                </span>
+              )
             ) : (
-              <>
-                <Circle className="h-4 w-4 text-neon-amber" />
-                <p className="text-sm text-slate-300">
-                  Not registered yet — claim an identity in the <span className="text-neon-cyan">Registry</span> tab.
-                </p>
-              </>
-            )
-          ) : (
-            <>
-              <Circle className="h-4 w-4 text-slate-500" />
-              <p className="text-sm text-slate-500">Connect a wallet to see your identity status.</p>
-            </>
-          )}
+              <span className="text-slate-500">No wallet connected.</span>
+            )}
+
+            <span className="ml-auto flex items-center gap-2">
+              {addr && (
+                <>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(addr);
+                      setCopied(true);
+                      setTimeout(() => setCopied(false), 1500);
+                    }}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:border-neon-cyan/50 hover:text-neon-cyan"
+                  >
+                    {copied ? (
+                      <CheckCircle2 className="h-3.5 w-3.5 text-neon-green" />
+                    ) : (
+                      <Copy className="h-3.5 w-3.5" />
+                    )}
+                    {copied ? "Copied" : "Copy address"}
+                  </button>
+                  <a
+                    href={addressLink(addr)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:text-neon-cyan"
+                  >
+                    <ExternalLink className="h-3.5 w-3.5" /> Explorer
+                  </a>
+                </>
+              )}
+              {isConnected && addr && !registered && (
+                <Link
+                  href="/dashboard?tab=registry&prefill=register"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-neon-cyan to-neon-violet px-3 py-1.5 text-xs font-semibold text-ink transition hover:brightness-110"
+                >
+                  Daftarkan identitas <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              )}
+            </span>
+          </div>
         </div>
       </motion.div>
 
-      {/* balances */}
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <BalanceCard
-          label="tQDAY"
-          desc="Gas · native"
-          value={tqday?.value ?? 0n}
-          decimals={18}
-          accent="violet"
-        />
-        <BalanceCard
-          label="tUSD8"
-          desc="Stablecoin · ERC-20"
-          value={tusd8 ?? 0n}
-          decimals={6}
-          accent="cyan"
-        />
-      </div>
+      {/* Assets — fintech-style portfolio */}
+      <div className="mt-6">
+        <div className="mb-3 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Wallet className="h-4 w-4 text-slate-500" />
+            <h3 className="font-display text-sm font-semibold text-white">Your assets</h3>
+            <span className="rounded-full bg-white/5 px-2 py-0.5 text-[11px] text-slate-400">
+              2 tokens · QDay Aevum
+            </span>
+          </div>
+          <button
+            onClick={refresh}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:text-neon-cyan"
+          >
+            <RefreshCw className="h-3.5 w-3.5" /> Refresh
+          </button>
+        </div>
 
-      {/* Live activity — same on-chain trail as the Audit tab */}
-      <OverviewActivity />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <AssetCard
+            symbol="tQDAY"
+            name="QDay Token"
+            desc="Gas · native token"
+            value={tqday?.value ?? 0n}
+            decimals={18}
+            accent="violet"
+            tokenAddr={null}
+          />
+          <AssetCard
+            symbol="tUSD8"
+            name="Test USD"
+            desc="Stablecoin · ERC-20"
+            value={tusd8 ?? 0n}
+            decimals={6}
+            accent="cyan"
+            tokenAddr={TUSD8_ADDRESS}
+          />
+        </div>
+      </div>
 
       {/* Quick actions */}
       <div className="mt-4 grid gap-3 sm:grid-cols-3">
@@ -210,102 +296,72 @@ export function HomePanel() {
   );
 }
 
-function OverviewActivity() {
-  const { rows, live, loading } = useAuditTrail();
-  const stats = useMemo(() => {
-    return {
-      total: rows.length,
-      payments: rows.filter((r) => r.kind === "exec" || r.kind === "agentExec").length,
-      blocked: rows.filter((r) => r.kind === "blocked" || r.kind === "agentBlocked").length,
-      checks: rows.filter((r) => r.kind === "check").length,
-    };
-  }, [rows]);
-  const recent = rows.slice(0, 5);
-
-  return (
-    <div className="mt-6">
-      <div className="mb-3 flex items-center justify-between">
-        <h3 className="font-display text-sm font-semibold text-white">Network activity</h3>
-        <span className="inline-flex items-center gap-1.5 text-[11px] text-slate-500">
-          <span className={`h-1.5 w-1.5 rounded-full ${live ? "animate-pulse bg-neon-green" : "bg-slate-500"}`} />
-          {live ? "Live from chain" : loading ? "Syncing…" : "Not synced"}
-        </span>
-      </div>
-
-      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
-        <MiniStat icon={History} label="Total events" value={stats.total} />
-        <MiniStat icon={Receipt} label="Payments" value={stats.payments} tone="text-neon-green" />
-        <MiniStat icon={ShieldAlert} label="Blocked" value={stats.blocked} tone="text-neon-red" />
-        <MiniStat icon={FileSearch} label="CoP checks" value={stats.checks} tone="text-neon-cyan" />
-      </div>
-
-      <div className="glass mt-3 divide-y divide-white/5 rounded-2xl">
-        {recent.length === 0 && (
-          <p className="p-4 text-center text-xs text-slate-500">
-            {loading ? "Syncing on-chain history…" : "No events yet — make a payment or run the agent."}
-          </p>
-        )}
-        {recent.map((r) => {
-          const meta = KIND_META[r.kind];
-          const Icon = meta.icon;
-          return (
-            <a
-              key={r.key}
-              href={txLink(r.hash)}
-              target="_blank"
-              rel="noreferrer"
-              className="group flex items-center gap-3 px-4 py-3 transition hover:bg-white/[0.03]"
-            >
-              <span className={`shrink-0 rounded-lg p-2 ${meta.cls}`}>
-                <Icon className="h-3.5 w-3.5" />
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm text-slate-200">{r.title}</span>
-                <span className="block text-[11px] text-slate-500">
-                  {meta.label} · {r.ts ? timeAgo(r.ts) : `block ${r.blockNumber.toString()}`}
-                </span>
-              </span>
-              {r.amount && (
-                <span className="shrink-0 font-display text-sm font-semibold tabular-nums text-white">
-                  {r.amount}
-                </span>
-              )}
-              <ExternalLink className="h-3.5 w-3.5 shrink-0 text-slate-600 transition group-hover:text-neon-cyan" />
-            </a>
-          );
-        })}
-        {recent.length > 0 && (
-          <Link
-            href="/dashboard?tab=audit"
-            className="flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-medium text-neon-cyan transition hover:bg-white/[0.03]"
-          >
-            View full audit trail <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function MiniStat({
-  icon: Icon,
-  label,
+function AssetCard({
+  symbol,
+  name,
+  desc,
   value,
-  tone = "text-slate-100",
+  decimals,
+  accent,
+  tokenAddr,
 }: {
-  icon: typeof Receipt;
-  label: string;
-  value: number;
-  tone?: string;
+  symbol: string;
+  name: string;
+  desc: string;
+  value: bigint;
+  decimals: number;
+  accent: "cyan" | "violet";
+  tokenAddr: string | null;
 }) {
+  const valueStr = formatToken(value, decimals);
+  const isCyan = accent === "cyan";
   return (
-    <div className="glass rounded-2xl px-4 py-3">
-      <div className="flex items-center gap-1.5">
-        <Icon className="h-3.5 w-3.5 text-slate-500" />
-        <p className="text-[10px] font-medium uppercase tracking-[0.12em] text-slate-500">{label}</p>
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.08 }}
+      className={`group relative overflow-hidden rounded-3xl border bg-ink-800/60 p-6 transition hover:-translate-y-px ${
+        isCyan ? "border-neon-cyan/20 hover:border-neon-cyan/40" : "border-neon-violet/20 hover:border-neon-violet/40"
+      }`}
+    >
+      <div
+        className={`pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full blur-3xl ${
+          isCyan ? "bg-neon-cyan/15" : "bg-neon-violet/20"
+        }`}
+      />
+      <div className="relative">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span
+              className={`flex h-11 w-11 items-center justify-center rounded-full font-display text-sm font-bold ring-1 ${
+                isCyan
+                  ? "bg-neon-cyan/15 text-neon-cyan ring-neon-cyan/30"
+                  : "bg-neon-violet/15 text-neon-violet ring-neon-violet/30"
+              }`}
+            >
+              {symbol.charAt(0)}
+            </span>
+            <div>
+              <p className="text-sm font-semibold text-white">{symbol}</p>
+              <p className="text-[11px] text-slate-500">
+                {name} · {desc}
+              </p>
+            </div>
+          </div>
+          <span className="rounded-full bg-white/5 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-slate-400">
+            Available
+          </span>
+        </div>
+        <p className="mt-5 font-display text-4xl font-semibold tabular-nums tracking-tight text-white">
+          {valueStr}
+          <span className="ml-2 text-base font-medium text-slate-500">{symbol}</span>
+        </p>
+        <div className="mt-4 flex items-center justify-between border-t border-white/5 pt-3 text-[11px] text-slate-500">
+          <span>Balance on QDay Aevum</span>
+          {tokenAddr && <span className="font-mono">{shortAddr(tokenAddr, 6)}</span>}
+        </div>
       </div>
-      <p className={`mt-1 font-display text-xl font-semibold tabular-nums ${tone}`}>{value}</p>
-    </div>
+    </motion.div>
   );
 }
 
@@ -316,7 +372,7 @@ function QuickAction({
   desc,
 }: {
   href: string;
-  icon: typeof Receipt;
+  icon: typeof FileSearch;
   title: string;
   desc: string;
 }) {
@@ -337,42 +393,8 @@ function QuickAction({
   );
 }
 
-function BalanceCard({
-  label,
-  desc,
-  value,
-  decimals,
-  accent,
-}: {
-  label: string;
-  desc: string;
-  value: bigint;
-  decimals: number;
-  accent: "cyan" | "violet";
-}) {
-  const accentCls =
-    accent === "cyan"
-      ? "from-neon-cyan/15 to-transparent border-neon-cyan/30"
-      : "from-neon-violet/15 to-transparent border-neon-violet/30";
-  const valueStr = formatToken(value, decimals);
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.08 }}
-      className={`rounded-2xl border bg-gradient-to-br p-5 transition hover:brightness-110 ${accentCls}`}
-    >
-      <div className="flex items-center justify-between">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">{label}</p>
-        <p className="text-[10px] text-slate-500">{desc}</p>
-      </div>
-      <p className="mt-2 font-mono text-2xl font-bold text-white">{valueStr}</p>
-    </motion.div>
-  );
-}
-
 function formatToken(value: bigint, decimals: number): string {
-  if (!value) return "0";
+  if (!value) return "0.00";
   const v = Number(value) / Math.pow(10, decimals);
-  return v >= 1 ? v.toFixed(2) : v.toFixed(4);
+  return v >= 1000 ? v.toLocaleString("en-US", { maximumFractionDigits: 2 }) : v.toFixed(2);
 }

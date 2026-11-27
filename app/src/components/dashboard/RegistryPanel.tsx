@@ -21,6 +21,7 @@ export function RegistryPanel({ prefill }: { prefill?: string }) {
   const [attestName, setAttestName] = useState("");
   const [revokeName, setRevokeName] = useState("");
   const [awaiting, setAwaiting] = useState<"register" | "attest" | "revoke" | null>(null);
+  const [view, setView] = useState<"identity" | "verifier">(prefill === "attest" ? "verifier" : "identity");
 
   const { writeContract, data: hash, error } = useWriteContract();
   const { isLoading: confirming, isSuccess } = useWaitForTransactionReceipt({ hash });
@@ -91,8 +92,35 @@ export function RegistryPanel({ prefill }: { prefill?: string }) {
         desc="Identities live here: self-claimed names by payees, verifier attestations for higher trust. Every write is an on-chain event."
       />
 
-      <div className="grid gap-5 lg:grid-cols-2">
+      {/* Segmented tabs — one job at a time, instead of a long stacked page */}
+      <div className="mb-5 inline-flex rounded-xl border border-white/10 bg-white/[0.03] p-1">
+        {(
+          [
+            { id: "identity", label: "Your identity", icon: Fingerprint },
+            { id: "verifier", label: "Verifier tools", icon: ShieldCheck },
+          ] as const
+        ).map((t) => (
+          <button
+            key={t.id}
+            onClick={() => setView(t.id)}
+            className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-semibold transition ${
+              view === t.id
+                ? "bg-gradient-to-r from-neon-cyan/20 to-neon-violet/20 text-white shadow-glow-cyan"
+                : "text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            <t.icon className="h-3.5 w-3.5" />
+            {t.label}
+            {t.id === "verifier" && isVerifier && (
+              <span className="rounded-full bg-neon-violet/20 px-1.5 py-0.5 text-[9px] text-neon-violet">you</span>
+            )}
+          </button>
+        ))}
+      </div>
+
+      <div className="grid max-w-2xl gap-5">
         {/* Identity card */}
+        {view === "identity" && (
         <div className={`glass rounded-2xl p-5 ${focus === "identity" ? "ring-1 ring-neon-cyan/50" : ""}`}>
           <div className="mb-4 flex items-center gap-2">
             <Fingerprint className="h-4 w-4 text-neon-cyan" />
@@ -139,8 +167,10 @@ export function RegistryPanel({ prefill }: { prefill?: string }) {
             <p className="text-sm text-slate-500">Connect your wallet on the QDay network to manage identity.</p>
           )}
         </div>
+        )}
 
         {/* Verifier tools */}
+        {view === "verifier" && (
         <div className={`glass rounded-2xl p-5 ${focus === "attest" ? "ring-1 ring-neon-violet/50" : ""}`}>
           <div className="mb-4 flex items-center gap-2">
             <ShieldCheck className="h-4 w-4 text-neon-violet" />
@@ -246,6 +276,7 @@ export function RegistryPanel({ prefill }: { prefill?: string }) {
             </div>
           )}
         </div>
+        )}
       </div>
     </div>
   );

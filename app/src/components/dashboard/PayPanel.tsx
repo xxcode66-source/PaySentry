@@ -197,6 +197,67 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
           />
         </div>
 
+        {/* Order summary — review before you sign */}
+        {parsed && parsed > 0n && validPayee && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"
+          >
+            <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+              Order summary
+            </p>
+            <dl className="grid gap-2.5 text-sm sm:grid-cols-2">
+              <div className="flex items-center justify-between gap-3">
+                <dt className="text-slate-500">Paying</dt>
+                <dd className="font-display text-lg font-semibold tabular-nums text-white">
+                  {formatUsd(parsed)} <span className="text-sm text-slate-400">tUSD8</span>
+                </dd>
+              </div>
+              <div className="flex items-center justify-between gap-3">
+                <dt className="text-slate-500">To</dt>
+                <dd className="truncate font-mono text-xs text-slate-200" title={payee}>
+                  {shortAddr(payee)} {name.trim() && <span className="text-slate-400">· “{name.trim()}”</span>}
+                </dd>
+              </div>
+              <div className="flex items-center justify-between gap-3">
+                <dt className="text-slate-500">Mode</dt>
+                <dd className="font-medium text-slate-200">
+                  {mode === 1 ? "Enforce — reverts on mismatch" : "Warn — proceeds, flagged on audit"}
+                </dd>
+              </div>
+              <div className="flex items-center justify-between gap-3">
+                <dt className="text-slate-500">Predicted verdict</dt>
+                <dd>
+                  {name.trim() && candidates.length > 0 ? (
+                    <VerdictPill result={predicted.result} size="sm" />
+                  ) : (
+                    <span className="text-xs text-slate-500">—</span>
+                  )}
+                </dd>
+              </div>
+              <div className="flex items-center justify-between gap-3">
+                <dt className="text-slate-500">Your balance</dt>
+                <dd
+                  className={`font-mono text-xs ${
+                    (balance ?? 0n) >= parsed ? "text-neon-green" : "text-neon-red"
+                  }`}
+                >
+                  {formatUsd(balance)} tUSD8
+                  {(balance ?? 0n) < parsed && " · insufficient"}
+                </dd>
+              </div>
+              <div className="flex items-center justify-between gap-3">
+                <dt className="text-slate-500">Guard allowance</dt>
+                <dd className="font-mono text-xs text-slate-200">
+                  {formatUsd(allowance)}
+                  {needsApproval && <span className="text-neon-amber"> · approval needed</span>}
+                </dd>
+              </div>
+            </dl>
+          </motion.div>
+        )}
+
         {/* Actions */}
         <div className="flex flex-wrap items-center gap-3">
           {needsApproval && (

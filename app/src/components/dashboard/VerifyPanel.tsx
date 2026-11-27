@@ -126,6 +126,49 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
         </div>
       </div>
 
+      {/* Name comparison — what you typed vs what the registry says */}
+      {valid && dName.trim() && (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-5 grid items-stretch gap-2 sm:grid-cols-[1fr_auto_1fr]"
+        >
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+              1 · You typed
+            </p>
+            <p className="mt-1.5 truncate text-base font-semibold text-white">“{dName.trim()}”</p>
+            <p className="mt-0.5 text-[11px] text-slate-500">Name you intend to pay</p>
+          </div>
+          <div className="flex items-center justify-center">
+            <span
+              className={`flex h-9 w-9 items-center justify-center rounded-full border text-sm font-bold ${
+                result === 3
+                  ? "border-neon-green/40 bg-neon-green/10 text-neon-green"
+                  : result === 2
+                    ? "border-neon-amber/40 bg-neon-amber/10 text-neon-amber"
+                    : result !== undefined
+                      ? "border-neon-red/40 bg-neon-red/10 text-neon-red"
+                      : "border-white/10 bg-white/5 text-slate-500"
+              }`}
+            >
+              {result === 3 ? "✓" : result === 2 ? "~" : result !== undefined ? "✕" : "="}
+            </span>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+              2 · Registered as
+            </p>
+            <p className="mt-1.5 truncate text-base font-semibold text-white">
+              {displayName ? `“${displayName}”` : "— not registered —"}
+            </p>
+            <p className="mt-0.5 text-[11px] text-slate-500">
+              {displayName ? "On-chain identity for this address" : "No identity on-chain for this address"}
+            </p>
+          </div>
+        </motion.div>
+      )}
+
       {/* Result card */}
       <motion.div layout className={`mt-6 rounded-2xl border p-6 transition-colors duration-500 ${cardBorder}`}>
         {checkLoading && contractsConfigured && enabled ? (

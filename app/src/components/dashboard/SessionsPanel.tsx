@@ -160,6 +160,37 @@ export function SessionsPanel() {
                 className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 outline-none focus:border-neon-cyan/60"
               />
             </div>
+            {/* Presets — one tap, no typing */}
+            <div>
+              <p className="mb-1.5 text-[11px] text-slate-500">Presets</p>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { label: "Cautious · 1 / 10 / 7d", max: "1", cap: "10", d: "7" },
+                  { label: "Standard · 5 / 50 / 7d", max: "5", cap: "50", d: "7" },
+                  { label: "Generous · 25 / 250 / 30d", max: "25", cap: "250", d: "30" },
+                ].map((p) => {
+                  const active = maxPerTx === p.max && capTotal === p.cap && days === p.d;
+                  return (
+                    <button
+                      key={p.label}
+                      type="button"
+                      onClick={() => {
+                        setMaxPerTx(p.max);
+                        setCapTotal(p.cap);
+                        setDays(p.d);
+                      }}
+                      className={`rounded-full border px-3 py-1.5 text-[11px] font-medium transition ${
+                        active
+                          ? "border-neon-cyan/60 bg-neon-cyan/10 text-neon-cyan"
+                          : "border-white/10 bg-white/[0.03] text-slate-400 hover:border-white/25 hover:text-slate-200"
+                      }`}
+                    >
+                      {p.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
             <p className="rounded-lg border border-neon-violet/30 bg-neon-violet/5 px-3 py-2 text-[11px] leading-relaxed text-neon-violet">
               CoP is <b>always enforced</b> for agent spend — the guard reverts on NO MATCH / NOT
               FOUND and records every blocked attempt on-chain.
@@ -177,12 +208,24 @@ export function SessionsPanel() {
 
         {/* List */}
         <div className="lg:col-span-3">
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="font-display text-sm font-semibold text-white">Your sessions</h3>
+            <span className="rounded-full bg-white/5 px-2.5 py-1 text-[11px] font-medium text-slate-400">
+              {sessionIds ? `${(sessionIds as bigint[]).length} active` : "—"}
+            </span>
+          </div>
           <div className="grid gap-3">
             {sessionIds && sessionIds.length > 0 ? (
               [...(sessionIds as bigint[])].reverse().map((id) => <SessionCard key={id.toString()} id={id} />)
             ) : (
-              <div className="glass rounded-2xl p-8 text-center text-sm text-slate-500">
-                {me ? "No sessions yet — create one on the left." : "Connect your wallet to see your sessions."}
+              <div className="glass rounded-2xl p-10 text-center">
+                <Bot className="mx-auto h-8 w-8 text-slate-600" />
+                <p className="mt-3 text-sm font-medium text-slate-300">No sessions yet</p>
+                <p className="mx-auto mt-1 max-w-xs text-xs leading-relaxed text-slate-500">
+                  {me
+                    ? "Create your first agent session on the left — pick a preset, set the limits, and the guard enforces them on-chain."
+                    : "Connect your wallet to see your sessions."}
+                </p>
               </div>
             )}
           </div>
