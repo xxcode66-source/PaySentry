@@ -111,13 +111,13 @@ body {
     transform: translate(0, 0) rotate(-1deg);
   }
   25% {
-    transform: translate(-18px, -6px) rotate(1deg);
+    transform: translate(-28px, -8px) rotate(1deg);
   }
   50% {
-    transform: translate(-32px, 0) rotate(-0.5deg);
+    transform: translate(-56px, 0) rotate(-0.5deg);
   }
   75% {
-    transform: translate(-12px, -4px) rotate(0.5deg);
+    transform: translate(-20px, -6px) rotate(0.5deg);
   }
 }
 /* Aurora background — slow-drifting color blobs */
@@ -194,7 +194,7 @@ body {
     animation: mascot-bob 3.2s ease-in-out infinite;
   }
   .animate-mascot-drift {
-    animation: mascot-drift 18s ease-in-out infinite;
+    animation: mascot-drift 14s ease-in-out infinite;
   }
 }
 

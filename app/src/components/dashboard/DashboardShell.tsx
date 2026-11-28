@@ -55,11 +55,11 @@ export function DashboardShell() {
       <AuroraBackground calm />
       {/* mascot in the background, bottom-right corner of the dashboard */}
       <div
-        className="pointer-events-none fixed bottom-3 right-3 z-0 hidden w-[190px] md:block"
+        className="pointer-events-none fixed bottom-1 right-1 z-0 hidden w-[160px] md:block"
         aria-hidden
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/mascot-bg.png" alt="" className="animate-mascot-drift h-auto w-full opacity-50" />
+        <img src="/mascot-bg.png" alt="" className="animate-mascot-drift h-auto w-full opacity-45" />
       </div>
       {/* top bar (mobile) */}
       <header className="glass-strong sticky top-0 z-40 border-b border-stone-900/5 lg:hidden">

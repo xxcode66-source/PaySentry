@@ -20,13 +20,18 @@ export function Hero() {
       <div className="absolute inset-0 opacity-55" aria-hidden>
         <HeroScene />
       </div>
-      {/* mascot in the background, bottom-right, fully in view, softly blended */}
+      {/* mascot in the background, right side, vertically centered so the
+          whole character is visible in the first viewport */}
       <div
-        className="pointer-events-none absolute bottom-0 right-0 z-0 hidden w-[300px] sm:block lg:w-[380px]"
+        className="pointer-events-none absolute right-2 top-1/2 z-0 hidden -translate-y-1/2 sm:block"
         aria-hidden
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/mascot-bg.png" alt="" className="animate-mascot-drift h-auto w-full opacity-65" />
+        <img
+          src="/mascot-bg.png"
+          alt=""
+          className="animate-mascot-drift h-auto w-[300px] opacity-65 lg:w-[360px]"
+        />
       </div>
       {/* light scrim behind the text column only — strong enough to calm the
           globe, weak enough that the aurora bands still show through */}
