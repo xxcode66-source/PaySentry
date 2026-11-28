@@ -41,21 +41,22 @@ export function TiltCard({
   }
 
   return (
-    <div style={{ perspective: "1100px" }} className={className}>
+    <div style={{ perspective: "1000px" }} className={className}>
       <div
         ref={ref}
         onPointerMove={onMove}
+        onMouseMove={onMove}
         onMouseLeave={onLeave}
-        className="relative h-full transition-transform duration-200 ease-out will-change-transform"
+        className="relative h-full transition-transform duration-150 ease-out will-change-transform"
         style={{
           transform: style
-            ? `rotateX(${style.rx.toFixed(2)}deg) rotateY(${style.ry.toFixed(2)}deg)`
-            : "rotateX(0deg) rotateY(0deg)",
+            ? `rotateX(${style.rx.toFixed(2)}deg) rotateY(${style.ry.toFixed(2)}deg) scale(1.015)`
+            : "rotateX(0deg) rotateY(0deg) scale(1)",
           transformStyle: "preserve-3d",
         }}
       >
         {children}
-        {/* pointer glare */}
+        {/* pointer glare — strong enough to read in a still screenshot */}
         <div
           className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit] transition-opacity duration-200"
           style={{ opacity: style ? 1 : 0 }}
@@ -67,7 +68,7 @@ export function TiltCard({
               left: `${style?.gx ?? 50}%`,
               top: `${style?.gy ?? 50}%`,
               background:
-                "radial-gradient(circle, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.02) 40%, transparent 65%)",
+                "radial-gradient(circle, rgba(255,255,255,0.16) 0%, rgba(34,211,238,0.07) 42%, transparent 68%)",
             }}
           />
         </div>

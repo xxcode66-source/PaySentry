@@ -49,7 +49,7 @@ function ParticleSphere() {
         vertexColors
         sizeAttenuation
         transparent
-        opacity={0.85}
+        opacity={0.65}
         depthWrite={false}
       />
     </points>
@@ -80,11 +80,11 @@ function CoreGroup() {
     <group rotation={[0.42, 0, 0.1]}>
       <mesh ref={core}>
         <icosahedronGeometry args={[1.02, 1]} />
-        <meshBasicMaterial color="#22d3ee" wireframe transparent opacity={0.28} />
+        <meshBasicMaterial color="#22d3ee" wireframe transparent opacity={0.18} />
       </mesh>
       <mesh ref={inner}>
         <icosahedronGeometry args={[0.58, 0]} />
-        <meshBasicMaterial color="#8b5cf6" wireframe transparent opacity={0.5} />
+        <meshBasicMaterial color="#8b5cf6" wireframe transparent opacity={0.35} />
       </mesh>
       <group ref={ring} rotation={[1.25, 0, 0]}>
         <mesh>

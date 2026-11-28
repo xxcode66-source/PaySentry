@@ -16,7 +16,15 @@ export function Hero() {
   return (
     <section className="relative flex min-h-[94vh] items-center overflow-hidden">
       <div className="absolute inset-0 grid-bg radial-fade" aria-hidden />
-      <HeroScene />
+      {/* 3D scene dimmed so the wireframe globe never fights the headline */}
+      <div className="absolute inset-0 opacity-55" aria-hidden>
+        <HeroScene />
+      </div>
+      {/* dark scrim behind the text column + edge fade */}
+      <div
+        className="absolute inset-0 bg-[radial-gradient(ellipse_58%_46%_at_50%_42%,rgba(5,7,13,0.82)_0%,rgba(5,7,13,0.45)_55%,transparent_78%)]"
+        aria-hidden
+      />
       <div
         className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_45%,transparent_30%,#05070d_100%)]"
         aria-hidden
@@ -41,7 +49,7 @@ export function Hero() {
         </StaggerItem>
 
         <StaggerItem className="mt-6 text-center">
-          <p className="mx-auto max-w-2xl text-base leading-relaxed text-slate-400 sm:text-lg">
+          <p className="mx-auto max-w-2xl text-base leading-relaxed text-slate-300 sm:text-lg">
             PaySentry is a trustless Confirmation-of-Payee layer for stablecoin payments. Every
             payee is verified on-chain, every mismatch is blocked or flagged, every attempt —
             human or AI agent — lands on a permanent audit trail.
@@ -75,7 +83,7 @@ export function Hero() {
                 className="glass rounded-2xl p-5 text-center transition hover:border-neon-cyan/30"
               >
                 <p className="font-display text-2xl font-bold text-gradient">{s.value}</p>
-                <p className="mt-2 text-xs leading-relaxed text-slate-400">{s.label}</p>
+                <p className="mt-2 text-xs leading-relaxed text-slate-300">{s.label}</p>
               </div>
             ))}
           </div>

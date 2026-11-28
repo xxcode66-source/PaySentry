@@ -28,23 +28,23 @@ export function AuroraBackground({ calm = false }: { calm?: boolean }) {
 
   return (
     <div
-      className="pointer-events-none absolute inset-0 overflow-hidden"
+      className="pointer-events-none fixed inset-0 overflow-hidden"
       aria-hidden
     >
-      {/* Aurora blobs */}
+      {/* Aurora blobs — strong enough to read as flowing bands, not a flat tint */}
       <div
-        className={`animate-aurora-a absolute -top-32 left-[8%] h-[420px] w-[520px] rounded-full bg-neon-cyan/25 blur-[110px] ${
-          calm ? "opacity-40" : ""
+        className={`animate-aurora-a absolute -top-24 left-[4%] h-[480px] w-[620px] rounded-full bg-neon-cyan/40 blur-[90px] ${
+          calm ? "opacity-50" : ""
         }`}
       />
       <div
-        className={`animate-aurora-b absolute right-[-6%] top-[30%] h-[460px] w-[560px] rounded-full bg-neon-violet/25 blur-[120px] ${
-          calm ? "opacity-40" : ""
+        className={`animate-aurora-b absolute right-[-4%] top-[28%] h-[520px] w-[640px] rounded-full bg-neon-violet/40 blur-[100px] ${
+          calm ? "opacity-50" : ""
         }`}
       />
       <div
-        className={`animate-aurora-c absolute bottom-[-10%] left-[30%] h-[380px] w-[480px] rounded-full bg-neon-green/15 blur-[120px] ${
-          calm ? "opacity-30" : ""
+        className={`animate-aurora-c absolute bottom-[-8%] left-[28%] h-[420px] w-[540px] rounded-full bg-neon-green/25 blur-[100px] ${
+          calm ? "opacity-40" : ""
         }`}
       />
       {/* Rising dust particles */}

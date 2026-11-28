@@ -77,7 +77,7 @@ export function HomePanel() {
       />
 
       {/* Identity card — like a name card / ID card, with 3D tilt + glare */}
-      <TiltCard max={7} className="rounded-3xl">
+      <TiltCard max={10} className="rounded-3xl">
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -97,7 +97,7 @@ export function HomePanel() {
                 className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl font-display text-2xl font-bold ${
                   registered
                     ? "animate-float-y bg-gradient-to-br from-neon-cyan to-neon-violet text-ink shadow-glow-cyan"
-                    : "border-2 border-dashed border-white/20 bg-white/5 text-slate-400"
+                    : "border border-white/10 bg-white/5 text-slate-400"
                 }`}
               >
                 {registered ? (
@@ -124,7 +124,7 @@ export function HomePanel() {
                   ) : (
                     <>
                       <p className="font-display text-2xl font-semibold leading-tight text-white">
-                        Belum terdaftar
+                        Not registered
                       </p>
                       <p className="mt-0.5 font-mono text-xs text-slate-400">{addr}</p>
                     </>
@@ -137,26 +137,28 @@ export function HomePanel() {
                     <p className="mt-0.5 text-xs text-slate-300">
                       Connect your wallet to see your identity card.
                     </p>
-                    {/* Sample preview — a real on-chain identity, so the card
-                        never looks like an empty placeholder */}
-                    <div className="mt-3 flex items-center gap-3 rounded-xl border border-white/10 bg-ink-900/60 px-3 py-2.5">
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-neon-cyan/15 font-display text-base font-bold text-neon-cyan">
-                        A
-                      </span>
-                      <span className="min-w-0 flex-1">
-                        <span className="block truncate text-sm font-semibold text-white">
-                          au
-                          <span className="ml-2 rounded-full border border-neon-green/40 bg-neon-green/10 px-1.5 py-0.5 text-[9px] font-semibold text-neon-green">
-                            TERDAFTAR
+                    {/* Sample preview — deliberately muted and neutral so it
+                        can never be mistaken for your own registered identity */}
+                    <div className="mt-3 rounded-xl border border-dashed border-white/15 bg-ink-900/50 px-3 py-2.5">
+                      <div className="flex items-center gap-3">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/5 font-display text-base font-bold text-slate-400">
+                          A
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-sm font-semibold text-slate-300">
+                            “au”
+                            <span className="ml-2 rounded-full border border-white/15 bg-white/5 px-1.5 py-0.5 text-[9px] font-semibold tracking-wider text-slate-400">
+                              SAMPLE
+                            </span>
+                          </span>
+                          <span className="block font-mono text-[11px] text-slate-500">
+                            0x9f25…ef94 · 1 tUSD8 · 24 Nov 2026
                           </span>
                         </span>
-                        <span className="block font-mono text-[11px] text-slate-400">
-                          0x9f25…ef94 · paid 1 tUSD8, 24 Nov 2026
-                        </span>
-                      </span>
-                      <span className="shrink-0 text-[10px] uppercase tracking-wider text-slate-500">
-                        Contoh
-                      </span>
+                      </div>
+                      <p className="mt-2 text-[11px] leading-relaxed text-slate-500">
+                        Sample — a real on-chain identity, shown as an example.
+                      </p>
                     </div>
                   </>
                 )}
@@ -177,7 +179,7 @@ export function HomePanel() {
               >
                 {registered ? (
                   <>
-                    <BadgeCheck className="h-3.5 w-3.5" /> Terdaftar
+                    <BadgeCheck className="h-3.5 w-3.5" /> Registered
                   </>
                 ) : (
                   <>
@@ -185,7 +187,7 @@ export function HomePanel() {
                       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon-amber opacity-70" />
                       <span className="relative inline-flex h-2 w-2 rounded-full bg-neon-amber" />
                     </span>
-                    Belum terdaftar
+                    Not registered
                   </>
                 )}
               </motion.span>
@@ -208,8 +210,8 @@ export function HomePanel() {
                 </>
               ) : (
                 <span className="max-w-md leading-relaxed text-slate-400">
-                  Alamat ini belum punya nama di Registry — pembayaran ke alamat ini
-                  akan gagal di mode Enforce sampai identitas didaftarkan.
+                  This address has no name in the Registry yet — payments to it
+                  will fail in Enforce mode until an identity is registered.
                 </span>
               )
             ) : (
@@ -256,7 +258,7 @@ export function HomePanel() {
                 >
                   <span className="absolute inset-0 animate-ping rounded-lg bg-neon-cyan/30 [animation-duration:2.5s]" />
                   <span className="relative flex items-center gap-1.5">
-                    Daftarkan identitas <ArrowRight className="h-3.5 w-3.5" />
+                    Register identity <ArrowRight className="h-3.5 w-3.5" />
                   </span>
                 </Link>
               )}
@@ -392,11 +394,12 @@ function AssetCard({
   const valueStr = formatNumber(animated);
   const isCyan = accent === "cyan";
   return (
+    <TiltCard max={6} className="h-full rounded-3xl">
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay }}
-      className={`group relative overflow-hidden rounded-3xl border bg-ink-800/60 p-6 transition hover:-translate-y-px ${
+      className={`group relative h-full overflow-hidden rounded-3xl border bg-ink-800/60 p-6 transition hover:-translate-y-px ${
         isCyan ? "border-neon-cyan/20 hover:border-neon-cyan/40" : "border-neon-violet/20 hover:border-neon-violet/40"
       }`}
     >
@@ -442,6 +445,7 @@ function AssetCard({
         </div>
       </div>
     </motion.div>
+    </TiltCard>
   );
 }
 
