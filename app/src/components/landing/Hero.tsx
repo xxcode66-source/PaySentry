@@ -20,10 +20,18 @@ export function Hero() {
       <div className="absolute inset-0 opacity-55" aria-hidden>
         <HeroScene />
       </div>
+      {/* mascot in the background, bottom-right, peeking in behind the content */}
+      <div
+        className="pointer-events-none absolute -bottom-8 -right-8 z-0 hidden w-[300px] sm:block lg:w-[430px]"
+        aria-hidden
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/mascot-bg.png" alt="" className="animate-float h-auto w-full opacity-90" />
+      </div>
       {/* light scrim behind the text column only — strong enough to calm the
           globe, weak enough that the aurora bands still show through */}
       <div
-        className="absolute inset-0 bg-[radial-gradient(ellipse_58%_46%_at_50%_42%,rgba(5,7,13,0.45)_0%,rgba(5,7,13,0.18)_55%,transparent_80%)]"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_58%_46%_at_50%_42%,rgba(250,246,239,0.65)_0%,rgba(250,246,239,0.35)_55%,transparent_80%)]"
         aria-hidden
       />
       <div
