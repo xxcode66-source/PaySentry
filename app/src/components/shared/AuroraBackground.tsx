@@ -51,8 +51,8 @@ export function AuroraBackground({ calm = false }: { calm?: boolean }) {
             bottom: p.bottom,
             width: p.size,
             height: p.size,
-            background: "#e8a85c",
-            boxShadow: "0 0 6px 1px rgba(232,168,92,0.7)",
+            background: "#c68a4b",
+            boxShadow: "0 0 6px 1px rgba(198,138,75,0.7)",
             animationDuration: p.duration,
             animationDelay: p.delay,
           }}

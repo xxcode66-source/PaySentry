@@ -7,11 +7,11 @@ const config: Config = {
     extend: {
       colors: {
         ink: {
-          DEFAULT: "#17100a",
-          900: "#1f150c",
-          800: "#2a1c10",
-          700: "#3a2817",
-          600: "#4d3a24",
+          DEFAULT: "#2b1a0c",
+          900: "#faf6ef",
+          800: "#ffffff",
+          700: "#f3ead9",
+          600: "#e5d9c3",
         },
         neon: {
           caramel: "#e8a85c",

@@ -51,10 +51,10 @@ export function Problem() {
     <section className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6" id="problem">
       <Reveal>
         <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-caramel">The problem</p>
-        <h2 className="font-display mt-3 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        <h2 className="font-display mt-3 max-w-3xl text-3xl font-bold tracking-tight text-ink sm:text-4xl">
           Crypto payments are the only rail where <span className="text-neon-red">nobody checks the name</span>.
         </h2>
-        <p className="mt-4 max-w-2xl text-slate-300">
+        <p className="mt-4 max-w-2xl text-[#6b543a]">
           Banks solved this years ago with Confirmation of Payee. Blockchain — where transfers are
           irreversible and AI agents are starting to pay autonomously — still has nothing.
         </p>
@@ -63,13 +63,13 @@ export function Problem() {
         {PROBLEMS.map((p) => (
           <StaggerItem key={p.title}>
             <div
-              className={`group glass h-full rounded-2xl p-6 transition-all duration-300 hover:border-white/20 ${p.ring}`}
+              className={`group glass h-full rounded-2xl p-6 transition-all duration-300 hover:border-stone-900/20 ${p.ring}`}
             >
-              <div className={`inline-flex rounded-xl border border-white/10 bg-white/5 p-3 ${p.color}`}>
+              <div className={`inline-flex rounded-xl border border-stone-900/10 bg-stone-900/5 p-3 ${p.color}`}>
                 <p.icon className="h-6 w-6" />
               </div>
-              <h3 className="font-display mt-4 text-lg font-semibold text-white">{p.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-300">{p.body}</p>
+              <h3 className="font-display mt-4 text-lg font-semibold text-ink">{p.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-[#6b543a]">{p.body}</p>
             </div>
           </StaggerItem>
         ))}
@@ -107,16 +107,16 @@ const VERDICT_ROW = [
   { label: "FULL MATCH", cls: "border-neon-green/40 bg-neon-green/10 text-neon-green", icon: "✓" },
   { label: "CLOSE MATCH", cls: "border-neon-amber/40 bg-neon-amber/10 text-neon-amber", icon: "⚠" },
   { label: "NO MATCH", cls: "border-neon-red/40 bg-neon-red/10 text-neon-red", icon: "✕" },
-  { label: "NOT FOUND", cls: "border-slate-500/40 bg-slate-500/10 text-slate-400", icon: "?" },
+  { label: "NOT FOUND", cls: "border-slate-500/40 bg-[#97836a]/10 text-[#7d6a52]", icon: "?" },
 ];
 
 export function HowItWorks() {
   return (
-    <section className="relative border-y border-white/5 bg-ink-900/40 py-20" id="how">
+    <section className="relative border-y border-stone-900/5 bg-ink-900/40 py-20" id="how">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-caramel">How it works</p>
-          <h2 className="font-display mt-3 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          <h2 className="font-display mt-3 max-w-3xl text-3xl font-bold tracking-tight text-ink sm:text-4xl">
             One primitive: <span className="text-gradient">check first, pay second</span>.
           </h2>
         </Reveal>
@@ -162,12 +162,12 @@ export function HowItWorks() {
           {STEPS.map((s, i) => (
             <StaggerItem key={s.title}>
               <div className="group glass relative h-full rounded-2xl p-6 transition hover:border-neon-caramel/30">
-                <span className="absolute right-5 top-4 font-display text-4xl font-bold text-white/5 transition group-hover:text-neon-caramel/15">
+                <span className="absolute right-5 top-4 font-display text-4xl font-bold text-ink/5 transition group-hover:text-neon-caramel/15">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <s.icon className="h-6 w-6 text-neon-caramel" />
-                <h3 className="font-display mt-4 text-base font-semibold text-white">{s.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-300">{s.body}</p>
+                <h3 className="font-display mt-4 text-base font-semibold text-ink">{s.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-[#6b543a]">{s.body}</p>
               </div>
             </StaggerItem>
           ))}
@@ -193,15 +193,15 @@ function FlowNode({
       className={`flex flex-1 items-center gap-3 rounded-xl border p-4 ${
         highlight
           ? "border-neon-caramel/50 bg-neon-caramel/5 shadow-glow-caramel"
-          : "border-white/10 bg-white/[0.03]"
+          : "border-stone-900/10 bg-stone-900/[0.03]"
       }`}
     >
-      <div className={`rounded-lg p-2.5 ${highlight ? "bg-neon-caramel/15 text-neon-caramel" : "bg-white/5 text-slate-300"}`}>
+      <div className={`rounded-lg p-2.5 ${highlight ? "bg-neon-caramel/15 text-neon-caramel" : "bg-stone-900/5 text-[#6b543a]"}`}>
         <Icon className="h-5 w-5" />
       </div>
       <div>
-        <p className="text-sm font-semibold text-white">{label}</p>
-        <p className="text-xs text-slate-500">{sub}</p>
+        <p className="text-sm font-semibold text-ink">{label}</p>
+        <p className="text-xs text-[#97836a]">{sub}</p>
       </div>
     </div>
   );
@@ -211,14 +211,14 @@ function FlowArrow({ verdict }: { verdict?: boolean }) {
   return (
     <div className="flex shrink-0 items-center justify-center md:px-2">
       <motion.div
-        className={`h-px w-10 ${verdict ? "bg-neon-caramel/60" : "bg-white/20"} relative md:w-16`}
+        className={`h-px w-10 ${verdict ? "bg-neon-caramel/60" : "bg-stone-900/20"} relative md:w-16`}
         animate={verdict ? { opacity: [0.4, 1, 0.4] } : {}}
         transition={{ repeat: Infinity, duration: 2.4 }}
         aria-hidden
       >
         <span
           className={`absolute -top-[3px] right-0 h-[7px] w-[7px] rotate-45 border-r border-t ${
-            verdict ? "border-neon-caramel" : "border-white/30"
+            verdict ? "border-neon-caramel" : "border-stone-900/30"
           }`}
         />
       </motion.div>
@@ -268,7 +268,7 @@ export function Features() {
     <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6" id="features">
       <Reveal>
         <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-caramel">Features</p>
-        <h2 className="font-display mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        <h2 className="font-display mt-3 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
           Guardrails that live <span className="text-gradient">inside the payment rail</span>.
         </h2>
       </Reveal>
@@ -276,11 +276,11 @@ export function Features() {
         {FEATURES.map((f) => (
           <StaggerItem key={f.title} className={f.span}>
             <div className="group glass h-full rounded-2xl p-6 transition hover:border-neon-caramel/40">
-              <div className="inline-flex rounded-xl border border-white/10 bg-white/5 p-3 text-neon-caramel transition group-hover:shadow-glow-caramel">
+              <div className="inline-flex rounded-xl border border-stone-900/10 bg-stone-900/5 p-3 text-neon-caramel transition group-hover:shadow-glow-caramel">
                 <f.icon className="h-6 w-6" />
               </div>
-              <h3 className="font-display mt-4 text-lg font-semibold text-white">{f.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-300">{f.body}</p>
+              <h3 className="font-display mt-4 text-lg font-semibold text-ink">{f.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-[#6b543a]">{f.body}</p>
             </div>
           </StaggerItem>
         ))}
@@ -293,16 +293,16 @@ export function Features() {
 
 export function BuiltOn() {
   return (
-    <section className="border-y border-white/5 bg-ink-900/40 py-20" id="qday">
+    <section className="border-y border-stone-900/5 bg-ink-900/40 py-20" id="qday">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-caramel">
             Built on QDay Aevum
           </p>
-          <h2 className="font-display mt-3 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          <h2 className="font-display mt-3 max-w-3xl text-3xl font-bold tracking-tight text-ink sm:text-4xl">
             Post-quantum rails for the <span className="text-gradient">agentic economy</span>.
           </h2>
-          <p className="mt-4 max-w-2xl text-slate-300">
+          <p className="mt-4 max-w-2xl text-[#6b543a]">
             PaySentry settles on QDay&apos;s Aevum testnet — an EVM-compatible chain designed for
             machine-driven commerce. Identity, guard and receipts live natively where agents
             already operate.
@@ -318,7 +318,7 @@ export function BuiltOn() {
           ].map((c) => (
             <StaggerItem key={c.k}>
               <div className="glass rounded-xl p-4">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">{c.k}</p>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#97836a]">{c.k}</p>
                 <p className="mt-1.5 break-all font-mono text-sm text-neon-caramel">{c.v}</p>
               </div>
             </StaggerItem>
@@ -328,10 +328,10 @@ export function BuiltOn() {
         <Reveal className="mt-8">
           <div className="glass flex flex-col items-start gap-4 rounded-2xl p-6 sm:flex-row sm:items-center">
             <div className="flex-1">
-              <p className="text-sm text-slate-300">
+              <p className="text-sm text-[#6b543a]">
                 Try it yourself — grab test tokens from the faucet and follow the guided demo. All
                 settlement uses tUSD8
-                <span className="ml-1 font-mono text-xs text-slate-500">({TUSD8_ADDRESS.slice(0, 14)}…)</span>.
+                <span className="ml-1 font-mono text-xs text-[#97836a]">({TUSD8_ADDRESS.slice(0, 14)}…)</span>.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -360,11 +360,11 @@ export function SDKSection() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-caramel">For builders</p>
-          <h2 className="font-display mt-3 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          <h2 className="font-display mt-3 max-w-3xl text-3xl font-bold tracking-tight text-ink sm:text-4xl">
             Drop CoP into any checkout with <span className="text-gradient">one function</span>.
           </h2>
-          <p className="mt-4 max-w-2xl text-slate-300">
-            The <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-xs text-neon-caramel">paysentry-sdk</code>{" "}
+          <p className="mt-4 max-w-2xl text-[#6b543a]">
+            The <code className="rounded bg-stone-900/5 px-1.5 py-0.5 font-mono text-xs text-neon-caramel">paysentry-sdk</code>{" "}
             wraps the on-chain guard in a single call. No ABI wrangling, no wagmi dependency —
             works in any dapp, script, or agent. Defaults to the live testnet deployment.
           </p>
@@ -374,8 +374,8 @@ export function SDKSection() {
           <Reveal className="lg:col-span-2">
             <div className="glass flex h-full flex-col justify-between rounded-2xl p-6">
               <div>
-                <h3 className="font-display text-lg font-semibold text-white">What you get</h3>
-                <ul className="mt-4 space-y-3 text-sm text-slate-300">
+                <h3 className="font-display text-lg font-semibold text-ink">What you get</h3>
+                <ul className="mt-4 space-y-3 text-sm text-[#6b543a]">
                   {[
                     "Verdict before payment — not after",
                     "Mismatched payees revert on-chain",
@@ -394,21 +394,21 @@ export function SDKSection() {
                   ))}
                 </ul>
               </div>
-              <p className="mt-6 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 font-mono text-[11px] text-slate-400">
+              <p className="mt-6 rounded-xl border border-stone-900/10 bg-stone-900/[0.03] px-4 py-3 font-mono text-[11px] text-[#7d6a52]">
                 npm i paysentry-sdk
               </p>
             </div>
           </Reveal>
 
           <Reveal delay={0.1} className="lg:col-span-3">
-            <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/60">
-              <div className="flex items-center gap-1.5 border-b border-white/10 px-4 py-3">
+            <div className="overflow-hidden rounded-2xl border border-stone-900/10 bg-[#f3ead9]">
+              <div className="flex items-center gap-1.5 border-b border-stone-900/10 px-4 py-3">
                 <span className="h-2.5 w-2.5 rounded-full bg-neon-red/70" />
                 <span className="h-2.5 w-2.5 rounded-full bg-neon-amber/70" />
                 <span className="h-2.5 w-2.5 rounded-full bg-neon-green/70" />
-                <span className="ml-3 font-mono text-[11px] text-slate-500">checkout.ts</span>
+                <span className="ml-3 font-mono text-[11px] text-[#7d6a52]">checkout.ts</span>
               </div>
-              <pre className="overflow-x-auto p-5 font-mono text-[12.5px] leading-relaxed text-slate-300">
+              <pre className="overflow-x-auto p-5 font-mono text-[12.5px] leading-relaxed text-[#3a2a18]">
                 <code>{`const result = await guardPay({
   payee: form.address,
   expectedName: form.recipientName,
@@ -442,10 +442,10 @@ export function CTA() {
         <div className="relative overflow-hidden rounded-3xl border border-neon-caramel/25 bg-gradient-to-br from-neon-caramel/10 via-transparent to-neon-caramel/15 p-10 text-center sm:p-16">
           <div className="absolute inset-0 grid-bg opacity-40" aria-hidden />
           <div className="relative">
-            <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            <h2 className="font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
               Check first. Pay second. <span className="text-gradient">Always.</span>
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-slate-300">
+            <p className="mx-auto mt-4 max-w-xl text-[#6b543a]">
               Open the dashboard to verify a payee, run a guarded payment, or watch an agent get
               stopped mid-transaction by the guardrail.
             </p>

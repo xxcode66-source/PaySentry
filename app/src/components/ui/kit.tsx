@@ -36,12 +36,12 @@ export function Button({
   const variants = {
     primary:
       "bg-neon-caramel text-ink font-semibold hover:brightness-110 hover:shadow-glow-caramel active:scale-[0.98]",
-    ghost: "text-slate-300 hover:text-white hover:bg-white/5",
+    ghost: "text-[#6b543a] hover:text-ink hover:bg-stone-900/5",
     danger:
       "bg-gradient-to-r from-neon-red to-rose-600 text-white font-semibold hover:shadow-glow-red active:scale-[0.98]",
     outline:
-      "border border-white/15 text-slate-200 hover:border-neon-caramel/60 hover:text-neon-caramel hover:bg-neon-caramel/5",
-    subtle: "bg-white/5 border border-white/10 text-slate-200 hover:bg-white/10",
+      "border border-stone-900/15 text-ink hover:border-neon-caramel/60 hover:text-neon-caramel hover:bg-neon-caramel/5",
+    subtle: "bg-stone-900/5 border border-stone-900/10 text-ink hover:bg-stone-900/10",
   };
   return (
     <button
@@ -84,7 +84,7 @@ export function Card({
 // ---------------------------------------------------------------- VerdictPill
 
 const VERDICT_STYLES: Record<number, string> = {
-  0: "bg-slate-500/10 text-slate-400 border-slate-500/30",
+  0: "bg-[#97836a]/10 text-[#7d6a52] border-slate-500/30",
   1: "bg-neon-red/10 text-neon-red border-neon-red/40",
   2: "bg-neon-amber/10 text-neon-amber border-neon-amber/40",
   3: "bg-neon-green/10 text-neon-green border-neon-green/40",
@@ -140,7 +140,7 @@ export function VerdictPill({
 
 export function LevelBadge({ level }: { level: number }) {
   const map: Record<number, { label: string; cls: string }> = {
-    0: { label: "Unknown", cls: "bg-white/5 text-slate-400 border-white/10" },
+    0: { label: "Unknown", cls: "bg-stone-900/5 text-[#7d6a52] border-stone-900/10" },
     1: { label: "Self-claimed", cls: "bg-neon-caramel/10 text-neon-caramel border-neon-caramel/30" },
     2: { label: "Attested", cls: "bg-neon-caramel/10 text-neon-caramel border-neon-caramel/40" },
   };
@@ -173,16 +173,16 @@ export function TextInput({
 }) {
   return (
     <div className={className}>
-      {label && <label className="mb-1.5 block text-xs font-medium text-slate-400">{label}</label>}
+      {label && <label className="mb-1.5 block text-xs font-medium text-[#7d6a52]">{label}</label>}
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className={`w-full rounded-xl border border-white/10 bg-ink-800/70 px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors focus:border-neon-caramel/60 focus:bg-ink-800 ${
+        className={`w-full rounded-xl border border-stone-900/10 bg-ink-800/70 px-3.5 py-2.5 text-sm text-ink placeholder-[#97836a] outline-none transition-colors focus:border-neon-caramel/60 focus:bg-ink-800 ${
           mono ? "font-mono text-xs" : ""
         }`}
       />
-      {hint && <p className="mt-1 text-[11px] text-slate-500">{hint}</p>}
+      {hint && <p className="mt-1 text-[11px] text-[#97836a]">{hint}</p>}
     </div>
   );
 }
@@ -198,7 +198,7 @@ export function CopyButton({ text, label = "Copy" }: { text: string; label?: str
         setCopied(true);
         setTimeout(() => setCopied(false), 1500);
       }}
-      className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 text-[11px] text-slate-300 transition hover:border-neon-caramel/50 hover:text-neon-caramel"
+      className="inline-flex items-center gap-1.5 rounded-lg border border-stone-900/10 bg-stone-900/5 px-2.5 py-1.5 text-[11px] text-[#6b543a] transition hover:border-neon-caramel/50 hover:text-neon-caramel"
     >
       {copied ? <Check className="h-3 w-3 text-neon-green" /> : <Copy className="h-3 w-3" />}
       {copied ? "Copied" : label}
@@ -212,7 +212,7 @@ export function StepLink({ href, children }: { href: string; children: React.Rea
   return (
     <a
       href={href}
-      className="inline-flex items-center gap-1 text-neon-caramel transition hover:gap-2 hover:text-white"
+      className="inline-flex items-center gap-1 text-neon-caramel transition hover:gap-2 hover:text-ink"
     >
       {children} <ChevronRight className="h-3.5 w-3.5" />
     </a>
@@ -259,8 +259,8 @@ export function ToastHost() {
                 {TOAST_ICON[t.kind]}
               </span>
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium text-slate-100">{t.title}</p>
-                {t.desc && <p className="mt-0.5 text-xs leading-relaxed text-slate-400">{t.desc}</p>}
+                <p className="text-sm font-medium text-ink">{t.title}</p>
+                {t.desc && <p className="mt-0.5 text-xs leading-relaxed text-[#7d6a52]">{t.desc}</p>}
               </div>
             </div>
           </motion.div>
@@ -274,12 +274,12 @@ export function ToastHost() {
 
 export function PanelHeader({ title, desc }: { title: string; desc: string }) {
   return (
-    <div className="mb-7 border-b border-white/10 pb-4">
+    <div className="mb-7 border-b border-stone-900/10 pb-4">
       <div className="flex items-center gap-3">
         <span className="h-7 w-1.5 shrink-0 rounded-full bg-gradient-to-b from-neon-caramel to-neon-caramel" />
         <div>
-          <h2 className="font-display text-xl font-semibold text-white">{title}</h2>
-          <p className="mt-0.5 text-sm text-slate-300">{desc}</p>
+          <h2 className="font-display text-xl font-semibold text-ink">{title}</h2>
+          <p className="mt-0.5 text-sm text-[#6b543a]">{desc}</p>
         </div>
       </div>
     </div>

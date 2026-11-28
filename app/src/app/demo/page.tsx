@@ -37,7 +37,7 @@ export default function DemoPage() {
 
   return (
     <div className="min-h-screen">
-      <header className="glass-strong sticky top-0 z-40 border-b border-white/5">
+      <header className="glass-strong sticky top-0 z-40 border-b border-stone-900/5">
         <div className="mx-auto flex h-16 max-w-4xl items-center justify-between px-4 sm:px-6">
           <Link href="/" className="transition hover:opacity-85"><Logo /></Link>
           <span className="rounded-full border border-neon-caramel/40 bg-neon-caramel/10 px-3 py-1 text-[11px] font-medium text-neon-caramel">
@@ -47,10 +47,10 @@ export default function DemoPage() {
       </header>
 
       <main className="mx-auto max-w-4xl px-4 pb-24 pt-10 sm:px-6">
-        <h1 className="font-display text-3xl font-bold text-white">
+        <h1 className="font-display text-3xl font-bold text-ink">
           Guided demo — <span className="text-gradient">from scam to safe</span>
         </h1>
-        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-400">
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#7d6a52]">
           Six steps that showcase every judging criterion: registration, attestation, verification,
           bounded agents, and the guardrail that blocks a fraudulent payment on-chain. Each step
           links into the console pre-filled where it makes sense.
@@ -67,7 +67,7 @@ export default function DemoPage() {
             >
               <div
                 className={`h-1.5 rounded-full transition-all duration-500 ${
-                  s.id < step ? "bg-neon-green" : s.id === step ? "bg-gradient-to-r from-neon-caramel to-neon-caramel" : "bg-white/10"
+                  s.id < step ? "bg-neon-green" : s.id === step ? "bg-gradient-to-r from-neon-caramel to-neon-caramel" : "bg-stone-900/10"
                 }`}
               />
             </button>
@@ -88,9 +88,9 @@ export default function DemoPage() {
                 <span className="font-display rounded-xl bg-gradient-to-br from-neon-caramel to-neon-caramel px-3 py-1.5 text-sm font-bold text-ink">
                   {step}/6
                 </span>
-                <h2 className="font-display text-xl font-semibold text-white">{STEPS[step - 1].title}</h2>
+                <h2 className="font-display text-xl font-semibold text-ink">{STEPS[step - 1].title}</h2>
               </div>
-              <p className="mt-3 text-sm leading-relaxed text-slate-400">{STEPS[step - 1].why}</p>
+              <p className="mt-3 text-sm leading-relaxed text-[#7d6a52]">{STEPS[step - 1].why}</p>
               <div className="mt-6">
                 {step === 1 && <StepOne netOk={netOk} />}
                 {step === 2 && <StepLinkRow href="/dashboard?tab=registry&prefill=register" label="Open Registry tab → claim a name" />}
@@ -141,7 +141,7 @@ function StepOne({ netOk }: { netOk: boolean }) {
       >
         Faucet — get tQDAY gas + tUSD8 <ExternalLink className="h-3.5 w-3.5" />
       </a>
-      <p className="text-xs text-slate-500">
+      <p className="text-xs text-[#97836a]">
         Tip: claim faucet for every demo address now (the faucet has a cooldown).
       </p>
     </div>
@@ -187,21 +187,21 @@ function StepFour() {
           onChange={(e) => setPayee(e.target.value)}
           placeholder="0x… payee address (step 2 wallet)"
           spellCheck={false}
-          className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 font-mono text-xs text-slate-100 placeholder-slate-500 outline-none focus:border-neon-caramel/60"
+          className="w-full rounded-xl border border-stone-900/10 bg-ink-800/70 px-3 py-2.5 font-mono text-xs text-ink placeholder-[#97836a] outline-none focus:border-neon-caramel/60"
         />
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 outline-none focus:border-neon-caramel/60"
+          className="w-full rounded-xl border border-stone-900/10 bg-ink-800/70 px-3 py-2.5 text-sm text-ink outline-none focus:border-neon-caramel/60"
         />
       </div>
       <div className="flex flex-wrap items-center gap-3">
         <VerdictPill result={result} size="lg" />
-        {displayName && <span className="text-xs text-slate-400">registry: “{displayName}”</span>}
-        {!address && <span className="text-xs text-slate-500">connect wallet for full flow</span>}
+        {displayName && <span className="text-xs text-[#7d6a52]">registry: “{displayName}”</span>}
+        {!address && <span className="text-xs text-[#97836a]">connect wallet for full flow</span>}
       </div>
       <StepLinkRow href="/dashboard?tab=verify" label="Open full Verify tab" />
-      <p className="text-xs text-slate-500">
+      <p className="text-xs text-[#97836a]">
         Try the typo: change the last character of the name — the verdict should drop to CLOSE MATCH.
       </p>
     </div>
@@ -214,8 +214,8 @@ function StepFive() {
     <div className="grid gap-4">
       <StepLinkRow href="/dashboard?tab=sessions" label="Open Sessions tab → create a bounded session" />
       <div>
-        <p className="mb-2 text-xs text-slate-400">Agent CLI — the “autonomous worker” of the demo:</p>
-        <div className="relative rounded-xl border border-white/10 bg-black/50 p-4 font-mono text-[11px] leading-relaxed text-slate-300">
+        <p className="mb-2 text-xs text-[#7d6a52]">Agent CLI — the “autonomous worker” of the demo:</p>
+        <div className="relative rounded-xl border border-stone-900/10 bg-[#efe4cf]/80 p-4 font-mono text-[11px] leading-relaxed text-[#6b543a]">
           <CopyButton text={cmd} label="Copy" />
           <pre className="mt-2 whitespace-pre-wrap">{cmd}</pre>
         </div>
@@ -229,7 +229,7 @@ function StepSix() {
   return (
     <div className="grid gap-4">
       <div>
-        <div className="relative rounded-xl border border-neon-red/30 bg-black/50 p-4 font-mono text-[11px] leading-relaxed text-slate-300">
+        <div className="relative rounded-xl border border-neon-red/30 bg-[#efe4cf]/80 p-4 font-mono text-[11px] leading-relaxed text-[#6b543a]">
           <CopyButton text={cmd} label="Copy" />
           <pre className="mt-2 whitespace-pre-wrap">{cmd}</pre>
         </div>
@@ -248,8 +248,8 @@ function CompletionCard() {
       className="mt-8 rounded-3xl border border-neon-green/40 bg-neon-green/5 p-8 text-center shadow-glow-green"
     >
       <CheckCircle2 className="mx-auto h-10 w-10 text-neon-green" />
-      <h3 className="font-display mt-3 text-xl font-bold text-white">Demo complete — every guardrail held.</h3>
-      <p className="mx-auto mt-2 max-w-md text-sm text-slate-400">
+      <h3 className="font-display mt-3 text-xl font-bold text-ink">Demo complete — every guardrail held.</h3>
+      <p className="mx-auto mt-2 max-w-md text-sm text-[#7d6a52]">
         Registered identity → attested → verified → bounded agent → fraudulent payment reverted
         on-chain, with the evidence permanently replayable from the block explorer.
       </p>
@@ -265,9 +265,9 @@ function CheckRow({ ok, label }: { ok: boolean; label: string }) {
           <Check className="h-3.5 w-3.5 text-neon-green" />
         </span>
       ) : (
-        <CircleDashed className="h-5 w-5 text-slate-600" />
+        <CircleDashed className="h-5 w-5 text-[#6b543a]" />
       )}
-      <span className={ok ? "text-slate-200" : "text-slate-500"}>{label}</span>
+      <span className={ok ? "text-ink" : "text-[#97836a]"}>{label}</span>
     </div>
   );
 }

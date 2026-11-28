@@ -94,7 +94,7 @@ export function RegistryPanel({ prefill }: { prefill?: string }) {
       />
 
       {/* Segmented tabs — one job at a time, instead of a long stacked page */}
-      <div className="mb-5 inline-flex rounded-xl border border-white/10 bg-white/[0.03] p-1">
+      <div className="mb-5 inline-flex rounded-xl border border-stone-900/10 bg-stone-900/[0.03] p-1">
         {(
           [
             { id: "identity", label: "Your identity", icon: Fingerprint },
@@ -106,8 +106,8 @@ export function RegistryPanel({ prefill }: { prefill?: string }) {
             onClick={() => setView(t.id)}
             className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-semibold transition ${
               view === t.id
-                ? "bg-gradient-to-r from-neon-caramel/20 to-neon-caramel/20 text-white shadow-glow-caramel"
-                : "text-slate-400 hover:text-slate-200"
+                ? "bg-gradient-to-r from-neon-caramel/20 to-neon-caramel/20 text-ink shadow-glow-caramel"
+                : "text-[#7d6a52] hover:text-ink"
             }`}
           >
             <t.icon className="h-3.5 w-3.5" />
@@ -125,24 +125,24 @@ export function RegistryPanel({ prefill }: { prefill?: string }) {
         <div className={`glass rounded-2xl p-5 ${focus === "identity" ? "ring-1 ring-neon-caramel/50" : ""}`}>
           <div className="mb-4 flex items-center gap-2">
             <Fingerprint className="h-4 w-4 text-neon-caramel" />
-            <h3 className="font-display text-sm font-semibold text-white">Your identity</h3>
+            <h3 className="font-display text-sm font-semibold text-ink">Your identity</h3>
             {registered && <LevelBadge level={myLevel} />}
           </div>
           {me && contractsConfigured ? (
             <>
               {registered && (
-                <p className="mb-4 rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-slate-200">
-                  “{myDisplayName}” <span className="ml-2 text-[11px] text-slate-500">({shortAddr(me)})</span>
+                <p className="mb-4 rounded-lg border border-stone-900/10 bg-stone-900/5 px-3 py-2.5 text-sm text-ink">
+                  “{myDisplayName}” <span className="ml-2 text-[11px] text-[#97836a]">({shortAddr(me)})</span>
                 </p>
               )}
-              <label className="mb-1 block text-xs text-slate-400">
+              <label className="mb-1 block text-xs text-[#7d6a52]">
                 {registered ? "Update display name" : "Claim a display name"}
               </label>
               <input
                 value={myName}
                 onChange={(e) => setMyName(e.target.value)}
                 placeholder='Your Name here'
-                className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-neon-caramel/60"
+                className="w-full rounded-xl border border-stone-900/10 bg-ink-800/70 px-3 py-2.5 text-sm text-ink placeholder-[#97836a] outline-none focus:border-neon-caramel/60"
               />
               <Button
                 className="mt-3"
@@ -166,7 +166,7 @@ export function RegistryPanel({ prefill }: { prefill?: string }) {
             </>
           ) : (
             <div className="grid gap-3">
-              <p className="text-sm text-slate-500">Connect your wallet on the QDay network to manage identity.</p>
+              <p className="text-sm text-[#97836a]">Connect your wallet on the QDay network to manage identity.</p>
               <div>
                 <WalletButton compact />
               </div>
@@ -180,7 +180,7 @@ export function RegistryPanel({ prefill }: { prefill?: string }) {
         <div className={`glass rounded-2xl p-5 ${focus === "attest" ? "ring-1 ring-neon-caramel/50" : ""}`}>
           <div className="mb-4 flex items-center gap-2">
             <ShieldCheck className="h-4 w-4 text-neon-caramel" />
-            <h3 className="font-display text-sm font-semibold text-white">Verifier tools</h3>
+            <h3 className="font-display text-sm font-semibold text-ink">Verifier tools</h3>
             {isVerifier && (
               <span className="rounded-md border border-neon-caramel/40 bg-neon-caramel/10 px-2 py-0.5 text-[10px] text-neon-caramel">
                 you are a verifier
@@ -190,20 +190,20 @@ export function RegistryPanel({ prefill }: { prefill?: string }) {
           {me && isVerifier ? (
             <div className="grid gap-4">
               <div>
-                <p className="mb-2 text-xs font-medium text-slate-400">Attest an identity</p>
+                <p className="mb-2 text-xs font-medium text-[#7d6a52]">Attest an identity</p>
                 <div className="grid gap-2">
                   <input
                     value={attestAddr}
                     onChange={(e) => setAttestAddr(e.target.value)}
                     placeholder="0x… payee address"
                     spellCheck={false}
-                    className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 font-mono text-xs text-slate-100 placeholder-slate-500 outline-none focus:border-neon-caramel/60"
+                    className="w-full rounded-xl border border-stone-900/10 bg-ink-800/70 px-3 py-2.5 font-mono text-xs text-ink placeholder-[#97836a] outline-none focus:border-neon-caramel/60"
                   />
                   <input
                     value={attestName}
                     onChange={(e) => setAttestName(e.target.value)}
                     placeholder='verified name, e.g. "BS Mart"'
-                    className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-neon-caramel/60"
+                    className="w-full rounded-xl border border-stone-900/10 bg-ink-800/70 px-3 py-2.5 text-sm text-ink placeholder-[#97836a] outline-none focus:border-neon-caramel/60"
                   />
                 </div>
                 <Button
@@ -228,13 +228,13 @@ export function RegistryPanel({ prefill }: { prefill?: string }) {
                 </Button>
               </div>
               <div>
-                <p className="mb-2 text-xs font-medium text-slate-400">Revoke an attestation</p>
+                <p className="mb-2 text-xs font-medium text-[#7d6a52]">Revoke an attestation</p>
                 <div className="grid gap-2">
                   <input
                     value={revokeName}
                     onChange={(e) => setRevokeName(e.target.value)}
                     placeholder="name to revoke"
-                    className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-neon-red/60"
+                    className="w-full rounded-xl border border-stone-900/10 bg-ink-800/70 px-3 py-2.5 text-sm text-ink placeholder-[#97836a] outline-none focus:border-neon-red/60"
                   />
                   <Button
                     size="sm"
@@ -260,7 +260,7 @@ export function RegistryPanel({ prefill }: { prefill?: string }) {
               </div>
             </div>
           ) : (
-            <p className="text-sm leading-relaxed text-slate-500">
+            <p className="text-sm leading-relaxed text-[#97836a]">
               Verifiers endorse <span className="font-mono text-xs">address → name</span> pairs — a
               federated trust model (KYC providers, DAOs, marketplaces). The deployer is the first
               verifier; additional verifiers are added by the contract owner.
@@ -268,13 +268,13 @@ export function RegistryPanel({ prefill }: { prefill?: string }) {
           )}
 
           {verifiers && (verifiers as `0x${string}`[]).length > 0 && (
-            <div className="mt-5 border-t border-white/10 pt-4">
-              <p className="mb-2 flex items-center gap-1.5 text-xs text-slate-400">
+            <div className="mt-5 border-t border-stone-900/10 pt-4">
+              <p className="mb-2 flex items-center gap-1.5 text-xs text-[#7d6a52]">
                 <Users className="h-3.5 w-3.5" /> Verifiers
               </p>
               <div className="flex flex-wrap gap-2">
                 {(verifiers as `0x${string}`[]).map((v) => (
-                  <span key={v} className="rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 font-mono text-[11px] text-slate-300">
+                  <span key={v} className="rounded-lg border border-stone-900/10 bg-stone-900/5 px-2.5 py-1 font-mono text-[11px] text-[#6b543a]">
                     {shortAddr(v, 6)}
                   </span>
                 ))}

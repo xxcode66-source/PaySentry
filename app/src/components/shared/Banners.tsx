@@ -34,15 +34,15 @@ export function ContractsMissingBanner() {
     <motion.div
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mb-4 rounded-xl border border-neon-amber/40 bg-neon-amber/10 p-3.5 text-sm text-neon-amber"
+      className="mb-4 rounded-xl border border-neon-amber/40 bg-neon-amber/10 p-3.5 text-sm text-[#8a5a33]"
     >
       <p>
         <strong>Contracts not configured yet.</strong> Deploy the registry + guard, then set{" "}
-        <code className="rounded bg-black/40 px-1 py-0.5 font-mono text-xs">
+        <code className="rounded bg-[#2b1a0c]/10 px-1 py-0.5 font-mono text-xs">
           NEXT_PUBLIC_REGISTRY_ADDRESS
         </code>{" "}
         and{" "}
-        <code className="rounded bg-black/40 px-1 py-0.5 font-mono text-xs">
+        <code className="rounded bg-[#2b1a0c]/10 px-1 py-0.5 font-mono text-xs">
           NEXT_PUBLIC_GUARD_ADDRESS
         </code>{" "}
         in <code className="font-mono text-xs">app/.env.local</code>. Full guide in the README

@@ -54,7 +54,7 @@ export function DashboardShell() {
     <div className="relative min-h-screen">
       <AuroraBackground calm />
       {/* top bar (mobile) */}
-      <header className="glass-strong sticky top-0 z-40 border-b border-white/5 lg:hidden">
+      <header className="glass-strong sticky top-0 z-40 border-b border-stone-900/5 lg:hidden">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           <Link href="/" className="transition hover:opacity-85">
             <Logo />
@@ -68,7 +68,7 @@ export function DashboardShell() {
 
       <div className="relative mx-auto flex max-w-7xl">
         {/* sidebar (desktop) */}
-        <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-white/10 bg-gradient-to-b from-ink-900/80 via-transparent to-transparent px-4 py-6 lg:flex">
+        <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-stone-900/10 bg-gradient-to-b from-ink-900/80 via-transparent to-transparent px-4 py-6 lg:flex">
           <Link href="/" className="mb-8 px-2 transition hover:opacity-85">
             <Logo />
           </Link>
@@ -80,8 +80,8 @@ export function DashboardShell() {
                 onClick={() => setTab(t.id)}
                 className={`group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-all duration-200 ${
                   tab === t.id
-                    ? "bg-gradient-to-r from-neon-caramel/15 via-neon-caramel/10 to-transparent text-white shadow-glow-caramel"
-                    : "text-slate-400 hover:bg-white/5 hover:text-slate-200"
+                    ? "bg-gradient-to-r from-neon-caramel/15 via-neon-caramel/10 to-transparent text-ink shadow-glow-caramel"
+                    : "text-[#7d6a52] hover:bg-stone-900/5 hover:text-ink"
                 }`}
               >
                 {tab === t.id && (
@@ -90,21 +90,21 @@ export function DashboardShell() {
                     className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-full bg-gradient-to-b from-neon-caramel to-neon-caramel shadow-glow-caramel"
                   />
                 )}
-                <t.icon className={`h-4 w-4 ${tab === t.id ? "text-neon-caramel" : "text-slate-500 group-hover:text-slate-300"}`} />
+                <t.icon className={`h-4 w-4 ${tab === t.id ? "text-neon-caramel" : "text-[#97836a] group-hover:text-[#6b543a]"}`} />
                 <span className="min-w-0">
-                  <span className={`block text-sm font-semibold ${tab === t.id ? "text-white" : ""}`}>{t.label}</span>
-                  <span className="block text-[10px] text-slate-500">{t.desc}</span>
+                  <span className={`block text-sm font-semibold ${tab === t.id ? "text-ink" : ""}`}>{t.label}</span>
+                  <span className="block text-[10px] text-[#97836a]">{t.desc}</span>
                 </span>
               </button>
             ))}
           </nav>
 
-          <div className="mt-4 border-t border-white/10 pt-4">
+          <div className="mt-4 border-t border-stone-900/10 pt-4">
             <div className="mb-3 [&_button]:w-full [&_button]:justify-center">
               <WalletButton />
             </div>
-            <div className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">Network</p>
+            <div className="rounded-xl border border-stone-900/10 bg-stone-900/[0.03] px-3 py-2.5">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#97836a]">Network</p>
               <p className="mt-1 flex items-center gap-2 text-xs text-neon-green">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon-green opacity-60" />
@@ -153,16 +153,16 @@ export function DashboardShell() {
             </AnimatePresence>
 
               {/* Status footer — same source of truth on every tab */}
-              <footer className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-white/10 pt-4 text-[11px] text-slate-500">
+              <footer className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-stone-900/10 pt-4 text-[11px] text-[#97836a]">
                 <span className="inline-flex items-center gap-1.5">
                   <span className="h-1.5 w-1.5 rounded-full bg-neon-green" />
                   QDay Aevum · chain 44005
                 </span>
                 <span>
-                  Guard <span className="font-mono text-slate-400">{shortAddr(GUARD_ADDRESS)}</span>
+                  Guard <span className="font-mono text-[#7d6a52]">{shortAddr(GUARD_ADDRESS)}</span>
                 </span>
                 <span>
-                  Registry <span className="font-mono text-slate-400">{shortAddr(REGISTRY_ADDRESS)}</span>
+                  Registry <span className="font-mono text-[#7d6a52]">{shortAddr(REGISTRY_ADDRESS)}</span>
                 </span>
                 <span className="ml-auto">Audit data replayed from on-chain events since block 3931234</span>
               </footer>
@@ -171,14 +171,14 @@ export function DashboardShell() {
       </div>
 
       {/* bottom nav (mobile) */}
-      <nav className="glass-strong fixed inset-x-0 bottom-0 z-40 border-t border-white/10 lg:hidden">
+      <nav className="glass-strong fixed inset-x-0 bottom-0 z-40 border-t border-stone-900/10 lg:hidden">
         <div className="mx-auto grid max-w-md grid-cols-6">
           {TABS.map((t) => (
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
               className={`flex flex-col items-center gap-1 py-2.5 transition ${
-                tab === t.id ? "text-neon-caramel" : "text-slate-500"
+                tab === t.id ? "text-neon-caramel" : "text-[#97836a]"
               }`}
             >
               <t.icon className="h-5 w-5" />

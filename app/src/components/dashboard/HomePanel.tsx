@@ -81,12 +81,12 @@ export function HomePanel() {
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        className="animate-gradient-pan relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-neon-caramel/15 via-ink-800 to-neon-caramel/15 bg-[length:200%_200%] p-6 sm:p-7"
+        className="animate-gradient-pan relative overflow-hidden rounded-3xl border border-stone-900/10 bg-gradient-to-br from-neon-caramel/15 via-ink-800 to-neon-caramel/15 bg-[length:200%_200%] p-6 sm:p-7"
       >
         {/* light sweep across the card, every few seconds */}
         <div className="animate-shine pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
         {/* decorative rings, like a card watermark */}
-        <div className="pointer-events-none absolute -right-10 -top-16 h-48 w-48 rounded-full border-[22px] border-white/[0.04]" />
+        <div className="pointer-events-none absolute -right-10 -top-16 h-48 w-48 rounded-full border-[22px] border-stone-900/[0.04]" />
         <div className="pointer-events-none absolute -bottom-20 -right-4 h-40 w-40 rounded-full border-[18px] border-neon-caramel/10" />
 
         <div className="relative">
@@ -94,8 +94,8 @@ export function HomePanel() {
             <div className="flex items-center gap-4">
               {/* avatar — a cute animated owl, never a letter initial */}
               <div
-                className={`h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-white/10 ${
-                  registered ? "bg-neon-caramel/10 shadow-glow-caramel" : "bg-white/5"
+                className={`h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-stone-900/10 ${
+                  registered ? "bg-neon-caramel/10 shadow-glow-caramel" : "bg-stone-900/5"
                 }`}
               >
                 <OwlAvatar dimmed={!registered} />
@@ -104,47 +104,47 @@ export function HomePanel() {
                 {isConnected && addr ? (
                   registered ? (
                     <>
-                      <p className="font-display text-2xl font-semibold leading-tight text-white">
+                      <p className="font-display text-2xl font-semibold leading-tight text-ink">
                         {displayName}
                       </p>
-                      <p className="mt-0.5 font-mono text-xs text-slate-400">{addr}</p>
+                      <p className="mt-0.5 font-mono text-xs text-[#7d6a52]">{addr}</p>
                     </>
                   ) : (
                     <>
-                      <p className="font-display text-2xl font-semibold leading-tight text-white">
+                      <p className="font-display text-2xl font-semibold leading-tight text-ink">
                         Not registered
                       </p>
-                      <p className="mt-0.5 font-mono text-xs text-slate-400">{addr}</p>
+                      <p className="mt-0.5 font-mono text-xs text-[#7d6a52]">{addr}</p>
                     </>
                   )
                 ) : (
                   <>
-                    <p className="font-display text-2xl font-semibold leading-tight text-white">
+                    <p className="font-display text-2xl font-semibold leading-tight text-ink">
                       PaySentry Identity
                     </p>
-                    <p className="mt-0.5 text-xs text-slate-300">
+                    <p className="mt-0.5 text-xs text-[#6b543a]">
                       Connect your wallet to see your identity card.
                     </p>
                     {/* Sample preview — grayscale + labeled header so it reads
                         as a placeholder example, never as your own identity */}
-                    <div className="mt-3 rounded-xl border border-dashed border-white/15 bg-ink-900/50 px-3 py-2.5 opacity-75 grayscale">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    <div className="mt-3 rounded-xl border border-dashed border-stone-900/15 bg-ink-900/50 px-3 py-2.5 opacity-75 grayscale">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#97836a]">
                         Sample identity
                       </p>
                       <div className="mt-2 flex items-center gap-3">
-                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/5 text-slate-400">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-stone-900/5 text-[#7d6a52]">
                           <ShieldCheck className="h-4 w-4" />
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className="block truncate text-sm font-semibold text-slate-300">
+                          <span className="block truncate text-sm font-semibold text-[#6b543a]">
                             “au”
                           </span>
-                          <span className="block font-mono text-[11px] text-slate-500">
+                          <span className="block font-mono text-[11px] text-[#97836a]">
                             0x9f25…ef94 · 1 tUSD8 · 24 Nov 2026
                           </span>
                         </span>
                       </div>
-                      <p className="mt-2 text-[11px] leading-relaxed text-slate-500">
+                      <p className="mt-2 text-[11px] leading-relaxed text-[#97836a]">
                         A real on-chain identity, shown as an example.
                       </p>
                     </div>
@@ -183,21 +183,21 @@ export function HomePanel() {
           </div>
 
           {/* card footer */}
-          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-white/10 pt-4 text-xs">
+          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-stone-900/10 pt-4 text-xs">
             {isConnected && addr ? (
               registered ? (
                 <>
-                  <span className="text-slate-400">
-                    <span className="text-slate-500">Attestations · </span>
+                  <span className="text-[#7d6a52]">
+                    <span className="text-[#97836a]">Attestations · </span>
                     {attCount ?? 0}
                   </span>
-                  <span className="text-slate-400">
-                    <span className="text-slate-500">Network · </span>
+                  <span className="text-[#7d6a52]">
+                    <span className="text-[#97836a]">Network · </span>
                     QDay Aevum
                   </span>
                 </>
               ) : (
-                <span className="max-w-md leading-relaxed text-slate-400">
+                <span className="max-w-md leading-relaxed text-[#7d6a52]">
                   This address has no name in the Registry yet — payments to it
                   will fail in Enforce mode until an identity is registered.
                 </span>
@@ -205,7 +205,7 @@ export function HomePanel() {
             ) : (
               <span className="flex flex-wrap items-center gap-3">
                 <WalletButton compact />
-                <span className="text-slate-400">
+                <span className="text-[#7d6a52]">
                   Your card, balances and activity appear here once connected.
                 </span>
               </span>
@@ -220,7 +220,7 @@ export function HomePanel() {
                       setCopied(true);
                       setTimeout(() => setCopied(false), 1500);
                     }}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:border-neon-caramel/50 hover:text-neon-caramel"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-stone-900/10 bg-stone-900/5 px-3 py-1.5 text-xs text-[#6b543a] transition hover:border-neon-caramel/50 hover:text-neon-caramel"
                   >
                     {copied ? (
                       <CheckCircle2 className="h-3.5 w-3.5 text-neon-green" />
@@ -233,7 +233,7 @@ export function HomePanel() {
                     href={addressLink(addr)}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:text-neon-caramel"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-stone-900/10 bg-stone-900/5 px-3 py-1.5 text-xs text-[#6b543a] transition hover:text-neon-caramel"
                   >
                     <ExternalLink className="h-3.5 w-3.5" /> Explorer
                   </a>
@@ -259,15 +259,15 @@ export function HomePanel() {
       <div className="mt-6">
         <div className="mb-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Wallet className="h-4 w-4 text-slate-500" />
-            <h3 className="font-display text-sm font-semibold text-white">Your assets</h3>
-            <span className="rounded-full bg-white/5 px-2 py-0.5 text-[11px] text-slate-400">
+            <Wallet className="h-4 w-4 text-[#97836a]" />
+            <h3 className="font-display text-sm font-semibold text-ink">Your assets</h3>
+            <span className="rounded-full bg-stone-900/5 px-2 py-0.5 text-[11px] text-[#7d6a52]">
               2 tokens · QDay Aevum
             </span>
           </div>
           <button
             onClick={refresh}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:text-neon-caramel"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-900/10 bg-stone-900/5 px-3 py-1.5 text-xs text-[#6b543a] transition hover:text-neon-caramel"
           >
             <RefreshCw className="h-3.5 w-3.5" /> Refresh
           </button>
@@ -322,7 +322,7 @@ export function HomePanel() {
       </div>
 
       {!contractsConfigured && (
-        <p className="mt-4 text-xs text-slate-500">
+        <p className="mt-4 text-xs text-[#97836a]">
           Deploy the contracts and set <code className="font-mono">NEXT_PUBLIC_*</code> addresses to load live balances.
         </p>
       )}
@@ -390,21 +390,21 @@ function AssetCard({
               {glyph}
             </span>
             <div>
-              <p className="text-sm font-semibold text-white">{symbol}</p>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-sm font-semibold text-ink">{symbol}</p>
+              <p className="text-[11px] text-[#97836a]">
                 {name} · {desc}
               </p>
             </div>
           </div>
-          <span className="rounded-full bg-white/5 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-slate-400">
+          <span className="rounded-full bg-stone-900/5 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-[#7d6a52]">
             Available
           </span>
         </div>
-        <p className="mt-5 font-display text-4xl font-semibold tabular-nums tracking-tight text-white">
+        <p className="mt-5 font-display text-4xl font-semibold tabular-nums tracking-tight text-ink">
           {valueStr}
-          <span className="ml-2 text-base font-medium text-slate-500">{symbol}</span>
+          <span className="ml-2 text-base font-medium text-[#97836a]">{symbol}</span>
         </p>
-        <div className="mt-4 flex items-center justify-between border-t border-white/5 pt-3 text-[11px] text-slate-500">
+        <div className="mt-4 flex items-center justify-between border-t border-stone-900/5 pt-3 text-[11px] text-[#97836a]">
           <span>{tokenAddrLabel}</span>
           {tokenAddr ? (
             <span className="font-mono">{shortAddr(tokenAddr, 6)}</span>
@@ -437,10 +437,10 @@ function QuickAction({
         <Icon className="h-4 w-4" />
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block text-sm font-semibold text-white">{title}</span>
-        <span className="block text-[11px] text-slate-500">{desc}</span>
+        <span className="block text-sm font-semibold text-ink">{title}</span>
+        <span className="block text-[11px] text-[#97836a]">{desc}</span>
       </span>
-      <ArrowRight className="h-4 w-4 shrink-0 text-slate-600 transition group-hover:translate-x-0.5 group-hover:text-neon-caramel" />
+      <ArrowRight className="h-4 w-4 shrink-0 text-[#6b543a] transition group-hover:translate-x-0.5 group-hover:text-neon-caramel" />
     </Link>
   );
 }

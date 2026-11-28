@@ -8,9 +8,9 @@ export function Logo({ size = 28 }: { size?: number }) {
   return (
     <span className="inline-flex items-center gap-2.5">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/paysentry.png" alt="PaySentry" width={size} height={size} className="rounded-lg" />
+      <img src="/icon.svg" alt="PaySentry" width={size} height={size} className="rounded-lg" />
       <span className="font-display text-lg font-bold tracking-tight">
-        <span className="text-white">Pay</span>
+        <span className="text-ink">Pay</span>
         <span className="text-gradient">Sentry</span>
       </span>
     </span>
@@ -48,7 +48,7 @@ export function Nav() {
             <Link
               key={l.href}
               href={l.href}
-              className="text-sm text-slate-400 transition-colors hover:text-white"
+              className="text-sm text-[#7d6a52] transition-colors hover:text-ink"
             >
               {l.label}
             </Link>

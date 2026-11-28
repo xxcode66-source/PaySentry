@@ -76,7 +76,7 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
         ? "border-neon-amber/40 bg-neon-amber/5"
         : result === 1
           ? "border-neon-red/40 bg-neon-red/5 shadow-glow-red"
-          : "border-white/10 bg-white/[0.02]";
+          : "border-stone-900/10 bg-stone-900/[0.02]";
 
   return (
     <div>
@@ -89,15 +89,15 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
       <div className="min-w-0">
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label className="mb-1.5 block text-xs font-medium text-slate-300">Payee address</label>
+          <label className="mb-1.5 block text-xs font-medium text-[#6b543a]">Payee address</label>
           <input
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             placeholder="0x…"
             spellCheck={false}
-            className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3.5 py-2.5 font-mono text-xs text-slate-100 placeholder-slate-500 outline-none transition-colors focus:border-neon-caramel/60 focus:bg-ink-800"
+            className="w-full rounded-xl border border-stone-900/10 bg-ink-800/70 px-3.5 py-2.5 font-mono text-xs text-ink placeholder-[#97836a] outline-none transition-colors focus:border-neon-caramel/60 focus:bg-ink-800"
           />
-          <p className="mt-1 text-[11px] text-slate-500">
+          <p className="mt-1 text-[11px] text-[#97836a]">
             {!address
               ? "Paste any address."
               : valid
@@ -108,21 +108,21 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
           </p>
         </div>
         <div>
-          <label className="mb-1.5 block text-xs font-medium text-slate-300">
+          <label className="mb-1.5 block text-xs font-medium text-[#6b543a]">
             Name you intend to pay
           </label>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder='Your Name here'
-            className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors focus:border-neon-caramel/60 focus:bg-ink-800"
+            className="w-full rounded-xl border border-stone-900/10 bg-ink-800/70 px-3.5 py-2.5 text-sm text-ink placeholder-[#97836a] outline-none transition-colors focus:border-neon-caramel/60 focus:bg-ink-800"
           />
           <div className="mt-1 flex items-center gap-2">
-            <span className="text-[11px] text-slate-500">Live prediction:</span>
+            <span className="text-[11px] text-[#97836a]">Live prediction:</span>
             {dName.trim() && candidates.length > 0 ? (
               <VerdictPill result={predicted.result} size="sm" />
             ) : (
-              <span className="text-[11px] text-slate-600">type a name…</span>
+              <span className="text-[11px] text-[#6b543a]">type a name…</span>
             )}
           </div>
         </div>
@@ -135,12 +135,12 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
           animate={{ opacity: 1, y: 0 }}
           className="mt-5 grid items-stretch gap-2 sm:grid-cols-[1fr_auto_1fr]"
         >
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+          <div className="rounded-2xl border border-stone-900/10 bg-stone-900/[0.03] p-4">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#97836a]">
               1 · You typed
             </p>
-            <p className="mt-1.5 truncate text-base font-semibold text-white">“{dName.trim()}”</p>
-            <p className="mt-0.5 text-[11px] text-slate-500">Name you intend to pay</p>
+            <p className="mt-1.5 truncate text-base font-semibold text-ink">“{dName.trim()}”</p>
+            <p className="mt-0.5 text-[11px] text-[#97836a]">Name you intend to pay</p>
           </div>
           <div className="flex items-center justify-center">
             <span
@@ -151,20 +151,20 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
                     ? "border-neon-amber/40 bg-neon-amber/10 text-neon-amber"
                     : result !== undefined
                       ? "border-neon-red/40 bg-neon-red/10 text-neon-red"
-                      : "border-white/10 bg-white/5 text-slate-500"
+                      : "border-stone-900/10 bg-stone-900/5 text-[#97836a]"
               }`}
             >
               {result === 3 ? "✓" : result === 2 ? "~" : result !== undefined ? "✕" : "="}
             </span>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+          <div className="rounded-2xl border border-stone-900/10 bg-stone-900/[0.03] p-4">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#97836a]">
               2 · Registered as
             </p>
-            <p className="mt-1.5 truncate text-base font-semibold text-white">
+            <p className="mt-1.5 truncate text-base font-semibold text-ink">
               {displayName ? `“${displayName}”` : "— not registered —"}
             </p>
-            <p className="mt-0.5 text-[11px] text-slate-500">
+            <p className="mt-0.5 text-[11px] text-[#97836a]">
               {displayName ? "On-chain identity for this address" : "No identity on-chain for this address"}
             </p>
           </div>
@@ -174,19 +174,19 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
       {/* Result card */}
       <motion.div layout className={`mt-6 rounded-2xl border p-6 transition-colors duration-500 ${cardBorder}`}>
         {checkLoading && contractsConfigured && enabled ? (
-          <div className="flex items-center gap-4 text-sm text-slate-400">
+          <div className="flex items-center gap-4 text-sm text-[#7d6a52]">
             <span className="h-2 w-2 animate-ping rounded-full bg-neon-caramel" />
             Querying the registry on-chain…
           </div>
         ) : result === undefined ? (
           <div className="flex flex-col items-center gap-2 py-2 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
-              <Search className="h-5 w-5 text-slate-500" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-stone-900/10 bg-stone-900/5">
+              <Search className="h-5 w-5 text-[#97836a]" />
             </div>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-[#97836a]">
               Enter an address and a name to run the check.
             </p>
-            <p className="text-xs text-slate-600">
+            <p className="text-xs text-[#6b543a]">
               Verdicts come straight from <span className="font-mono">PayeeRegistry.checkPayee</span>.
             </p>
           </div>
@@ -194,7 +194,7 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
           <div>
             <div className="flex flex-wrap items-center justify-between gap-3">
               <VerdictPill result={result} size="lg" />
-              <span className="text-[11px] text-slate-500">
+              <span className="text-[11px] text-[#97836a]">
                 {checkLoading && contractsConfigured && enabled
                   ? "querying chain…"
                   : contractsConfigured && enabled
@@ -202,38 +202,38 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
                     : "predicted (client-side mirror of the contract)"}
               </span>
             </div>
-            <p className="mt-4 text-sm leading-relaxed text-slate-300">
+            <p className="mt-4 text-sm leading-relaxed text-[#6b543a]">
               {verdictExplainer(result as 0 | 1 | 2 | 3, matchedAs)}
             </p>
 
             {contractsConfigured && enabled && (
-              <dl className="mt-5 grid grid-cols-2 gap-4 border-t border-white/10 pt-4 text-xs sm:grid-cols-4">
+              <dl className="mt-5 grid grid-cols-2 gap-4 border-t border-stone-900/10 pt-4 text-xs sm:grid-cols-4">
                 <div>
-                  <dt className="text-slate-500">Registry label</dt>
-                  <dd className="mt-1 text-slate-200">{displayName || "—"}</dd>
+                  <dt className="text-[#97836a]">Registry label</dt>
+                  <dd className="mt-1 text-ink">{displayName || "—"}</dd>
                 </div>
                 <div>
-                  <dt className="text-slate-500">Identity level</dt>
+                  <dt className="text-[#97836a]">Identity level</dt>
                   <dd className="mt-1">{level !== undefined ? <LevelBadge level={level} /> : "—"}</dd>
                 </div>
                 <div>
-                  <dt className="text-slate-500">Verifier attestations</dt>
-                  <dd className="mt-1 text-slate-200">{attCount ?? "—"}</dd>
+                  <dt className="text-[#97836a]">Verifier attestations</dt>
+                  <dd className="mt-1 text-ink">{attCount ?? "—"}</dd>
                 </div>
                 <div>
-                  <dt className="text-slate-500">Verdict (raw)</dt>
-                  <dd className="mt-1 font-mono text-slate-200">{MATCH_LABELS[result]} ({result})</dd>
+                  <dt className="text-[#97836a]">Verdict (raw)</dt>
+                  <dd className="mt-1 font-mono text-ink">{MATCH_LABELS[result]} ({result})</dd>
                 </div>
               </dl>
             )}
 
             {candidates.length > 1 && (
-              <p className="mt-4 text-[11px] text-slate-500">
+              <p className="mt-4 text-[11px] text-[#97836a]">
                 Accepted names: {candidates.filter(Boolean).map((c) => `“${c}”`).join(", ")}
               </p>
             )}
 
-            <div className="mt-5 flex flex-wrap items-center gap-4 border-t border-white/10 pt-4">
+            <div className="mt-5 flex flex-wrap items-center gap-4 border-t border-stone-900/10 pt-4">
               {valid && (
                 <a
                   href={addressLink(address)}
@@ -253,7 +253,7 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
                 </Link>
               )}
               {valid && name.trim() && result !== undefined && result < 2 && (
-                <span className="text-xs text-slate-500">
+                <span className="text-xs text-[#97836a]">
                   Verdict is {MATCH_LABELS[result]} — paying in Enforce mode would revert; use Warn mode in the Pay tab.
                 </span>
               )}
@@ -263,7 +263,7 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
       </motion.div>
 
       {!contractsConfigured && (
-        <p className="mt-4 text-xs leading-relaxed text-slate-500">
+        <p className="mt-4 text-xs leading-relaxed text-[#97836a]">
           Contracts aren&apos;t configured yet, so this panel runs the exact same matching logic in
           your browser (the TypeScript mirror of <code className="font-mono">PayeeRegistry.checkPayee</code>).
           After deploy, verdicts come straight from the chain.
@@ -273,8 +273,8 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
 
       {/* Side panel — verdict guide + a real example to try */}
       <aside className="space-y-4">
-        <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+        <div className="rounded-2xl border border-stone-900/10 bg-stone-900/[0.02] p-5">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#97836a]">
             What each verdict means
           </p>
           <ul className="mt-3 space-y-3">
@@ -286,17 +286,17 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
             ].map(({ r, text }) => (
               <li key={r} className="flex items-start gap-2.5">
                 <VerdictPill result={r} size="sm" />
-                <span className="text-xs leading-relaxed text-slate-300">{text}</span>
+                <span className="text-xs leading-relaxed text-[#6b543a]">{text}</span>
               </li>
             ))}
           </ul>
         </div>
-        <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+        <div className="rounded-2xl border border-stone-900/10 bg-stone-900/[0.02] p-5">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#97836a]">
             Try a real example
           </p>
-          <p className="mt-2 text-xs leading-relaxed text-slate-300">
-            The payee <span className="font-semibold text-white">“au”</span> was paid 1 tUSD8 on
+          <p className="mt-2 text-xs leading-relaxed text-[#6b543a]">
+            The payee <span className="font-semibold text-ink">“au”</span> was paid 1 tUSD8 on
             24 Nov 2026 — the first guarded payment on this chain.
           </p>
           <button

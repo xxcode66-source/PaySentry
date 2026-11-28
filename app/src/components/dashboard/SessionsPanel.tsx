@@ -119,51 +119,51 @@ export function SessionsPanel() {
         <div className="glass rounded-2xl p-5 lg:col-span-2">
           <div className="mb-4 flex items-center gap-2 text-neon-caramel">
             <Bot className="h-4 w-4" />
-            <h3 className="font-display text-sm font-semibold text-white">New session</h3>
+            <h3 className="font-display text-sm font-semibold text-ink">New session</h3>
           </div>
           <div className="grid gap-3">
             <div>
-              <label className="mb-1 block text-xs text-slate-400">Agent address</label>
+              <label className="mb-1 block text-xs text-[#7d6a52]">Agent address</label>
               <input
                 value={agent}
                 onChange={(e) => setAgent(e.target.value)}
                 placeholder="0x… agent wallet"
                 spellCheck={false}
-                className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 font-mono text-xs text-slate-100 placeholder-slate-500 outline-none focus:border-neon-caramel/60"
+                className="w-full rounded-xl border border-stone-900/10 bg-ink-800/70 px-3 py-2.5 font-mono text-xs text-ink placeholder-[#97836a] outline-none focus:border-neon-caramel/60"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="mb-1 block text-xs text-slate-400">Max / tx (tUSD8)</label>
+                <label className="mb-1 block text-xs text-[#7d6a52]">Max / tx (tUSD8)</label>
                 <input
                   value={maxPerTx}
                   onChange={(e) => setMaxPerTx(e.target.value)}
                   inputMode="decimal"
-                  className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 outline-none focus:border-neon-caramel/60"
+                  className="w-full rounded-xl border border-stone-900/10 bg-ink-800/70 px-3 py-2.5 text-sm text-ink outline-none focus:border-neon-caramel/60"
                 />
               </div>
               <div>
-                <label className="mb-1 block text-xs text-slate-400">Lifetime cap</label>
+                <label className="mb-1 block text-xs text-[#7d6a52]">Lifetime cap</label>
                 <input
                   value={capTotal}
                   onChange={(e) => setCapTotal(e.target.value)}
                   inputMode="decimal"
-                  className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 outline-none focus:border-neon-caramel/60"
+                  className="w-full rounded-xl border border-stone-900/10 bg-ink-800/70 px-3 py-2.5 text-sm text-ink outline-none focus:border-neon-caramel/60"
                 />
               </div>
             </div>
             <div>
-              <label className="mb-1 block text-xs text-slate-400">Expires after (days)</label>
+              <label className="mb-1 block text-xs text-[#7d6a52]">Expires after (days)</label>
               <input
                 value={days}
                 onChange={(e) => setDays(e.target.value)}
                 inputMode="numeric"
-                className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 outline-none focus:border-neon-caramel/60"
+                className="w-full rounded-xl border border-stone-900/10 bg-ink-800/70 px-3 py-2.5 text-sm text-ink outline-none focus:border-neon-caramel/60"
               />
             </div>
             {/* Presets — one tap, no typing */}
             <div>
-              <p className="mb-1.5 text-[11px] text-slate-500">Presets</p>
+              <p className="mb-1.5 text-[11px] text-[#97836a]">Presets</p>
               <div className="flex flex-wrap gap-2">
                 {[
                   { label: "Cautious · 1 / 10 / 7d", max: "1", cap: "10", d: "7" },
@@ -183,7 +183,7 @@ export function SessionsPanel() {
                       className={`rounded-full border px-3 py-1.5 text-[11px] font-medium transition ${
                         active
                           ? "border-neon-caramel/60 bg-neon-caramel/10 text-neon-caramel"
-                          : "border-white/10 bg-white/[0.03] text-slate-400 hover:border-white/25 hover:text-slate-200"
+                          : "border-stone-900/10 bg-stone-900/[0.03] text-[#7d6a52] hover:border-stone-900/25 hover:text-ink"
                       }`}
                     >
                       {p.label}
@@ -210,8 +210,8 @@ export function SessionsPanel() {
         {/* List */}
         <div className="lg:col-span-3">
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="font-display text-sm font-semibold text-white">Your sessions</h3>
-            <span className="rounded-full bg-white/5 px-2.5 py-1 text-[11px] font-medium text-slate-400">
+            <h3 className="font-display text-sm font-semibold text-ink">Your sessions</h3>
+            <span className="rounded-full bg-stone-900/5 px-2.5 py-1 text-[11px] font-medium text-[#7d6a52]">
               {sessionIds ? `${(sessionIds as bigint[]).length} active` : "—"}
             </span>
           </div>
@@ -220,9 +220,9 @@ export function SessionsPanel() {
               [...(sessionIds as bigint[])].reverse().map((id) => <SessionCard key={id.toString()} id={id} />)
             ) : (
               <div className="glass rounded-2xl p-10 text-center">
-                <Bot className="mx-auto h-8 w-8 text-slate-600" />
-                <p className="mt-3 text-sm font-medium text-slate-300">No sessions yet</p>
-                <p className="mx-auto mt-1 max-w-xs text-xs leading-relaxed text-slate-500">
+                <Bot className="mx-auto h-8 w-8 text-[#6b543a]" />
+                <p className="mt-3 text-sm font-medium text-[#6b543a]">No sessions yet</p>
+                <p className="mx-auto mt-1 max-w-xs text-xs leading-relaxed text-[#97836a]">
                   {me
                     ? "Create your first agent session on the left — pick a preset, set the limits, and the guard enforces them on-chain."
                     : "Connect your wallet to see your sessions."}
@@ -284,8 +284,8 @@ function SessionCard({ id }: { id: bigint }) {
           <span className="rounded-lg bg-neon-caramel/10 px-2.5 py-1 font-mono text-xs text-neon-caramel">
             #{id.toString()}
           </span>
-          <span className="text-xs text-slate-400">
-            agent <span className="font-mono text-slate-200">{shortAddr(agentAddr)}</span>
+          <span className="text-xs text-[#7d6a52]">
+            agent <span className="font-mono text-ink">{shortAddr(agentAddr)}</span>
           </span>
         </div>
         <StatusChip active={isActive} expired={expired} />
@@ -298,7 +298,7 @@ function SessionCard({ id }: { id: bigint }) {
       </div>
 
       <div className="mt-3">
-        <div className="h-2 overflow-hidden rounded-full bg-white/10">
+        <div className="h-2 overflow-hidden rounded-full bg-stone-900/10">
           <motion.div
             className={`h-full rounded-full ${pct > 80 ? "bg-neon-red" : "bg-gradient-to-r from-neon-caramel to-neon-caramel"}`}
             initial={{ width: 0 }}
@@ -306,7 +306,7 @@ function SessionCard({ id }: { id: bigint }) {
             transition={{ duration: 0.8, ease: "easeOut" }}
           />
         </div>
-        <div className="mt-1.5 flex items-center justify-between text-[11px] text-slate-500">
+        <div className="mt-1.5 flex items-center justify-between text-[11px] text-[#97836a]">
           <span>{pct}% of lifetime cap used</span>
           <span className="inline-flex items-center gap-1">
             <Clock className="h-3 w-3" /> {expired ? "expired" : durationLeft(expiry)}
@@ -316,7 +316,7 @@ function SessionCard({ id }: { id: bigint }) {
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
         <RevokeButton id={id} />
-        <span className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 font-mono text-[10px] text-slate-400">
+        <span className="inline-flex items-center gap-1.5 rounded-lg border border-stone-900/10 bg-stone-900/5 px-2.5 py-1.5 font-mono text-[10px] text-[#7d6a52]">
           <Terminal className="h-3 w-3" /> {cmd.slice(0, 48)}…
         </span>
         <CopyButton text={cmd} label="Copy agent cmd" />
@@ -327,9 +327,9 @@ function SessionCard({ id }: { id: bigint }) {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-white/5 bg-white/[0.03] px-2.5 py-2">
-      <p className="text-[10px] uppercase tracking-wider text-slate-500">{label}</p>
-      <p className="mt-0.5 font-mono text-sm text-slate-200">{value}</p>
+    <div className="rounded-lg border border-stone-900/5 bg-stone-900/[0.03] px-2.5 py-2">
+      <p className="text-[10px] uppercase tracking-wider text-[#97836a]">{label}</p>
+      <p className="mt-0.5 font-mono text-sm text-ink">{value}</p>
     </div>
   );
 }
@@ -338,7 +338,7 @@ function StatusChip({ active, expired }: { active: boolean; expired: boolean }) 
   const cls = !active
     ? "border-neon-red/40 bg-neon-red/10 text-neon-red"
     : expired
-      ? "border-slate-500/40 bg-slate-500/10 text-slate-400"
+      ? "border-slate-500/40 bg-[#97836a]/10 text-[#7d6a52]"
       : "border-neon-green/40 bg-neon-green/10 text-neon-green";
   return (
     <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold ${cls}`}>

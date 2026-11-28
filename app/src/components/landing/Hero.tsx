@@ -27,7 +27,7 @@ export function Hero() {
         aria-hidden
       />
       <div
-        className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_45%,transparent_30%,#17100a_100%)]"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_45%,transparent_30%,#faf6ef_100%)]"
         aria-hidden
       />
 
@@ -43,14 +43,14 @@ export function Hero() {
         </StaggerItem>
 
         <StaggerItem className="mt-8 text-center">
-          <h1 className="font-display mx-auto max-w-4xl text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-6xl">
+          <h1 className="font-display mx-auto max-w-4xl text-4xl font-bold leading-[1.08] tracking-tight text-ink sm:text-6xl">
             Know exactly <span className="text-gradient">who you&apos;re paying</span> — before the
             money moves.
           </h1>
         </StaggerItem>
 
         <StaggerItem className="mt-6 text-center">
-          <p className="mx-auto max-w-2xl text-base leading-relaxed text-slate-300 sm:text-lg">
+          <p className="mx-auto max-w-2xl text-base leading-relaxed text-[#6b543a] sm:text-lg">
             PaySentry is a trustless Confirmation-of-Payee layer for stablecoin payments. Every
             payee is verified on-chain, every mismatch is blocked or flagged, every attempt —
             human or AI agent — lands on a permanent audit trail.
@@ -69,7 +69,7 @@ export function Hero() {
           <Link href="/demo">
             <motion.span
               whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-7 py-3.5 font-medium text-slate-200 transition hover:border-neon-caramel/60 hover:text-neon-caramel"
+              className="inline-flex items-center gap-2 rounded-xl border border-stone-900/15 px-7 py-3.5 font-medium text-ink transition hover:border-neon-caramel/60 hover:text-neon-caramel"
             >
               <PlayCircle className="h-4 w-4" /> Guided demo flow
             </motion.span>
@@ -84,7 +84,7 @@ export function Hero() {
                 className="glass rounded-2xl p-5 text-center transition hover:border-neon-caramel/30"
               >
                 <p className="font-display text-2xl font-bold text-gradient">{s.value}</p>
-                <p className="mt-2 text-xs leading-relaxed text-slate-300">{s.label}</p>
+                <p className="mt-2 text-xs leading-relaxed text-[#6b543a]">{s.label}</p>
               </div>
             ))}
           </div>
@@ -92,7 +92,7 @@ export function Hero() {
       </Stagger>
 
       <motion.div
-        className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 text-slate-500"
+        className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 text-[#97836a]"
         animate={{ y: [0, 8, 0] }}
         transition={{ repeat: Infinity, duration: 2.2, ease: "easeInOut" }}
         aria-hidden

@@ -126,35 +126,35 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
         desc="Send tUSD8 through the guard. In enforce mode a name mismatch reverts the transaction on-chain — before any token moves."
       />
 
-      <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-slate-400">
-        <span className="rounded-md border border-white/10 bg-white/5 px-2 py-1 font-mono text-[11px] text-neon-caramel">
+      <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-[#7d6a52]">
+        <span className="rounded-md border border-stone-900/10 bg-stone-900/5 px-2 py-1 font-mono text-[11px] text-neon-caramel">
           tUSD8 {shortAddr(TUSD8_ADDRESS, 6)}
         </span>
-        <span>balance: <b className="text-slate-200">{formatUsd(balance)}</b></span>
-        <span>allowance to guard: <b className="text-slate-200">{formatUsd(allowance)}</b></span>
+        <span>balance: <b className="text-ink">{formatUsd(balance)}</b></span>
+        <span>allowance to guard: <b className="text-ink">{formatUsd(allowance)}</b></span>
       </div>
 
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
       <div className="grid min-w-0 gap-4">
         <div className="grid gap-4 md:grid-cols-2">
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-slate-300">Payee address</label>
+            <label className="mb-1.5 block text-xs font-medium text-[#6b543a]">Payee address</label>
             <input
               value={payee}
               onChange={(e) => setPayee(e.target.value)}
               placeholder="0x…"
               spellCheck={false}
-              className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3.5 py-2.5 font-mono text-xs text-slate-100 placeholder-slate-500 outline-none focus:border-neon-caramel/60 focus:bg-ink-800"
+              className="w-full rounded-xl border border-stone-900/10 bg-ink-800/70 px-3.5 py-2.5 font-mono text-xs text-ink placeholder-[#97836a] outline-none focus:border-neon-caramel/60 focus:bg-ink-800"
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-slate-300">Amount (tUSD8)</label>
+            <label className="mb-1.5 block text-xs font-medium text-[#6b543a]">Amount (tUSD8)</label>
             <input
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="10.00"
               inputMode="decimal"
-              className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-neon-caramel/60 focus:bg-ink-800"
+              className="w-full rounded-xl border border-stone-900/10 bg-ink-800/70 px-3.5 py-2.5 text-sm text-ink placeholder-[#97836a] outline-none focus:border-neon-caramel/60 focus:bg-ink-800"
             />
             {amount && !parsed && (
               <p className="mt-1 text-[11px] text-neon-red">Invalid amount.</p>
@@ -163,21 +163,21 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
         </div>
 
         <div>
-          <label className="mb-1.5 block text-xs font-medium text-slate-300">
-            Payee name as intended <span className="text-slate-500">(checked against the registry)</span>
+          <label className="mb-1.5 block text-xs font-medium text-[#6b543a]">
+            Payee name as intended <span className="text-[#97836a]">(checked against the registry)</span>
           </label>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder='Your Name here'
-            className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-neon-caramel/60 focus:bg-ink-800"
+            className="w-full rounded-xl border border-stone-900/10 bg-ink-800/70 px-3.5 py-2.5 text-sm text-ink placeholder-[#97836a] outline-none focus:border-neon-caramel/60 focus:bg-ink-800"
           />
           <div className="mt-1.5 flex items-center gap-2">
-            <span className="text-[11px] text-slate-500">Predicted verdict:</span>
+            <span className="text-[11px] text-[#97836a]">Predicted verdict:</span>
             {name.trim() && candidates.length > 0 ? (
               <VerdictPill result={predicted.result} size="sm" />
             ) : (
-              <span className="text-[11px] text-slate-600">—</span>
+              <span className="text-[11px] text-[#6b543a]">—</span>
             )}
           </div>
         </div>
@@ -204,42 +204,42 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"
+            className="rounded-2xl border border-stone-900/10 bg-stone-900/[0.03] p-5"
           >
-            <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+            <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#97836a]">
               Order summary
             </p>
             <dl className="grid gap-2.5 text-sm sm:grid-cols-2">
               <div className="flex items-center justify-between gap-3">
-                <dt className="text-slate-500">Paying</dt>
-                <dd className="font-display text-lg font-semibold tabular-nums text-white">
-                  {formatUsd(parsed)} <span className="text-sm text-slate-400">tUSD8</span>
+                <dt className="text-[#97836a]">Paying</dt>
+                <dd className="font-display text-lg font-semibold tabular-nums text-ink">
+                  {formatUsd(parsed)} <span className="text-sm text-[#7d6a52]">tUSD8</span>
                 </dd>
               </div>
               <div className="flex items-center justify-between gap-3">
-                <dt className="text-slate-500">To</dt>
-                <dd className="truncate font-mono text-xs text-slate-200" title={payee}>
-                  {shortAddr(payee)} {name.trim() && <span className="text-slate-400">· “{name.trim()}”</span>}
+                <dt className="text-[#97836a]">To</dt>
+                <dd className="truncate font-mono text-xs text-ink" title={payee}>
+                  {shortAddr(payee)} {name.trim() && <span className="text-[#7d6a52]">· “{name.trim()}”</span>}
                 </dd>
               </div>
               <div className="flex items-center justify-between gap-3">
-                <dt className="text-slate-500">Mode</dt>
-                <dd className="font-medium text-slate-200">
+                <dt className="text-[#97836a]">Mode</dt>
+                <dd className="font-medium text-ink">
                   {mode === 1 ? "Enforce — reverts on mismatch" : "Warn — proceeds, flagged on audit"}
                 </dd>
               </div>
               <div className="flex items-center justify-between gap-3">
-                <dt className="text-slate-500">Predicted verdict</dt>
+                <dt className="text-[#97836a]">Predicted verdict</dt>
                 <dd>
                   {name.trim() && candidates.length > 0 ? (
                     <VerdictPill result={predicted.result} size="sm" />
                   ) : (
-                    <span className="text-xs text-slate-500">—</span>
+                    <span className="text-xs text-[#97836a]">—</span>
                   )}
                 </dd>
               </div>
               <div className="flex items-center justify-between gap-3">
-                <dt className="text-slate-500">Your balance</dt>
+                <dt className="text-[#97836a]">Your balance</dt>
                 <dd
                   className={`font-mono text-xs ${
                     (balance ?? 0n) >= parsed ? "text-neon-green" : "text-neon-red"
@@ -250,8 +250,8 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
                 </dd>
               </div>
               <div className="flex items-center justify-between gap-3">
-                <dt className="text-slate-500">Guard allowance</dt>
-                <dd className="font-mono text-xs text-slate-200">
+                <dt className="text-[#97836a]">Guard allowance</dt>
+                <dd className="font-mono text-xs text-ink">
                   {formatUsd(allowance)}
                   {needsApproval && <span className="text-neon-amber"> · approval needed</span>}
                 </dd>
@@ -292,8 +292,8 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
                 <TriangleAlert className="h-5 w-5" />
                 <p className="font-display font-semibold">{blocked.title}</p>
               </div>
-              <p className="mt-2 text-sm leading-relaxed text-slate-300">{blocked.desc}</p>
-              <p className="mt-2 text-xs text-slate-500">
+              <p className="mt-2 text-sm leading-relaxed text-[#6b543a]">{blocked.desc}</p>
+              <p className="mt-2 text-xs text-[#97836a]">
                 The revert is permanent, public evidence that this payment attempt was stopped — see the{" "}
                 <Link href="/dashboard?tab=audit" className="text-neon-caramel hover:underline">
                   Audit tab
@@ -317,7 +317,7 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
                 <ReceiptText className="h-5 w-5" />
                 <p className="font-display font-semibold">Payment receipt — on-chain verdict recorded</p>
               </div>
-              <p className="mt-2 text-sm text-slate-300">
+              <p className="mt-2 text-sm text-[#6b543a]">
                 {formatUsd(parsed)} tUSD8 → “{name}”
               </p>
               <div className="mt-3 flex flex-wrap items-center gap-4">
@@ -338,8 +338,8 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
 
       {/* Side panel — how the guard works */}
       <aside className="space-y-4">
-        <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+        <div className="rounded-2xl border border-stone-900/10 bg-stone-900/[0.02] p-5">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#97836a]">
             How the guard works
           </p>
           <ol className="mt-3 space-y-3">
@@ -353,24 +353,24 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
                   {n}
                 </span>
                 <span>
-                  <span className="block text-sm font-semibold text-white">{t}</span>
-                  <span className="mt-0.5 block text-xs leading-relaxed text-slate-300">{d}</span>
+                  <span className="block text-sm font-semibold text-ink">{t}</span>
+                  <span className="mt-0.5 block text-xs leading-relaxed text-[#6b543a]">{d}</span>
                 </span>
               </li>
             ))}
           </ol>
         </div>
-        <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+        <div className="rounded-2xl border border-stone-900/10 bg-stone-900/[0.02] p-5">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#97836a]">
             Blocked attempts are evidence
           </p>
-          <p className="mt-2 text-xs leading-relaxed text-slate-300">
+          <p className="mt-2 text-xs leading-relaxed text-[#6b543a]">
             A blocked payment reverts on-chain, so the attempt itself is permanent, public proof
             that the Guard stopped a bad payment.
           </p>
           <Link
             href="/dashboard?tab=audit"
-            className="mt-3 inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-slate-200 transition hover:text-neon-caramel"
+            className="mt-3 inline-flex items-center gap-1.5 rounded-xl border border-stone-900/10 bg-stone-900/5 px-3 py-2 text-xs font-semibold text-ink transition hover:text-neon-caramel"
           >
             See the audit trail <ArrowRight className="h-3.5 w-3.5" />
           </Link>
@@ -400,12 +400,12 @@ function ModeCard({
       className={`rounded-2xl border p-4 text-left transition-all duration-200 ${
         active
           ? "border-neon-caramel/60 bg-neon-caramel/5 shadow-glow-caramel"
-          : "border-white/10 bg-white/[0.02] hover:border-white/25"
+          : "border-stone-900/10 bg-stone-900/[0.02] hover:border-stone-900/25"
       }`}
     >
       <div className="flex items-center gap-2">
-        <ShieldCheck className={`h-4 w-4 ${active ? "text-neon-caramel" : "text-slate-500"}`} />
-        <span className={`text-sm font-semibold ${active ? "text-white" : "text-slate-300"}`}>{title}</span>
+        <ShieldCheck className={`h-4 w-4 ${active ? "text-neon-caramel" : "text-[#97836a]"}`} />
+        <span className={`text-sm font-semibold ${active ? "text-ink" : "text-[#6b543a]"}`}>{title}</span>
         {badge && (
           <span className="rounded-full border border-neon-green/40 bg-neon-green/10 px-2 py-0.5 text-[10px] text-neon-green">
             {badge}
@@ -413,7 +413,7 @@ function ModeCard({
         )}
         {active && <BadgeCheck className="ml-auto h-4 w-4 text-neon-caramel" />}
       </div>
-      <p className="mt-2 text-xs leading-relaxed text-slate-400">{desc}</p>
+      <p className="mt-2 text-xs leading-relaxed text-[#7d6a52]">{desc}</p>
     </button>
   );
 }
