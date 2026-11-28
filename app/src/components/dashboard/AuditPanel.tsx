@@ -4,27 +4,37 @@ import { motion } from "framer-motion";
 import {
   Activity,
   Check,
+  ChevronLeft,
+  ChevronRight,
   Copy,
   Download,
   ExternalLink,
   FileSearch,
+  Globe,
   History,
   Receipt,
   Search,
   ShieldAlert,
   ShieldCheck,
+  User,
 } from "lucide-react";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
+import { useAccount } from "wagmi";
 import { shortAddr, timeAgo } from "@/lib/format";
 import { GUARD_ADDRESS, REGISTRY_ADDRESS, contractsConfigured } from "@/lib/web3/addresses";
 import { txLink } from "@/lib/web3/chain";
 import { DEPLOY_BLOCK, FILTERS, KIND_META, VERDICT_PILL, type AuditRow } from "@/lib/audit/trail";
 import { useAuditTrail } from "./AuditProvider";
 
+const PAGE_SIZE = 20;
+
 export function AuditPanel() {
   const { rows, live, loading, error, scanned, totalToScan } = useAuditTrail();
+  const { address } = useAccount();
   const [filter, setFilter] = useState("all");
   const [query, setQuery] = useState("");
+  const [scope, setScope] = useState<"mine" | "all">("all");
+  const [page, setPage] = useState(1);
   const [, setNow] = useState(0);
 
   // Re-render every 30s so "x min ago" stays fresh.
@@ -32,6 +42,21 @@ export function AuditPanel() {
     const t = setInterval(() => setNow((x) => x + 1), 30000);
     return () => clearInterval(t);
   }, []);
+
+  // Default to "Aktivitas saya" the first time a wallet is connected —
+  // the user can still switch to "Semua jaringan" afterwards.
+  const autoScoped = useRef(false);
+  useEffect(() => {
+    if (address && !autoScoped.current) {
+      autoScoped.current = true;
+      setScope("mine");
+    }
+  }, [address]);
+
+  // Back to page 1 whenever the visible set changes.
+  useEffect(() => {
+    setPage(1);
+  }, [filter, query, scope]);
 
 
   const stats = useMemo(() => {
@@ -42,20 +67,39 @@ export function AuditPanel() {
     return { total: rows.length, payments, blocked, checks, registry };
   }, [rows]);
 
+  // How many events involve the connected wallet (for the scope toggle).
+  const mineCount = useMemo(() => {
+    if (!address) return 0;
+    const me = address.toLowerCase();
+    return rows.filter((r) => (r.actors ?? []).includes(me)).length;
+  }, [rows, address]);
+
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase();
+    const me = scope === "mine" ? address?.toLowerCase() : undefined;
     return rows.filter((r) => {
       if (!FILTERS.find((f) => f.id === filter)!.match(r.kind)) return false;
+      if (me && !(r.actors ?? []).includes(me)) return false;
       if (!q) return true;
       return `${r.title} ${r.detail} ${r.hash} ${r.verdict ?? ""} ${r.amount ?? ""}`
         .toLowerCase()
         .includes(q);
     });
-  }, [rows, filter, query]);
+  }, [rows, filter, query, scope, address]);
+
+  // Pagination — 20 rows per page, grouped by day within the page.
+  const totalPages = Math.max(1, Math.ceil(visible.length / PAGE_SIZE));
+  const pageSafe = Math.min(page, totalPages);
+  const pageRows = useMemo(
+    () => visible.slice((pageSafe - 1) * PAGE_SIZE, pageSafe * PAGE_SIZE),
+    [visible, pageSafe],
+  );
+  const pageFrom = visible.length === 0 ? 0 : (pageSafe - 1) * PAGE_SIZE + 1;
+  const pageTo = Math.min(visible.length, pageSafe * PAGE_SIZE);
 
   const grouped = useMemo(() => {
     const groups = new Map<string, AuditRow[]>();
-    for (const r of visible) {
+    for (const r of pageRows) {
       const label = r.ts
         ? new Date(r.ts * 1000).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })
         : `Block ${r.blockNumber.toString()}`;
@@ -64,7 +108,7 @@ export function AuditPanel() {
       groups.set(label, list);
     }
     return [...groups.entries()];
-  }, [visible]);
+  }, [pageRows]);
 
   const progressPct =
     totalToScan > 0n ? Math.min(100, Math.round((Number(scanned) / Number(totalToScan)) * 100)) : 0;
@@ -103,7 +147,7 @@ export function AuditPanel() {
       <div className="mb-6 border-b border-white/10 pb-5">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="flex items-start gap-3">
-            <span className="mt-1 h-8 w-1.5 shrink-0 rounded-full bg-gradient-to-b from-neon-cyan to-neon-violet" />
+            <span className="mt-1 h-8 w-1.5 shrink-0 rounded-full bg-neon-cyan" />
             <div>
               <div className="flex flex-wrap items-center gap-2.5">
                 <h2 className="font-display text-xl font-semibold text-white">Audit trail</h2>
@@ -151,7 +195,7 @@ export function AuditPanel() {
           </div>
           <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-white/10">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-neon-cyan to-neon-violet transition-all"
+              className="h-full rounded-full bg-neon-cyan transition-all"
               style={{ width: `${progressPct}%` }}
             />
           </div>
@@ -179,16 +223,58 @@ export function AuditPanel() {
         </div>
       )}
 
-      {/* Toolbar: search + filters with counts */}
+      {/* Toolbar: scope toggle + search + filters with counts */}
       <div className="mb-5 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-        <div className="relative w-full lg:max-w-xs">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search address, name, tx hash…"
-            className="w-full rounded-xl border border-white/10 bg-ink-800/70 py-2.5 pl-9 pr-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors focus:border-neon-cyan/60"
-          />
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          {/* Scope: only my wallet's events, or the whole network */}
+          <div
+            className="inline-flex shrink-0 items-center rounded-full border border-white/10 bg-white/[0.03] p-1"
+            role="group"
+            aria-label="Audit scope"
+          >
+            <button
+              onClick={() => setScope("mine")}
+              disabled={!address}
+              title={address ? "Hanya event yang melibatkan wallet kamu" : "Connect wallet untuk melihat aktivitasmu"}
+              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition ${
+                scope === "mine"
+                  ? "bg-neon-cyan/15 text-neon-cyan"
+                  : "text-slate-400 hover:text-slate-200"
+              } disabled:cursor-not-allowed disabled:opacity-40`}
+            >
+              <User className="h-3.5 w-3.5" />
+              Aktivitas saya
+              {address && (
+                <span className="rounded-full bg-neon-cyan/20 px-1.5 py-0.5 text-[10px] font-semibold text-neon-cyan">
+                  {mineCount}
+                </span>
+              )}
+            </button>
+            <button
+              onClick={() => setScope("all")}
+              title="Semua event di chain"
+              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition ${
+                scope === "all"
+                  ? "bg-neon-cyan/15 text-neon-cyan"
+                  : "text-slate-400 hover:text-slate-200"
+              }`}
+            >
+              <Globe className="h-3.5 w-3.5" />
+              Semua jaringan
+              <span className="rounded-full bg-white/5 px-1.5 py-0.5 text-[10px] font-semibold text-slate-400">
+                {rows.length}
+              </span>
+            </button>
+          </div>
+          <div className="relative w-full sm:w-64">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search address, name, tx hash…"
+              className="w-full rounded-xl border border-white/10 bg-ink-800/70 py-2.5 pl-9 pr-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors focus:border-neon-cyan/60"
+            />
+          </div>
         </div>
         <div className="flex flex-wrap gap-2">
           {FILTERS.map((f) => {
@@ -226,16 +312,26 @@ export function AuditPanel() {
           <div className="glass rounded-2xl p-10 text-center">
             <Activity className="mx-auto h-8 w-8 text-slate-600" />
             <p className="mt-3 text-sm font-medium text-slate-300">
-              {query ? "No events match your search." : "No events yet"}
+              {scope === "mine" && !address
+                ? "Connect your wallet to see your activity."
+                : scope === "mine"
+                  ? "No events involve this wallet yet."
+                  : query
+                    ? "No events match your search."
+                    : "No events yet"}
             </p>
             <p className="mx-auto mt-1 max-w-md text-xs leading-relaxed text-slate-500">
-              {contractsConfigured
-                ? loading
-                  ? "Scanning the chain for events…"
-                  : error
-                    ? "Could not load the audit trail — see the error above."
-                    : "No events since deployment (block 3931234) — make a payment or run the agent to populate the trail. Note: a payment that reverts (e.g. blocked by the guard) leaves no event log, only a failed transaction."
-                : "Configure deployed contracts to stream audit events."}
+              {scope === "mine" && !address
+                ? "Switch to “Semua jaringan” to browse the whole network trail, or connect your wallet to filter it down to your own payments, checks and sessions."
+                : scope === "mine"
+                  ? "Try “Semua jaringan” to see every event on the chain — or make a payment, run a check, or register an identity with this wallet."
+                  : contractsConfigured
+                    ? loading
+                      ? "Scanning the chain for events…"
+                      : error
+                        ? "Could not load the audit trail — see the error above."
+                        : "No events since deployment (block 3931234) — make a payment or run the agent to populate the trail. Note: a payment that reverts (e.g. blocked by the guard) leaves no event log, only a failed transaction."
+                    : "Configure deployed contracts to stream audit events."}
             </p>
           </div>
         )}
@@ -258,10 +354,31 @@ export function AuditPanel() {
       </div>
 
       {visible.length > 0 && (
-        <p className="mt-5 text-center text-[11px] text-slate-600">
-          Showing {visible.length} of {rows.length} events · Source: QDay Aevum RPC · Contracts{" "}
-          {shortAddr(GUARD_ADDRESS)} / {shortAddr(REGISTRY_ADDRESS)}
-        </p>
+        <div className="mt-5 flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
+          <p className="text-[11px] text-slate-600">
+            Menampilkan {pageFrom}–{pageTo} dari {visible.length} event · Source: QDay Aevum RPC ·
+            Contracts {shortAddr(GUARD_ADDRESS)} / {shortAddr(REGISTRY_ADDRESS)}
+          </p>
+          <div className="flex shrink-0 items-center gap-2">
+            <button
+              onClick={() => setPage(pageSafe - 1)}
+              disabled={pageSafe <= 1}
+              className="inline-flex items-center gap-1 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:border-neon-cyan/50 hover:text-neon-cyan disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <ChevronLeft className="h-3.5 w-3.5" /> Sebelumnya
+            </button>
+            <span className="px-1 text-xs text-slate-500">
+              Halaman {pageSafe} dari {totalPages}
+            </span>
+            <button
+              onClick={() => setPage(pageSafe + 1)}
+              disabled={pageSafe >= totalPages}
+              className="inline-flex items-center gap-1 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:border-neon-cyan/50 hover:text-neon-cyan disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              Berikutnya <ChevronRight className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

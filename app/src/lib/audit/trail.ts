@@ -18,6 +18,9 @@ export interface AuditRow {
   /** Structured fields for the professional UI — never parsed back from `detail`. */
   verdict?: string;
   amount?: string;
+  /** Lowercase addresses involved in this event (payer, payee, owner,
+      agent, verifier…). Used by the Audit "Aktivitas saya" filter. */
+  actors?: string[];
 }
 
 export const KIND_META: Record<Kind, { icon: typeof Receipt; cls: string; label: string; tone: "ok" | "warn" | "bad" | "info" | "neutral" }> = {
@@ -257,6 +260,7 @@ export function mapRawToRows(rawLogs: RawLog[]): AuditRow[] {
           hash,
           blockNumber: block,
           ts,
+          actors: [payer, payee].map((a) => a.toLowerCase()),
           verdict: VERDICTS[Number(result)],
           title: `CoP check — ${shortAddr(payer)} → ${shortAddr(payee)}`,
           detail: `name “${name}” · mode ${mode === 1n ? "ENFORCE" : "WARN"}${blocked ? " · blocked" : ""}`,
@@ -277,6 +281,7 @@ export function mapRawToRows(rawLogs: RawLog[]): AuditRow[] {
           hash,
           blockNumber: block,
           ts,
+          actors: [payer, payee].map((a) => a.toLowerCase()),
           verdict: VERDICTS[Number(result)],
           amount: `${formatUsd(amount)} tUSD8`,
           title: `Payment executed — ${shortAddr(payer)} → ${shortAddr(payee)}`,
@@ -296,6 +301,7 @@ export function mapRawToRows(rawLogs: RawLog[]): AuditRow[] {
           hash,
           blockNumber: block,
           ts,
+          actors: [payer, payee].map((a) => a.toLowerCase()),
           verdict: VERDICTS[Number(result)],
           title: `Payment blocked — ${shortAddr(payer)} → ${shortAddr(payee)}`,
           detail: `name “${name}”${reason ? ` · ${reason}` : ""}`,
@@ -314,6 +320,7 @@ export function mapRawToRows(rawLogs: RawLog[]): AuditRow[] {
           hash,
           blockNumber: block,
           ts,
+          actors: [owner, agent].map((a) => a.toLowerCase()),
           title: `Session #${sessionId} created — agent ${shortAddr(agent)}`,
           detail: `owner ${shortAddr(owner)} · max ${formatUsd(maxPerTx)} tUSD8/tx · cap ${formatUsd(capTotal)} tUSD8`,
         });
@@ -328,6 +335,7 @@ export function mapRawToRows(rawLogs: RawLog[]): AuditRow[] {
           hash,
           blockNumber: block,
           ts,
+          actors: [],
           title: `Session #${sessionId} cap increased`,
           detail: `new lifetime cap ${formatUsd(newCap)} tUSD8`,
         });
@@ -342,6 +350,7 @@ export function mapRawToRows(rawLogs: RawLog[]): AuditRow[] {
           hash,
           blockNumber: block,
           ts,
+          actors: [owner].map((a) => a.toLowerCase()),
           title: `Session #${sessionId} revoked`,
           detail: `by owner ${shortAddr(owner)}`,
         });
@@ -362,6 +371,7 @@ export function mapRawToRows(rawLogs: RawLog[]): AuditRow[] {
           hash,
           blockNumber: block,
           ts,
+          actors: [payee, owner, agent].map((a) => a.toLowerCase()),
           verdict: VERDICTS[Number(result)],
           amount: `${formatUsd(amount)} tUSD8`,
           title: `Agent payment — session #${sessionId} · ${shortAddr(owner)} → ${shortAddr(payee)}`,
@@ -382,6 +392,7 @@ export function mapRawToRows(rawLogs: RawLog[]): AuditRow[] {
           hash,
           blockNumber: block,
           ts,
+          actors: [payee, owner, agent].map((a) => a.toLowerCase()),
           verdict: VERDICTS[Number(result)],
           title: `Agent payment blocked — session #${sessionId} · ${shortAddr(owner)} → ${shortAddr(payee)}`,
           detail: `agent ${shortAddr(agent)} · name “${name}”`,
@@ -397,6 +408,7 @@ export function mapRawToRows(rawLogs: RawLog[]): AuditRow[] {
           hash,
           blockNumber: block,
           ts,
+          actors: [payee].map((a) => a.toLowerCase()),
           title: `Payee registered — ${shortAddr(payee)}`,
           detail: `claimed name “${name}”`,
         });
@@ -412,6 +424,7 @@ export function mapRawToRows(rawLogs: RawLog[]): AuditRow[] {
           hash,
           blockNumber: block,
           ts,
+          actors: [payee, verifier].map((a) => a.toLowerCase()),
           title: `Payee attested — ${shortAddr(payee)} as “${name}”`,
           detail: `verifier ${shortAddr(verifier)}`,
         });
@@ -427,6 +440,7 @@ export function mapRawToRows(rawLogs: RawLog[]): AuditRow[] {
           hash,
           blockNumber: block,
           ts,
+          actors: [payee, verifier].map((a) => a.toLowerCase()),
           title: `Attestation revoked — ${shortAddr(payee)} as “${name}”`,
           detail: `verifier ${shortAddr(verifier)}`,
         });
@@ -440,6 +454,7 @@ export function mapRawToRows(rawLogs: RawLog[]): AuditRow[] {
           hash,
           blockNumber: block,
           ts,
+          actors: [verifier].map((a) => a.toLowerCase()),
           title: `Verifier added — ${shortAddr(verifier)}`,
           detail: "can now attest payee identities",
         });
@@ -453,6 +468,7 @@ export function mapRawToRows(rawLogs: RawLog[]): AuditRow[] {
           hash,
           blockNumber: block,
           ts,
+          actors: [verifier].map((a) => a.toLowerCase()),
           title: `Verifier removed — ${shortAddr(verifier)}`,
           detail: "can no longer attest payee identities",
         });
@@ -467,6 +483,7 @@ export function mapRawToRows(rawLogs: RawLog[]): AuditRow[] {
           hash,
           blockNumber: block,
           ts,
+          actors: [prev, next].map((a) => a.toLowerCase()),
           title: `Registry ownership transferred`,
           detail: `${shortAddr(prev)} → ${shortAddr(next)}`,
         });
