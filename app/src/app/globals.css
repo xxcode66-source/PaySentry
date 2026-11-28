@@ -104,6 +104,22 @@ body {
     transform: translateY(-4px) rotate(1.5deg);
   }
 }
+/* Mascot in the background — slow drift across, like it's walking by */
+@keyframes mascot-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-1deg);
+  }
+  25% {
+    transform: translate(-18px, -6px) rotate(1deg);
+  }
+  50% {
+    transform: translate(-32px, 0) rotate(-0.5deg);
+  }
+  75% {
+    transform: translate(-12px, -4px) rotate(0.5deg);
+  }
+}
 /* Aurora background — slow-drifting color blobs */
 @keyframes aurora-a {
   0%,
@@ -176,6 +192,9 @@ body {
   }
   .animate-mascot-bob {
     animation: mascot-bob 3.2s ease-in-out infinite;
+  }
+  .animate-mascot-drift {
+    animation: mascot-drift 18s ease-in-out infinite;
   }
 }
 
