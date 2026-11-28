@@ -63,12 +63,12 @@ export function TiltCard({
           aria-hidden
         >
           <div
-            className="absolute h-[220%] w-[220%] -translate-x-1/2 -translate-y-1/2 rounded-full"
+            className="absolute h-[170%] w-[170%] -translate-x-1/2 -translate-y-1/2 rounded-full"
             style={{
               left: `${style?.gx ?? 50}%`,
               top: `${style?.gy ?? 50}%`,
               background:
-                "radial-gradient(circle, rgba(255,255,255,0.16) 0%, rgba(34,211,238,0.07) 42%, transparent 68%)",
+                "radial-gradient(circle, rgba(255,255,255,0.24) 0%, rgba(255,255,255,0.10) 26%, rgba(34,211,238,0.06) 46%, transparent 62%)",
             }}
           />
         </div>

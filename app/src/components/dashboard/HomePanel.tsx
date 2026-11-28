@@ -137,19 +137,19 @@ export function HomePanel() {
                     <p className="mt-0.5 text-xs text-slate-300">
                       Connect your wallet to see your identity card.
                     </p>
-                    {/* Sample preview — deliberately muted and neutral so it
-                        can never be mistaken for your own registered identity */}
-                    <div className="mt-3 rounded-xl border border-dashed border-white/15 bg-ink-900/50 px-3 py-2.5">
-                      <div className="flex items-center gap-3">
+                    {/* Sample preview — grayscale + labeled header so it reads
+                        as a placeholder example, never as your own identity */}
+                    <div className="mt-3 rounded-xl border border-dashed border-white/15 bg-ink-900/50 px-3 py-2.5 opacity-75 grayscale">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                        Sample identity
+                      </p>
+                      <div className="mt-2 flex items-center gap-3">
                         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/5 font-display text-base font-bold text-slate-400">
                           A
                         </span>
                         <span className="min-w-0 flex-1">
                           <span className="block truncate text-sm font-semibold text-slate-300">
                             “au”
-                            <span className="ml-2 rounded-full border border-white/15 bg-white/5 px-1.5 py-0.5 text-[9px] font-semibold tracking-wider text-slate-400">
-                              SAMPLE
-                            </span>
                           </span>
                           <span className="block font-mono text-[11px] text-slate-500">
                             0x9f25…ef94 · 1 tUSD8 · 24 Nov 2026
@@ -157,7 +157,7 @@ export function HomePanel() {
                         </span>
                       </div>
                       <p className="mt-2 text-[11px] leading-relaxed text-slate-500">
-                        Sample — a real on-chain identity, shown as an example.
+                        A real on-chain identity, shown as an example.
                       </p>
                     </div>
                   </>

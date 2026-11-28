@@ -89,7 +89,7 @@ function CoreGroup() {
       <group ref={ring} rotation={[1.25, 0, 0]}>
         <mesh>
           <torusGeometry args={[2.12, 0.005, 8, 180]} />
-          <meshBasicMaterial color="#67e8f9" transparent opacity={0.4} />
+          <meshBasicMaterial color="#67e8f9" transparent opacity={0.22} />
         </mesh>
         <mesh ref={orbA}>
           <sphereGeometry args={[0.045, 12, 12]} />
@@ -104,7 +104,8 @@ function CoreGroup() {
   );
 }
 
-/** Pointer parallax rig. */
+/** Pointer parallax rig — shifted down and scaled so the globe sits below
+ *  the headline (behind the CTAs/stats) instead of crossing the text. */
 function Rig({ children }: { children: React.ReactNode }) {
   const group = useRef<THREE.Group>(null);
   useFrame(({ pointer }) => {
@@ -112,7 +113,11 @@ function Rig({ children }: { children: React.ReactNode }) {
     group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, pointer.x * 0.22, 0.05);
     group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, pointer.y * 0.16, 0.05);
   });
-  return <group ref={group}>{children}</group>;
+  return (
+    <group ref={group} position={[0, -1.05, 0]} scale={0.82}>
+      {children}
+    </group>
+  );
 }
 
 export function HeroScene() {

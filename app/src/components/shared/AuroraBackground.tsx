@@ -31,21 +31,34 @@ export function AuroraBackground({ calm = false }: { calm?: boolean }) {
       className="pointer-events-none fixed inset-0 overflow-hidden"
       aria-hidden
     >
-      {/* Aurora blobs — strong enough to read as flowing bands, not a flat tint */}
+      {/* Aurora bands — wide, elongated gradients with a visible color core,
+          so they read as flowing ribbons rather than a faint diffuse glow */}
       <div
-        className={`animate-aurora-a absolute -top-24 left-[4%] h-[480px] w-[620px] rounded-full bg-neon-cyan/40 blur-[90px] ${
-          calm ? "opacity-50" : ""
-        }`}
-      />
-      <div
-        className={`animate-aurora-b absolute right-[-4%] top-[28%] h-[520px] w-[640px] rounded-full bg-neon-violet/40 blur-[100px] ${
-          calm ? "opacity-50" : ""
-        }`}
-      />
-      <div
-        className={`animate-aurora-c absolute bottom-[-8%] left-[28%] h-[420px] w-[540px] rounded-full bg-neon-green/25 blur-[100px] ${
+        className={`animate-aurora-a absolute -top-16 left-[-6%] h-[240px] w-[1100px] rounded-full blur-[55px] ${
           calm ? "opacity-40" : ""
         }`}
+        style={{
+          background:
+            "linear-gradient(100deg, transparent 0%, rgba(34,211,238,0.55) 30%, rgba(34,211,238,0.35) 55%, transparent 85%)",
+        }}
+      />
+      <div
+        className={`animate-aurora-b absolute right-[-10%] top-[24%] h-[220px] w-[1000px] rounded-full blur-[60px] ${
+          calm ? "opacity-40" : ""
+        }`}
+        style={{
+          background:
+            "linear-gradient(100deg, transparent 0%, rgba(139,92,246,0.55) 35%, rgba(139,92,246,0.3) 60%, transparent 90%)",
+        }}
+      />
+      <div
+        className={`animate-aurora-c absolute bottom-[-6%] left-[24%] h-[200px] w-[900px] rounded-full blur-[60px] ${
+          calm ? "opacity-30" : ""
+        }`}
+        style={{
+          background:
+            "linear-gradient(100deg, transparent 0%, rgba(52,211,153,0.35) 30%, rgba(34,211,238,0.28) 60%, transparent 88%)",
+        }}
       />
       {/* Rising dust particles */}
       {particles.map((p, i) => (

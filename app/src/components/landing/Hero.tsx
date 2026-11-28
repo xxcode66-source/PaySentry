@@ -20,9 +20,10 @@ export function Hero() {
       <div className="absolute inset-0 opacity-55" aria-hidden>
         <HeroScene />
       </div>
-      {/* dark scrim behind the text column + edge fade */}
+      {/* light scrim behind the text column only — strong enough to calm the
+          globe, weak enough that the aurora bands still show through */}
       <div
-        className="absolute inset-0 bg-[radial-gradient(ellipse_58%_46%_at_50%_42%,rgba(5,7,13,0.82)_0%,rgba(5,7,13,0.45)_55%,transparent_78%)]"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_58%_46%_at_50%_42%,rgba(5,7,13,0.45)_0%,rgba(5,7,13,0.18)_55%,transparent_80%)]"
         aria-hidden
       />
       <div
