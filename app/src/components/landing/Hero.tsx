@@ -30,7 +30,7 @@ export function Hero() {
         <img
           src="/mascot-bg.png"
           alt=""
-          className="animate-mascot-drift h-auto w-[300px] opacity-65 lg:w-[360px]"
+          className="animate-mascot-drift h-auto w-[300px] opacity-80 lg:w-[360px]"
         />
       </div>
       {/* light scrim behind the text column only — strong enough to calm the
