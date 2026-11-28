@@ -80,17 +80,17 @@ export function DashboardShell() {
                 onClick={() => setTab(t.id)}
                 className={`group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-all duration-200 ${
                   tab === t.id
-                    ? "bg-gradient-to-r from-neon-cyan/15 via-neon-cyan/10 to-transparent text-white shadow-glow-cyan"
+                    ? "bg-gradient-to-r from-neon-caramel/15 via-neon-caramel/10 to-transparent text-white shadow-glow-caramel"
                     : "text-slate-400 hover:bg-white/5 hover:text-slate-200"
                 }`}
               >
                 {tab === t.id && (
                   <motion.span
                     layoutId="side-active"
-                    className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-full bg-gradient-to-b from-neon-cyan to-neon-cyan shadow-glow-cyan"
+                    className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-full bg-gradient-to-b from-neon-caramel to-neon-caramel shadow-glow-caramel"
                   />
                 )}
-                <t.icon className={`h-4 w-4 ${tab === t.id ? "text-neon-cyan" : "text-slate-500 group-hover:text-slate-300"}`} />
+                <t.icon className={`h-4 w-4 ${tab === t.id ? "text-neon-caramel" : "text-slate-500 group-hover:text-slate-300"}`} />
                 <span className="min-w-0">
                   <span className={`block text-sm font-semibold ${tab === t.id ? "text-white" : ""}`}>{t.label}</span>
                   <span className="block text-[10px] text-slate-500">{t.desc}</span>
@@ -115,7 +115,7 @@ export function DashboardShell() {
             </div>
             <a
               href="/demo"
-              className="mt-3 block rounded-xl border border-neon-cyan/30 bg-neon-cyan/10 px-3 py-2.5 text-center text-xs font-medium text-neon-cyan transition hover:bg-neon-cyan/20"
+              className="mt-3 block rounded-xl border border-neon-caramel/30 bg-neon-caramel/10 px-3 py-2.5 text-center text-xs font-medium text-neon-caramel transition hover:bg-neon-caramel/20"
             >
               Guided demo →
             </a>
@@ -178,7 +178,7 @@ export function DashboardShell() {
               key={t.id}
               onClick={() => setTab(t.id)}
               className={`flex flex-col items-center gap-1 py-2.5 transition ${
-                tab === t.id ? "text-neon-cyan" : "text-slate-500"
+                tab === t.id ? "text-neon-caramel" : "text-slate-500"
               }`}
             >
               <t.icon className="h-5 w-5" />

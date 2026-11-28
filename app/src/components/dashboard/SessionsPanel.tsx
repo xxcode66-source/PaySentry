@@ -117,7 +117,7 @@ export function SessionsPanel() {
       <div className="grid gap-5 lg:grid-cols-5">
         {/* Create form */}
         <div className="glass rounded-2xl p-5 lg:col-span-2">
-          <div className="mb-4 flex items-center gap-2 text-neon-cyan">
+          <div className="mb-4 flex items-center gap-2 text-neon-caramel">
             <Bot className="h-4 w-4" />
             <h3 className="font-display text-sm font-semibold text-white">New session</h3>
           </div>
@@ -129,7 +129,7 @@ export function SessionsPanel() {
                 onChange={(e) => setAgent(e.target.value)}
                 placeholder="0x… agent wallet"
                 spellCheck={false}
-                className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 font-mono text-xs text-slate-100 placeholder-slate-500 outline-none focus:border-neon-cyan/60"
+                className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 font-mono text-xs text-slate-100 placeholder-slate-500 outline-none focus:border-neon-caramel/60"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -139,7 +139,7 @@ export function SessionsPanel() {
                   value={maxPerTx}
                   onChange={(e) => setMaxPerTx(e.target.value)}
                   inputMode="decimal"
-                  className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 outline-none focus:border-neon-cyan/60"
+                  className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 outline-none focus:border-neon-caramel/60"
                 />
               </div>
               <div>
@@ -148,7 +148,7 @@ export function SessionsPanel() {
                   value={capTotal}
                   onChange={(e) => setCapTotal(e.target.value)}
                   inputMode="decimal"
-                  className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 outline-none focus:border-neon-cyan/60"
+                  className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 outline-none focus:border-neon-caramel/60"
                 />
               </div>
             </div>
@@ -158,7 +158,7 @@ export function SessionsPanel() {
                 value={days}
                 onChange={(e) => setDays(e.target.value)}
                 inputMode="numeric"
-                className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 outline-none focus:border-neon-cyan/60"
+                className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 outline-none focus:border-neon-caramel/60"
               />
             </div>
             {/* Presets — one tap, no typing */}
@@ -182,7 +182,7 @@ export function SessionsPanel() {
                       }}
                       className={`rounded-full border px-3 py-1.5 text-[11px] font-medium transition ${
                         active
-                          ? "border-neon-cyan/60 bg-neon-cyan/10 text-neon-cyan"
+                          ? "border-neon-caramel/60 bg-neon-caramel/10 text-neon-caramel"
                           : "border-white/10 bg-white/[0.03] text-slate-400 hover:border-white/25 hover:text-slate-200"
                       }`}
                     >
@@ -192,7 +192,7 @@ export function SessionsPanel() {
                 })}
               </div>
             </div>
-            <p className="rounded-lg border border-neon-cyan/30 bg-neon-cyan/5 px-3 py-2 text-[11px] leading-relaxed text-neon-cyan">
+            <p className="rounded-lg border border-neon-caramel/30 bg-neon-caramel/5 px-3 py-2 text-[11px] leading-relaxed text-neon-caramel">
               CoP is <b>always enforced</b> for agent spend — the guard reverts on NO MATCH / NOT
               FOUND and records every blocked attempt on-chain.
             </p>
@@ -281,7 +281,7 @@ function SessionCard({ id }: { id: bigint }) {
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2.5">
-          <span className="rounded-lg bg-neon-cyan/10 px-2.5 py-1 font-mono text-xs text-neon-cyan">
+          <span className="rounded-lg bg-neon-caramel/10 px-2.5 py-1 font-mono text-xs text-neon-caramel">
             #{id.toString()}
           </span>
           <span className="text-xs text-slate-400">
@@ -300,7 +300,7 @@ function SessionCard({ id }: { id: bigint }) {
       <div className="mt-3">
         <div className="h-2 overflow-hidden rounded-full bg-white/10">
           <motion.div
-            className={`h-full rounded-full ${pct > 80 ? "bg-neon-red" : "bg-gradient-to-r from-neon-cyan to-neon-cyan"}`}
+            className={`h-full rounded-full ${pct > 80 ? "bg-neon-red" : "bg-gradient-to-r from-neon-caramel to-neon-caramel"}`}
             initial={{ width: 0 }}
             animate={{ width: `${Math.min(100, pct)}%` }}
             transition={{ duration: 0.8, ease: "easeOut" }}

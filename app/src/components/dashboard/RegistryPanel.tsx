@@ -106,14 +106,14 @@ export function RegistryPanel({ prefill }: { prefill?: string }) {
             onClick={() => setView(t.id)}
             className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-semibold transition ${
               view === t.id
-                ? "bg-gradient-to-r from-neon-cyan/20 to-neon-cyan/20 text-white shadow-glow-cyan"
+                ? "bg-gradient-to-r from-neon-caramel/20 to-neon-caramel/20 text-white shadow-glow-caramel"
                 : "text-slate-400 hover:text-slate-200"
             }`}
           >
             <t.icon className="h-3.5 w-3.5" />
             {t.label}
             {t.id === "verifier" && isVerifier && (
-              <span className="rounded-full bg-neon-cyan/20 px-1.5 py-0.5 text-[9px] text-neon-cyan">you</span>
+              <span className="rounded-full bg-neon-caramel/20 px-1.5 py-0.5 text-[9px] text-neon-caramel">you</span>
             )}
           </button>
         ))}
@@ -122,9 +122,9 @@ export function RegistryPanel({ prefill }: { prefill?: string }) {
       <div className="grid max-w-2xl gap-5">
         {/* Identity card */}
         {view === "identity" && (
-        <div className={`glass rounded-2xl p-5 ${focus === "identity" ? "ring-1 ring-neon-cyan/50" : ""}`}>
+        <div className={`glass rounded-2xl p-5 ${focus === "identity" ? "ring-1 ring-neon-caramel/50" : ""}`}>
           <div className="mb-4 flex items-center gap-2">
-            <Fingerprint className="h-4 w-4 text-neon-cyan" />
+            <Fingerprint className="h-4 w-4 text-neon-caramel" />
             <h3 className="font-display text-sm font-semibold text-white">Your identity</h3>
             {registered && <LevelBadge level={myLevel} />}
           </div>
@@ -142,7 +142,7 @@ export function RegistryPanel({ prefill }: { prefill?: string }) {
                 value={myName}
                 onChange={(e) => setMyName(e.target.value)}
                 placeholder='Your Name here'
-                className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-neon-cyan/60"
+                className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-neon-caramel/60"
               />
               <Button
                 className="mt-3"
@@ -177,12 +177,12 @@ export function RegistryPanel({ prefill }: { prefill?: string }) {
 
         {/* Verifier tools */}
         {view === "verifier" && (
-        <div className={`glass rounded-2xl p-5 ${focus === "attest" ? "ring-1 ring-neon-cyan/50" : ""}`}>
+        <div className={`glass rounded-2xl p-5 ${focus === "attest" ? "ring-1 ring-neon-caramel/50" : ""}`}>
           <div className="mb-4 flex items-center gap-2">
-            <ShieldCheck className="h-4 w-4 text-neon-cyan" />
+            <ShieldCheck className="h-4 w-4 text-neon-caramel" />
             <h3 className="font-display text-sm font-semibold text-white">Verifier tools</h3>
             {isVerifier && (
-              <span className="rounded-md border border-neon-cyan/40 bg-neon-cyan/10 px-2 py-0.5 text-[10px] text-neon-cyan">
+              <span className="rounded-md border border-neon-caramel/40 bg-neon-caramel/10 px-2 py-0.5 text-[10px] text-neon-caramel">
                 you are a verifier
               </span>
             )}
@@ -197,13 +197,13 @@ export function RegistryPanel({ prefill }: { prefill?: string }) {
                     onChange={(e) => setAttestAddr(e.target.value)}
                     placeholder="0x… payee address"
                     spellCheck={false}
-                    className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 font-mono text-xs text-slate-100 placeholder-slate-500 outline-none focus:border-neon-cyan/60"
+                    className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 font-mono text-xs text-slate-100 placeholder-slate-500 outline-none focus:border-neon-caramel/60"
                   />
                   <input
                     value={attestName}
                     onChange={(e) => setAttestName(e.target.value)}
                     placeholder='verified name, e.g. "BS Mart"'
-                    className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-neon-cyan/60"
+                    className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-neon-caramel/60"
                   />
                 </div>
                 <Button

@@ -12,8 +12,8 @@ function ParticleSphere() {
     const N = 2600;
     const positions = new Float32Array(N * 3);
     const colors = new Float32Array(N * 3);
-    const cyan = new THREE.Color("#22d3ee");
-    const deep = new THREE.Color("#0e7490");
+    const cyan = new THREE.Color("#e8a85c");
+    const deep = new THREE.Color("#7c4a1e");
     const tmp = new THREE.Color();
     for (let i = 0; i < N; i++) {
       const t = i / (N - 1);
@@ -80,24 +80,24 @@ function CoreGroup() {
     <group rotation={[0.42, 0, 0.1]}>
       <mesh ref={core}>
         <icosahedronGeometry args={[1.02, 1]} />
-        <meshBasicMaterial color="#22d3ee" wireframe transparent opacity={0.18} />
+        <meshBasicMaterial color="#e8a85c" wireframe transparent opacity={0.18} />
       </mesh>
       <mesh ref={inner}>
         <icosahedronGeometry args={[0.58, 0]} />
-        <meshBasicMaterial color="#22d3ee" wireframe transparent opacity={0.35} />
+        <meshBasicMaterial color="#e8a85c" wireframe transparent opacity={0.35} />
       </mesh>
       <group ref={ring} rotation={[1.25, 0, 0]}>
         <mesh>
           <torusGeometry args={[2.12, 0.005, 8, 180]} />
-          <meshBasicMaterial color="#67e8f9" transparent opacity={0.22} />
+          <meshBasicMaterial color="#f2c98a" transparent opacity={0.22} />
         </mesh>
         <mesh ref={orbA}>
           <sphereGeometry args={[0.045, 12, 12]} />
-          <meshBasicMaterial color="#22d3ee" />
+          <meshBasicMaterial color="#e8a85c" />
         </mesh>
         <mesh ref={orbB}>
           <sphereGeometry args={[0.045, 12, 12]} />
-          <meshBasicMaterial color="#67e8f9" />
+          <meshBasicMaterial color="#f2c98a" />
         </mesh>
       </group>
     </group>

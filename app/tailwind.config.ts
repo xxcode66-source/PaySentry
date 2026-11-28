@@ -7,14 +7,14 @@ const config: Config = {
     extend: {
       colors: {
         ink: {
-          DEFAULT: "#05070d",
-          900: "#0a0e1a",
-          800: "#101627",
-          700: "#1a2138",
-          600: "#263050",
+          DEFAULT: "#17100a",
+          900: "#1f150c",
+          800: "#2a1c10",
+          700: "#3a2817",
+          600: "#4d3a24",
         },
         neon: {
-          cyan: "#22d3ee",
+          caramel: "#e8a85c",
           green: "#34d399",
           amber: "#fbbf24",
           red: "#f87171",
@@ -25,7 +25,7 @@ const config: Config = {
         body: ["var(--font-body)", "system-ui", "sans-serif"],
       },
       boxShadow: {
-        "glow-cyan": "0 0 24px rgba(34,211,238,0.25), 0 0 64px rgba(34,211,238,0.08)",
+        "glow-caramel": "0 0 24px rgba(232,168,92,0.25), 0 0 64px rgba(232,168,92,0.08)",
         "glow-red": "0 0 24px rgba(248,113,113,0.3)",
         "glow-green": "0 0 24px rgba(52,211,153,0.3)",
       },

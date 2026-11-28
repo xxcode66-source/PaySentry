@@ -38,7 +38,7 @@ export function AuroraBackground({ calm = false }: { calm?: boolean }) {
         }`}
         style={{
           background:
-            "linear-gradient(100deg, transparent 0%, rgba(34,211,238,0.32) 35%, rgba(34,211,238,0.18) 60%, transparent 85%)",
+            "linear-gradient(100deg, transparent 0%, rgba(232,168,92,0.32) 35%, rgba(232,168,92,0.18) 60%, transparent 85%)",
         }}
       />
       {/* Rising cyan dust particles */}
@@ -51,8 +51,8 @@ export function AuroraBackground({ calm = false }: { calm?: boolean }) {
             bottom: p.bottom,
             width: p.size,
             height: p.size,
-            background: "#22d3ee",
-            boxShadow: "0 0 6px 1px rgba(34,211,238,0.7)",
+            background: "#e8a85c",
+            boxShadow: "0 0 6px 1px rgba(232,168,92,0.7)",
             animationDuration: p.duration,
             animationDelay: p.delay,
           }}

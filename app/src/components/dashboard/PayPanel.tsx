@@ -127,7 +127,7 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
       />
 
       <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-slate-400">
-        <span className="rounded-md border border-white/10 bg-white/5 px-2 py-1 font-mono text-[11px] text-neon-cyan">
+        <span className="rounded-md border border-white/10 bg-white/5 px-2 py-1 font-mono text-[11px] text-neon-caramel">
           tUSD8 {shortAddr(TUSD8_ADDRESS, 6)}
         </span>
         <span>balance: <b className="text-slate-200">{formatUsd(balance)}</b></span>
@@ -144,7 +144,7 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
               onChange={(e) => setPayee(e.target.value)}
               placeholder="0x…"
               spellCheck={false}
-              className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3.5 py-2.5 font-mono text-xs text-slate-100 placeholder-slate-500 outline-none focus:border-neon-cyan/60 focus:bg-ink-800"
+              className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3.5 py-2.5 font-mono text-xs text-slate-100 placeholder-slate-500 outline-none focus:border-neon-caramel/60 focus:bg-ink-800"
             />
           </div>
           <div>
@@ -154,7 +154,7 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
               onChange={(e) => setAmount(e.target.value)}
               placeholder="10.00"
               inputMode="decimal"
-              className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-neon-cyan/60 focus:bg-ink-800"
+              className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-neon-caramel/60 focus:bg-ink-800"
             />
             {amount && !parsed && (
               <p className="mt-1 text-[11px] text-neon-red">Invalid amount.</p>
@@ -170,7 +170,7 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder='Your Name here'
-            className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-neon-cyan/60 focus:bg-ink-800"
+            className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-neon-caramel/60 focus:bg-ink-800"
           />
           <div className="mt-1.5 flex items-center gap-2">
             <span className="text-[11px] text-slate-500">Predicted verdict:</span>
@@ -295,7 +295,7 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
               <p className="mt-2 text-sm leading-relaxed text-slate-300">{blocked.desc}</p>
               <p className="mt-2 text-xs text-slate-500">
                 The revert is permanent, public evidence that this payment attempt was stopped — see the{" "}
-                <Link href="/dashboard?tab=audit" className="text-neon-cyan hover:underline">
+                <Link href="/dashboard?tab=audit" className="text-neon-caramel hover:underline">
                   Audit tab
                 </Link>
                 .
@@ -321,7 +321,7 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
                 {formatUsd(parsed)} tUSD8 → “{name}”
               </p>
               <div className="mt-3 flex flex-wrap items-center gap-4">
-                <Link href={txLink(hash)} target="_blank" className="inline-block font-mono text-xs text-neon-cyan hover:underline">
+                <Link href={txLink(hash)} target="_blank" className="inline-block font-mono text-xs text-neon-caramel hover:underline">
                   {hash.slice(0, 26)}… ↗
                 </Link>
                 <Link
@@ -349,7 +349,7 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
               ["3", "Execute or revert", "Match → tokens move. Mismatch in Enforce mode → the whole transaction reverts."],
             ].map(([n, t, d]) => (
               <li key={n} className="flex items-start gap-3">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-neon-cyan/15 font-display text-xs font-bold text-neon-cyan">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-neon-caramel/15 font-display text-xs font-bold text-neon-caramel">
                   {n}
                 </span>
                 <span>
@@ -370,7 +370,7 @@ export function PayPanel({ prefill }: { prefill?: { address?: string; name?: str
           </p>
           <Link
             href="/dashboard?tab=audit"
-            className="mt-3 inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-slate-200 transition hover:text-neon-cyan"
+            className="mt-3 inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-slate-200 transition hover:text-neon-caramel"
           >
             See the audit trail <ArrowRight className="h-3.5 w-3.5" />
           </Link>
@@ -399,19 +399,19 @@ function ModeCard({
       onClick={onClick}
       className={`rounded-2xl border p-4 text-left transition-all duration-200 ${
         active
-          ? "border-neon-cyan/60 bg-neon-cyan/5 shadow-glow-cyan"
+          ? "border-neon-caramel/60 bg-neon-caramel/5 shadow-glow-caramel"
           : "border-white/10 bg-white/[0.02] hover:border-white/25"
       }`}
     >
       <div className="flex items-center gap-2">
-        <ShieldCheck className={`h-4 w-4 ${active ? "text-neon-cyan" : "text-slate-500"}`} />
+        <ShieldCheck className={`h-4 w-4 ${active ? "text-neon-caramel" : "text-slate-500"}`} />
         <span className={`text-sm font-semibold ${active ? "text-white" : "text-slate-300"}`}>{title}</span>
         {badge && (
           <span className="rounded-full border border-neon-green/40 bg-neon-green/10 px-2 py-0.5 text-[10px] text-neon-green">
             {badge}
           </span>
         )}
-        {active && <BadgeCheck className="ml-auto h-4 w-4 text-neon-cyan" />}
+        {active && <BadgeCheck className="ml-auto h-4 w-4 text-neon-caramel" />}
       </div>
       <p className="mt-2 text-xs leading-relaxed text-slate-400">{desc}</p>
     </button>

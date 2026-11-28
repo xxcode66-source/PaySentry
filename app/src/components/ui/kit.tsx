@@ -27,7 +27,7 @@ export function Button({
   type?: "button" | "submit";
 }) {
   const base =
-    "relative inline-flex items-center justify-center gap-2 font-medium rounded-xl transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-neon-cyan/60 disabled:opacity-40 disabled:cursor-not-allowed";
+    "relative inline-flex items-center justify-center gap-2 font-medium rounded-xl transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-neon-caramel/60 disabled:opacity-40 disabled:cursor-not-allowed";
   const sizes = {
     sm: "px-3 py-1.5 text-xs",
     md: "px-4 py-2.5 text-sm",
@@ -35,12 +35,12 @@ export function Button({
   };
   const variants = {
     primary:
-      "bg-neon-cyan text-ink font-semibold hover:bg-cyan-300 hover:shadow-glow-cyan active:scale-[0.98]",
+      "bg-neon-caramel text-ink font-semibold hover:brightness-110 hover:shadow-glow-caramel active:scale-[0.98]",
     ghost: "text-slate-300 hover:text-white hover:bg-white/5",
     danger:
       "bg-gradient-to-r from-neon-red to-rose-600 text-white font-semibold hover:shadow-glow-red active:scale-[0.98]",
     outline:
-      "border border-white/15 text-slate-200 hover:border-neon-cyan/60 hover:text-neon-cyan hover:bg-neon-cyan/5",
+      "border border-white/15 text-slate-200 hover:border-neon-caramel/60 hover:text-neon-caramel hover:bg-neon-caramel/5",
     subtle: "bg-white/5 border border-white/10 text-slate-200 hover:bg-white/10",
   };
   return (
@@ -73,7 +73,7 @@ export function Card({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       className={`glass rounded-2xl ${
-        glow === "cyan" ? "shadow-glow-cyan" : ""
+        glow === "cyan" ? "shadow-glow-caramel" : ""
       } ${className}`}
     >
       {children}
@@ -141,8 +141,8 @@ export function VerdictPill({
 export function LevelBadge({ level }: { level: number }) {
   const map: Record<number, { label: string; cls: string }> = {
     0: { label: "Unknown", cls: "bg-white/5 text-slate-400 border-white/10" },
-    1: { label: "Self-claimed", cls: "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30" },
-    2: { label: "Attested", cls: "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/40" },
+    1: { label: "Self-claimed", cls: "bg-neon-caramel/10 text-neon-caramel border-neon-caramel/30" },
+    2: { label: "Attested", cls: "bg-neon-caramel/10 text-neon-caramel border-neon-caramel/40" },
   };
   const m = map[level] ?? map[0];
   return (
@@ -178,7 +178,7 @@ export function TextInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className={`w-full rounded-xl border border-white/10 bg-ink-800/70 px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors focus:border-neon-cyan/60 focus:bg-ink-800 ${
+        className={`w-full rounded-xl border border-white/10 bg-ink-800/70 px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors focus:border-neon-caramel/60 focus:bg-ink-800 ${
           mono ? "font-mono text-xs" : ""
         }`}
       />
@@ -198,7 +198,7 @@ export function CopyButton({ text, label = "Copy" }: { text: string; label?: str
         setCopied(true);
         setTimeout(() => setCopied(false), 1500);
       }}
-      className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 text-[11px] text-slate-300 transition hover:border-neon-cyan/50 hover:text-neon-cyan"
+      className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 text-[11px] text-slate-300 transition hover:border-neon-caramel/50 hover:text-neon-caramel"
     >
       {copied ? <Check className="h-3 w-3 text-neon-green" /> : <Copy className="h-3 w-3" />}
       {copied ? "Copied" : label}
@@ -212,7 +212,7 @@ export function StepLink({ href, children }: { href: string; children: React.Rea
   return (
     <a
       href={href}
-      className="inline-flex items-center gap-1 text-neon-cyan transition hover:gap-2 hover:text-white"
+      className="inline-flex items-center gap-1 text-neon-caramel transition hover:gap-2 hover:text-white"
     >
       {children} <ChevronRight className="h-3.5 w-3.5" />
     </a>
@@ -253,7 +253,7 @@ export function ToastHost() {
                       ? "bg-neon-red/20 text-neon-red"
                       : t.kind === "warning"
                         ? "bg-neon-amber/20 text-neon-amber"
-                        : "bg-neon-cyan/20 text-neon-cyan"
+                        : "bg-neon-caramel/20 text-neon-caramel"
                 }`}
               >
                 {TOAST_ICON[t.kind]}
@@ -276,7 +276,7 @@ export function PanelHeader({ title, desc }: { title: string; desc: string }) {
   return (
     <div className="mb-7 border-b border-white/10 pb-4">
       <div className="flex items-center gap-3">
-        <span className="h-7 w-1.5 shrink-0 rounded-full bg-gradient-to-b from-neon-cyan to-neon-cyan" />
+        <span className="h-7 w-1.5 shrink-0 rounded-full bg-gradient-to-b from-neon-caramel to-neon-caramel" />
         <div>
           <h2 className="font-display text-xl font-semibold text-white">{title}</h2>
           <p className="mt-0.5 text-sm text-slate-300">{desc}</p>

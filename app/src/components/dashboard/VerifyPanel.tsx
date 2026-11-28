@@ -95,7 +95,7 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
             onChange={(e) => setAddress(e.target.value)}
             placeholder="0x…"
             spellCheck={false}
-            className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3.5 py-2.5 font-mono text-xs text-slate-100 placeholder-slate-500 outline-none transition-colors focus:border-neon-cyan/60 focus:bg-ink-800"
+            className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3.5 py-2.5 font-mono text-xs text-slate-100 placeholder-slate-500 outline-none transition-colors focus:border-neon-caramel/60 focus:bg-ink-800"
           />
           <p className="mt-1 text-[11px] text-slate-500">
             {!address
@@ -115,7 +115,7 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder='Your Name here'
-            className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors focus:border-neon-cyan/60 focus:bg-ink-800"
+            className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors focus:border-neon-caramel/60 focus:bg-ink-800"
           />
           <div className="mt-1 flex items-center gap-2">
             <span className="text-[11px] text-slate-500">Live prediction:</span>
@@ -175,7 +175,7 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
       <motion.div layout className={`mt-6 rounded-2xl border p-6 transition-colors duration-500 ${cardBorder}`}>
         {checkLoading && contractsConfigured && enabled ? (
           <div className="flex items-center gap-4 text-sm text-slate-400">
-            <span className="h-2 w-2 animate-ping rounded-full bg-neon-cyan" />
+            <span className="h-2 w-2 animate-ping rounded-full bg-neon-caramel" />
             Querying the registry on-chain…
           </div>
         ) : result === undefined ? (
@@ -239,7 +239,7 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
                   href={addressLink(address)}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs text-neon-cyan hover:underline"
+                  className="inline-flex items-center gap-1.5 text-xs text-neon-caramel hover:underline"
                 >
                   View address on explorer <ExternalLink className="h-3 w-3" />
                 </a>
@@ -247,7 +247,7 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
               {valid && name.trim() && (result === 2 || result === 3) && (
                 <Link
                   href={`/dashboard?tab=pay&address=${encodeURIComponent(address)}&name=${encodeURIComponent(name.trim())}`}
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-neon-cyan px-3.5 py-2 text-xs font-semibold text-ink transition hover:bg-cyan-300"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-neon-caramel px-3.5 py-2 text-xs font-semibold text-ink transition hover:brightness-110"
                 >
                   Pay this payee <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
@@ -304,7 +304,7 @@ export function VerifyPanel({ prefill }: { prefill?: { address?: string; name?: 
               setAddress("0x9f25556d1a0acc49bb05dd9081e74bd4c0dcef94");
               setName("au");
             }}
-            className="mt-3 inline-flex items-center gap-1.5 rounded-xl border border-neon-cyan/40 bg-neon-cyan/10 px-3 py-2 text-xs font-semibold text-neon-cyan transition hover:bg-neon-cyan/20"
+            className="mt-3 inline-flex items-center gap-1.5 rounded-xl border border-neon-caramel/40 bg-neon-caramel/10 px-3 py-2 text-xs font-semibold text-neon-caramel transition hover:bg-neon-caramel/20"
           >
             Fill in “au” <ArrowRight className="h-3.5 w-3.5" />
           </button>

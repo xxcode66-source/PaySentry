@@ -147,7 +147,7 @@ export function AuditPanel() {
       <div className="mb-6 border-b border-white/10 pb-5">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="flex items-start gap-3">
-            <span className="mt-1 h-8 w-1.5 shrink-0 rounded-full bg-neon-cyan" />
+            <span className="mt-1 h-8 w-1.5 shrink-0 rounded-full bg-neon-caramel" />
             <div>
               <div className="flex flex-wrap items-center gap-2.5">
                 <h2 className="font-display text-xl font-semibold text-white">Audit trail</h2>
@@ -171,7 +171,7 @@ export function AuditPanel() {
           <button
             onClick={exportCsv}
             disabled={visible.length === 0}
-            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2 text-xs font-medium text-slate-200 transition hover:border-neon-cyan/50 hover:text-neon-cyan disabled:cursor-not-allowed disabled:opacity-40"
+            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2 text-xs font-medium text-slate-200 transition hover:border-neon-caramel/50 hover:text-neon-caramel disabled:cursor-not-allowed disabled:opacity-40"
           >
             <Download className="h-3.5 w-3.5" />
             Export CSV
@@ -183,7 +183,7 @@ export function AuditPanel() {
           <StatCard icon={History} label="Total events" value={stats.total} tone="text-slate-100" />
           <StatCard icon={Receipt} label="Payments" value={stats.payments} tone="text-neon-green" />
           <StatCard icon={ShieldAlert} label="Blocked" value={stats.blocked} tone="text-neon-red" />
-          <StatCard icon={FileSearch} label="CoP checks" value={stats.checks} tone="text-neon-cyan" />
+          <StatCard icon={FileSearch} label="CoP checks" value={stats.checks} tone="text-neon-caramel" />
         </div>
       </div>
 
@@ -195,7 +195,7 @@ export function AuditPanel() {
           </div>
           <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-white/10">
             <div
-              className="h-full rounded-full bg-neon-cyan transition-all"
+              className="h-full rounded-full bg-neon-caramel transition-all"
               style={{ width: `${progressPct}%` }}
             />
           </div>
@@ -238,14 +238,14 @@ export function AuditPanel() {
               title={address ? "Hanya event yang melibatkan wallet kamu" : "Connect wallet untuk melihat aktivitasmu"}
               className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition ${
                 scope === "mine"
-                  ? "bg-neon-cyan/15 text-neon-cyan"
+                  ? "bg-neon-caramel/15 text-neon-caramel"
                   : "text-slate-400 hover:text-slate-200"
               } disabled:cursor-not-allowed disabled:opacity-40`}
             >
               <User className="h-3.5 w-3.5" />
               Aktivitas saya
               {address && (
-                <span className="rounded-full bg-neon-cyan/20 px-1.5 py-0.5 text-[10px] font-semibold text-neon-cyan">
+                <span className="rounded-full bg-neon-caramel/20 px-1.5 py-0.5 text-[10px] font-semibold text-neon-caramel">
                   {mineCount}
                 </span>
               )}
@@ -255,7 +255,7 @@ export function AuditPanel() {
               title="Semua event di chain"
               className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition ${
                 scope === "all"
-                  ? "bg-neon-cyan/15 text-neon-cyan"
+                  ? "bg-neon-caramel/15 text-neon-caramel"
                   : "text-slate-400 hover:text-slate-200"
               }`}
             >
@@ -272,7 +272,7 @@ export function AuditPanel() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search address, name, tx hash…"
-              className="w-full rounded-xl border border-white/10 bg-ink-800/70 py-2.5 pl-9 pr-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors focus:border-neon-cyan/60"
+              className="w-full rounded-xl border border-white/10 bg-ink-800/70 py-2.5 pl-9 pr-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition-colors focus:border-neon-caramel/60"
             />
           </div>
         </div>
@@ -288,14 +288,14 @@ export function AuditPanel() {
                 onClick={() => setFilter(f.id)}
                 className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-medium transition ${
                   filter === f.id
-                    ? "border-neon-cyan/60 bg-neon-cyan/10 text-neon-cyan"
+                    ? "border-neon-caramel/60 bg-neon-caramel/10 text-neon-caramel"
                     : "border-white/10 bg-white/[0.03] text-slate-400 hover:border-white/25 hover:text-slate-200"
                 }`}
               >
                 {f.label}
                 <span
                   className={`rounded-full px-1.5 py-0.5 text-[10px] font-semibold ${
-                    filter === f.id ? "bg-neon-cyan/20 text-neon-cyan" : "bg-white/5 text-slate-400"
+                    filter === f.id ? "bg-neon-caramel/20 text-neon-caramel" : "bg-white/5 text-slate-400"
                   }`}
                 >
                   {count}
@@ -363,7 +363,7 @@ export function AuditPanel() {
             <button
               onClick={() => setPage(pageSafe - 1)}
               disabled={pageSafe <= 1}
-              className="inline-flex items-center gap-1 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:border-neon-cyan/50 hover:text-neon-cyan disabled:cursor-not-allowed disabled:opacity-40"
+              className="inline-flex items-center gap-1 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:border-neon-caramel/50 hover:text-neon-caramel disabled:cursor-not-allowed disabled:opacity-40"
             >
               <ChevronLeft className="h-3.5 w-3.5" /> Sebelumnya
             </button>
@@ -373,7 +373,7 @@ export function AuditPanel() {
             <button
               onClick={() => setPage(pageSafe + 1)}
               disabled={pageSafe >= totalPages}
-              className="inline-flex items-center gap-1 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:border-neon-cyan/50 hover:text-neon-cyan disabled:cursor-not-allowed disabled:opacity-40"
+              className="inline-flex items-center gap-1 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:border-neon-caramel/50 hover:text-neon-caramel disabled:cursor-not-allowed disabled:opacity-40"
             >
               Berikutnya <ChevronRight className="h-3.5 w-3.5" />
             </button>
@@ -438,9 +438,9 @@ function AuditItem({ row, isLast }: { row: AuditRow; isLast?: boolean }) {
             : meta.tone === "bad"
               ? "bg-neon-red"
               : meta.tone === "info"
-                ? "bg-neon-cyan"
+                ? "bg-neon-caramel"
                 : meta.tone === "warn"
-                  ? "bg-neon-cyan"
+                  ? "bg-neon-caramel"
                   : "bg-slate-500"
         }`}
       />
@@ -486,13 +486,13 @@ function AuditItem({ row, isLast }: { row: AuditRow; isLast?: boolean }) {
               </span>
               <button
                 onClick={copyHash}
-                className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 font-mono text-slate-500 transition hover:bg-white/5 hover:text-neon-cyan"
+                className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 font-mono text-slate-500 transition hover:bg-white/5 hover:text-neon-caramel"
                 title="Copy transaction hash"
               >
                 {copied ? <Check className="h-3 w-3 text-neon-green" /> : <Copy className="h-3 w-3" />}
                 {row.hash.slice(0, 10)}…{row.hash.slice(-6)}
               </button>
-              <span className="inline-flex items-center gap-1 text-slate-600 transition group-hover:text-neon-cyan">
+              <span className="inline-flex items-center gap-1 text-slate-600 transition group-hover:text-neon-caramel">
                 Explorer <ExternalLink className="h-3 w-3" />
               </span>
             </div>

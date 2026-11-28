@@ -27,16 +27,16 @@ export function Hero() {
         aria-hidden
       />
       <div
-        className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_45%,transparent_30%,#05070d_100%)]"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_45%,transparent_30%,#17100a_100%)]"
         aria-hidden
       />
 
       <Stagger className="relative z-10 mx-auto w-full max-w-6xl px-4 py-28 sm:px-6">
         <StaggerItem className="flex justify-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-neon-cyan/40 bg-neon-cyan/10 px-4 py-1.5 text-xs font-medium text-neon-cyan">
+          <span className="inline-flex items-center gap-2 rounded-full border border-neon-caramel/40 bg-neon-caramel/10 px-4 py-1.5 text-xs font-medium text-neon-caramel">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon-cyan opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-neon-cyan" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon-caramel opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-neon-caramel" />
             </span>
             Built for QDay Aevum Builder Challenge #1 · Confirmation of Payee track
           </span>
@@ -61,7 +61,7 @@ export function Hero() {
           <Link href="/dashboard">
             <motion.span
               whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-cyan px-7 py-3.5 font-semibold text-ink shadow-glow-cyan transition hover:brightness-110"
+              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-neon-caramel to-neon-caramel px-7 py-3.5 font-semibold text-ink shadow-glow-caramel transition hover:brightness-110"
             >
               Launch dashboard <ArrowRight className="h-4 w-4" />
             </motion.span>
@@ -69,7 +69,7 @@ export function Hero() {
           <Link href="/demo">
             <motion.span
               whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-7 py-3.5 font-medium text-slate-200 transition hover:border-neon-cyan/60 hover:text-neon-cyan"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-7 py-3.5 font-medium text-slate-200 transition hover:border-neon-caramel/60 hover:text-neon-caramel"
             >
               <PlayCircle className="h-4 w-4" /> Guided demo flow
             </motion.span>
@@ -81,7 +81,7 @@ export function Hero() {
             {STATS.map((s) => (
               <div
                 key={s.value}
-                className="glass rounded-2xl p-5 text-center transition hover:border-neon-cyan/30"
+                className="glass rounded-2xl p-5 text-center transition hover:border-neon-caramel/30"
               >
                 <p className="font-display text-2xl font-bold text-gradient">{s.value}</p>
                 <p className="mt-2 text-xs leading-relaxed text-slate-300">{s.label}</p>

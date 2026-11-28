@@ -39,7 +39,7 @@ const PROBLEMS = [
   },
   {
     icon: Bot,
-    color: "text-neon-cyan",
+    color: "text-neon-caramel",
     ring: "",
     title: "AI agents pay at machine speed",
     body: "Autonomous agents act on instructions they read. Prompt-inject an invoice and an agent will happily wire out funds — with zero identity checks in its path.",
@@ -50,7 +50,7 @@ export function Problem() {
   return (
     <section className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6" id="problem">
       <Reveal>
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-cyan">The problem</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-caramel">The problem</p>
         <h2 className="font-display mt-3 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
           Crypto payments are the only rail where <span className="text-neon-red">nobody checks the name</span>.
         </h2>
@@ -115,7 +115,7 @@ export function HowItWorks() {
     <section className="relative border-y border-white/5 bg-ink-900/40 py-20" id="how">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-cyan">How it works</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-caramel">How it works</p>
           <h2 className="font-display mt-3 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
             One primitive: <span className="text-gradient">check first, pay second</span>.
           </h2>
@@ -161,11 +161,11 @@ export function HowItWorks() {
         <Stagger className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {STEPS.map((s, i) => (
             <StaggerItem key={s.title}>
-              <div className="group glass relative h-full rounded-2xl p-6 transition hover:border-neon-cyan/30">
-                <span className="absolute right-5 top-4 font-display text-4xl font-bold text-white/5 transition group-hover:text-neon-cyan/15">
+              <div className="group glass relative h-full rounded-2xl p-6 transition hover:border-neon-caramel/30">
+                <span className="absolute right-5 top-4 font-display text-4xl font-bold text-white/5 transition group-hover:text-neon-caramel/15">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <s.icon className="h-6 w-6 text-neon-cyan" />
+                <s.icon className="h-6 w-6 text-neon-caramel" />
                 <h3 className="font-display mt-4 text-base font-semibold text-white">{s.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-slate-300">{s.body}</p>
               </div>
@@ -192,11 +192,11 @@ function FlowNode({
     <div
       className={`flex flex-1 items-center gap-3 rounded-xl border p-4 ${
         highlight
-          ? "border-neon-cyan/50 bg-neon-cyan/5 shadow-glow-cyan"
+          ? "border-neon-caramel/50 bg-neon-caramel/5 shadow-glow-caramel"
           : "border-white/10 bg-white/[0.03]"
       }`}
     >
-      <div className={`rounded-lg p-2.5 ${highlight ? "bg-neon-cyan/15 text-neon-cyan" : "bg-white/5 text-slate-300"}`}>
+      <div className={`rounded-lg p-2.5 ${highlight ? "bg-neon-caramel/15 text-neon-caramel" : "bg-white/5 text-slate-300"}`}>
         <Icon className="h-5 w-5" />
       </div>
       <div>
@@ -211,14 +211,14 @@ function FlowArrow({ verdict }: { verdict?: boolean }) {
   return (
     <div className="flex shrink-0 items-center justify-center md:px-2">
       <motion.div
-        className={`h-px w-10 ${verdict ? "bg-neon-cyan/60" : "bg-white/20"} relative md:w-16`}
+        className={`h-px w-10 ${verdict ? "bg-neon-caramel/60" : "bg-white/20"} relative md:w-16`}
         animate={verdict ? { opacity: [0.4, 1, 0.4] } : {}}
         transition={{ repeat: Infinity, duration: 2.4 }}
         aria-hidden
       >
         <span
           className={`absolute -top-[3px] right-0 h-[7px] w-[7px] rotate-45 border-r border-t ${
-            verdict ? "border-neon-cyan" : "border-white/30"
+            verdict ? "border-neon-caramel" : "border-white/30"
           }`}
         />
       </motion.div>
@@ -267,7 +267,7 @@ export function Features() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6" id="features">
       <Reveal>
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-cyan">Features</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-caramel">Features</p>
         <h2 className="font-display mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
           Guardrails that live <span className="text-gradient">inside the payment rail</span>.
         </h2>
@@ -275,8 +275,8 @@ export function Features() {
       <Stagger className="mt-12 grid gap-5 md:grid-cols-3">
         {FEATURES.map((f) => (
           <StaggerItem key={f.title} className={f.span}>
-            <div className="group glass h-full rounded-2xl p-6 transition hover:border-neon-cyan/40">
-              <div className="inline-flex rounded-xl border border-white/10 bg-white/5 p-3 text-neon-cyan transition group-hover:shadow-glow-cyan">
+            <div className="group glass h-full rounded-2xl p-6 transition hover:border-neon-caramel/40">
+              <div className="inline-flex rounded-xl border border-white/10 bg-white/5 p-3 text-neon-caramel transition group-hover:shadow-glow-caramel">
                 <f.icon className="h-6 w-6" />
               </div>
               <h3 className="font-display mt-4 text-lg font-semibold text-white">{f.title}</h3>
@@ -296,7 +296,7 @@ export function BuiltOn() {
     <section className="border-y border-white/5 bg-ink-900/40 py-20" id="qday">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-cyan">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-caramel">
             Built on QDay Aevum
           </p>
           <h2 className="font-display mt-3 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
@@ -319,7 +319,7 @@ export function BuiltOn() {
             <StaggerItem key={c.k}>
               <div className="glass rounded-xl p-4">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">{c.k}</p>
-                <p className="mt-1.5 break-all font-mono text-sm text-neon-cyan">{c.v}</p>
+                <p className="mt-1.5 break-all font-mono text-sm text-neon-caramel">{c.v}</p>
               </div>
             </StaggerItem>
           ))}
@@ -359,12 +359,12 @@ export function SDKSection() {
     <section className="py-20" id="sdk">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-cyan">For builders</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-caramel">For builders</p>
           <h2 className="font-display mt-3 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
             Drop CoP into any checkout with <span className="text-gradient">one function</span>.
           </h2>
           <p className="mt-4 max-w-2xl text-slate-300">
-            The <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-xs text-neon-cyan">paysentry-sdk</code>{" "}
+            The <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-xs text-neon-caramel">paysentry-sdk</code>{" "}
             wraps the on-chain guard in a single call. No ABI wrangling, no wagmi dependency —
             works in any dapp, script, or agent. Defaults to the live testnet deployment.
           </p>
@@ -439,7 +439,7 @@ export function CTA() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
       <Reveal>
-        <div className="relative overflow-hidden rounded-3xl border border-neon-cyan/25 bg-gradient-to-br from-neon-cyan/10 via-transparent to-neon-cyan/15 p-10 text-center sm:p-16">
+        <div className="relative overflow-hidden rounded-3xl border border-neon-caramel/25 bg-gradient-to-br from-neon-caramel/10 via-transparent to-neon-caramel/15 p-10 text-center sm:p-16">
           <div className="absolute inset-0 grid-bg opacity-40" aria-hidden />
           <div className="relative">
             <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">

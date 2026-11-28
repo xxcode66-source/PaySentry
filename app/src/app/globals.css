@@ -11,13 +11,13 @@ html {
 }
 
 body {
-  background-color: #05070d;
+  background-color: #17100a;
   color: #cbd5e1;
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: rgba(34, 211, 238, 0.3);
+  background: rgba(232, 168, 92, 0.35);
   color: #f1f5f9;
 }
 
@@ -27,14 +27,14 @@ body {
   height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a0e1a;
+  background: #1f150c;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1a2138;
+  background: #3a2817;
   border-radius: 8px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #263050;
+  background: #4d3a24;
 }
 
 @layer utilities {
@@ -44,12 +44,12 @@ body {
     backdrop-filter: blur(12px);
   }
   .glass-strong {
-    background: rgba(10, 14, 26, 0.72);
+    background: rgba(31, 21, 12, 0.72);
     border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(16px);
   }
   .text-gradient {
-    background: linear-gradient(100deg, #22d3ee 10%, #22d3ee 90%);
+    background: linear-gradient(100deg, #e8a85c 10%, #e8a85c 90%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -92,6 +92,27 @@ body {
   }
   50% {
     transform: translateY(-5px);
+  }
+}
+/* Cute owl avatar — slow bob + a blink every few seconds */
+@keyframes owl-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1.5deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(1.5deg);
+  }
+}
+@keyframes owl-blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  94%,
+  96% {
+    transform: scaleY(0.08);
   }
 }
 /* Aurora background — slow-drifting color blobs */
@@ -163,6 +184,14 @@ body {
   }
   .animate-particle-rise {
     animation: particle-rise linear infinite;
+  }
+  .animate-owl-bob {
+    animation: owl-bob 3.2s ease-in-out infinite;
+  }
+  .animate-owl-blink {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: owl-blink 4.2s ease-in-out infinite;
   }
 }
 

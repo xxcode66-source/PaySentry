@@ -60,7 +60,7 @@ export function FaucetChip({ address }: { address?: string }) {
       href={`https://faucet.qday.info/en`}
       target="_blank"
       rel="noreferrer"
-      className="inline-flex items-center gap-1.5 rounded-full border border-neon-cyan/30 bg-neon-cyan/5 px-3 py-1 text-[11px] text-neon-cyan transition hover:bg-neon-cyan/15"
+      className="inline-flex items-center gap-1.5 rounded-full border border-neon-caramel/30 bg-neon-caramel/5 px-3 py-1 text-[11px] text-neon-caramel transition hover:bg-neon-caramel/15"
     >
       Need test tokens? Faucet <ExternalLink className="h-3 w-3" />
     </a>

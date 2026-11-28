@@ -20,8 +20,7 @@ import { useEffect, useRef, useState } from "react";
 import { isAddress } from "viem";
 import { useAccount, useBalance, useContractRead } from "wagmi";
 import { PanelHeader } from "@/components/ui/kit";
-import { TiltCard } from "@/components/shared/TiltCard";
-import { MiniShield } from "@/components/three/MiniShield";
+import { OwlAvatar } from "@/components/shared/OwlAvatar";
 import { WalletButton } from "@/components/shared/WalletButton";
 import { shortAddr } from "@/lib/format";
 import { ERC20_ABI, REGISTRY_ABI } from "@/lib/web3/abis";
@@ -78,29 +77,28 @@ export function HomePanel() {
         desc="Your identity card and assets — all straight from the chain."
       />
 
-      {/* Identity card — like a name card / ID card, with 3D tilt + glare */}
-      <TiltCard max={10} className="rounded-3xl">
+      {/* Identity card — like a name card / ID card */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        className="animate-gradient-pan relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-neon-cyan/15 via-ink-800 to-neon-cyan/15 bg-[length:200%_200%] p-6 sm:p-7"
+        className="animate-gradient-pan relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-neon-caramel/15 via-ink-800 to-neon-caramel/15 bg-[length:200%_200%] p-6 sm:p-7"
       >
         {/* light sweep across the card, every few seconds */}
         <div className="animate-shine pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
         {/* decorative rings, like a card watermark */}
         <div className="pointer-events-none absolute -right-10 -top-16 h-48 w-48 rounded-full border-[22px] border-white/[0.04]" />
-        <div className="pointer-events-none absolute -bottom-20 -right-4 h-40 w-40 rounded-full border-[18px] border-neon-cyan/10" />
+        <div className="pointer-events-none absolute -bottom-20 -right-4 h-40 w-40 rounded-full border-[18px] border-neon-caramel/10" />
 
         <div className="relative">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex items-center gap-4">
-              {/* avatar — a self-animating 3D shield, never a letter initial */}
+              {/* avatar — a cute animated owl, never a letter initial */}
               <div
                 className={`h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-white/10 ${
-                  registered ? "bg-neon-cyan/10 shadow-glow-cyan" : "bg-white/5"
+                  registered ? "bg-neon-caramel/10 shadow-glow-caramel" : "bg-white/5"
                 }`}
               >
-                <MiniShield dimmed={!registered} />
+                <OwlAvatar dimmed={!registered} />
               </div>
               <div>
                 {isConnected && addr ? (
@@ -222,7 +220,7 @@ export function HomePanel() {
                       setCopied(true);
                       setTimeout(() => setCopied(false), 1500);
                     }}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:border-neon-cyan/50 hover:text-neon-cyan"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:border-neon-caramel/50 hover:text-neon-caramel"
                   >
                     {copied ? (
                       <CheckCircle2 className="h-3.5 w-3.5 text-neon-green" />
@@ -235,7 +233,7 @@ export function HomePanel() {
                     href={addressLink(addr)}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:text-neon-cyan"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:text-neon-caramel"
                   >
                     <ExternalLink className="h-3.5 w-3.5" /> Explorer
                   </a>
@@ -244,9 +242,9 @@ export function HomePanel() {
               {isConnected && addr && !registered && (
                 <Link
                   href="/dashboard?tab=registry&prefill=register"
-                  className="relative inline-flex items-center gap-1.5 rounded-lg bg-neon-cyan px-3 py-1.5 text-xs font-semibold text-ink transition hover:bg-cyan-300"
+                  className="relative inline-flex items-center gap-1.5 rounded-lg bg-neon-caramel px-3 py-1.5 text-xs font-semibold text-ink transition hover:brightness-110"
                 >
-                  <span className="absolute inset-0 animate-ping rounded-lg bg-neon-cyan/30 [animation-duration:2.5s]" />
+                  <span className="absolute inset-0 animate-ping rounded-lg bg-neon-caramel/30 [animation-duration:2.5s]" />
                   <span className="relative flex items-center gap-1.5">
                     Register identity <ArrowRight className="h-3.5 w-3.5" />
                   </span>
@@ -256,7 +254,6 @@ export function HomePanel() {
           </div>
         </div>
       </motion.div>
-      </TiltCard>
 
       {/* Assets — fintech-style portfolio */}
       <div className="mt-6">
@@ -270,7 +267,7 @@ export function HomePanel() {
           </div>
           <button
             onClick={refresh}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:text-neon-cyan"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:text-neon-caramel"
           >
             <RefreshCw className="h-3.5 w-3.5" /> Refresh
           </button>
@@ -379,18 +376,17 @@ function AssetCard({
   const animated = useCountUp(numeric);
   const valueStr = formatNumber(animated);
   return (
-    <TiltCard max={6} className="h-full rounded-3xl">
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay }}
-      className="group relative h-full overflow-hidden rounded-3xl border border-neon-cyan/20 bg-ink-800/60 p-6 transition hover:-translate-y-px hover:border-neon-cyan/40"
+      className="group relative h-full overflow-hidden rounded-3xl border border-neon-caramel/20 bg-ink-800/60 p-6 transition hover:-translate-y-px hover:border-neon-caramel/40"
     >
-      <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-neon-cyan/15 blur-3xl" />
+      <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-neon-caramel/15 blur-3xl" />
       <div className="relative">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-neon-cyan/15 font-display text-base font-bold text-neon-cyan ring-1 ring-neon-cyan/30">
+            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-neon-caramel/15 font-display text-base font-bold text-neon-caramel ring-1 ring-neon-caramel/30">
               {glyph}
             </span>
             <div>
@@ -418,7 +414,6 @@ function AssetCard({
         </div>
       </div>
     </motion.div>
-    </TiltCard>
   );
 }
 
@@ -436,16 +431,16 @@ function QuickAction({
   return (
     <Link
       href={href}
-      className="group glass flex items-center gap-3 rounded-2xl p-4 transition hover:-translate-y-px hover:border-neon-cyan/40"
+      className="group glass flex items-center gap-3 rounded-2xl p-4 transition hover:-translate-y-px hover:border-neon-caramel/40"
     >
-      <span className="rounded-xl bg-neon-cyan/10 p-2.5 text-neon-cyan ring-1 ring-neon-cyan/20">
+      <span className="rounded-xl bg-neon-caramel/10 p-2.5 text-neon-caramel ring-1 ring-neon-caramel/20">
         <Icon className="h-4 w-4" />
       </span>
       <span className="min-w-0 flex-1">
         <span className="block text-sm font-semibold text-white">{title}</span>
         <span className="block text-[11px] text-slate-500">{desc}</span>
       </span>
-      <ArrowRight className="h-4 w-4 shrink-0 text-slate-600 transition group-hover:translate-x-0.5 group-hover:text-neon-cyan" />
+      <ArrowRight className="h-4 w-4 shrink-0 text-slate-600 transition group-hover:translate-x-0.5 group-hover:text-neon-caramel" />
     </Link>
   );
 }

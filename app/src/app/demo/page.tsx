@@ -40,7 +40,7 @@ export default function DemoPage() {
       <header className="glass-strong sticky top-0 z-40 border-b border-white/5">
         <div className="mx-auto flex h-16 max-w-4xl items-center justify-between px-4 sm:px-6">
           <Link href="/" className="transition hover:opacity-85"><Logo /></Link>
-          <span className="rounded-full border border-neon-cyan/40 bg-neon-cyan/10 px-3 py-1 text-[11px] font-medium text-neon-cyan">
+          <span className="rounded-full border border-neon-caramel/40 bg-neon-caramel/10 px-3 py-1 text-[11px] font-medium text-neon-caramel">
             Demo Day script · ~4 minutes
           </span>
         </div>
@@ -67,7 +67,7 @@ export default function DemoPage() {
             >
               <div
                 className={`h-1.5 rounded-full transition-all duration-500 ${
-                  s.id < step ? "bg-neon-green" : s.id === step ? "bg-gradient-to-r from-neon-cyan to-neon-cyan" : "bg-white/10"
+                  s.id < step ? "bg-neon-green" : s.id === step ? "bg-gradient-to-r from-neon-caramel to-neon-caramel" : "bg-white/10"
                 }`}
               />
             </button>
@@ -85,7 +85,7 @@ export default function DemoPage() {
           >
             <div className="glass rounded-3xl p-6 sm:p-8">
               <div className="flex items-center gap-3">
-                <span className="font-display rounded-xl bg-gradient-to-br from-neon-cyan to-neon-cyan px-3 py-1.5 text-sm font-bold text-ink">
+                <span className="font-display rounded-xl bg-gradient-to-br from-neon-caramel to-neon-caramel px-3 py-1.5 text-sm font-bold text-ink">
                   {step}/6
                 </span>
                 <h2 className="font-display text-xl font-semibold text-white">{STEPS[step - 1].title}</h2>
@@ -129,7 +129,7 @@ function StepOne({ netOk }: { netOk: boolean }) {
     <div className="grid gap-3">
       <CheckRow ok={netOk} label="Wallet connected on QDay Aevum Testnet (44005)" />
       {!netOk && (
-        <Link href="/dashboard" className="text-sm text-neon-cyan hover:underline">
+        <Link href="/dashboard" className="text-sm text-neon-caramel hover:underline">
           Open the console to connect & switch network →
         </Link>
       )}
@@ -137,7 +137,7 @@ function StepOne({ netOk }: { netOk: boolean }) {
         href="https://faucet.qday.info/en"
         target="_blank"
         rel="noreferrer"
-        className="inline-flex items-center gap-1.5 text-sm text-neon-cyan hover:underline"
+        className="inline-flex items-center gap-1.5 text-sm text-neon-caramel hover:underline"
       >
         Faucet — get tQDAY gas + tUSD8 <ExternalLink className="h-3.5 w-3.5" />
       </a>
@@ -152,7 +152,7 @@ function StepLinkRow({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
-      className="inline-flex items-center gap-2 rounded-xl border border-neon-cyan/40 bg-neon-cyan/10 px-4 py-2.5 text-sm font-medium text-neon-cyan transition hover:bg-neon-cyan/20"
+      className="inline-flex items-center gap-2 rounded-xl border border-neon-caramel/40 bg-neon-caramel/10 px-4 py-2.5 text-sm font-medium text-neon-caramel transition hover:bg-neon-caramel/20"
     >
       {label} <ArrowRight className="h-4 w-4" />
     </Link>
@@ -187,12 +187,12 @@ function StepFour() {
           onChange={(e) => setPayee(e.target.value)}
           placeholder="0x… payee address (step 2 wallet)"
           spellCheck={false}
-          className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 font-mono text-xs text-slate-100 placeholder-slate-500 outline-none focus:border-neon-cyan/60"
+          className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 font-mono text-xs text-slate-100 placeholder-slate-500 outline-none focus:border-neon-caramel/60"
         />
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 outline-none focus:border-neon-cyan/60"
+          className="w-full rounded-xl border border-white/10 bg-ink-800/70 px-3 py-2.5 text-sm text-slate-100 outline-none focus:border-neon-caramel/60"
         />
       </div>
       <div className="flex flex-wrap items-center gap-3">

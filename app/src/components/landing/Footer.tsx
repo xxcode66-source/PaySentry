@@ -45,7 +45,7 @@ export function Footer() {
                 href="https://dorahacks.io/hackathon/qday"
                 target="_blank"
                 rel="noreferrer"
-                className="text-neon-cyan hover:underline"
+                className="text-neon-caramel hover:underline"
               >
                 Aevum Builder Challenge #1
               </a>
@@ -64,7 +64,7 @@ export function Footer() {
                         href={l.href}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-sm text-slate-300 transition hover:text-neon-cyan"
+                        className="text-sm text-slate-300 transition hover:text-neon-caramel"
                       >
                         {l.label}
                       </a>
@@ -73,7 +73,7 @@ export function Footer() {
                     <li key={l.label}>
                       <Link
                         href={l.href}
-                        className="text-sm text-slate-300 transition hover:text-neon-cyan"
+                        className="text-sm text-slate-300 transition hover:text-neon-caramel"
                       >
                         {l.label}
                       </Link>
@@ -88,13 +88,13 @@ export function Footer() {
           <span>QDay Aevum · chain 44005</span>
           <span>
             Guard{" "}
-            <a href={`${EXPLORER_URL}/address/${GUARD_ADDRESS}`} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-neon-cyan">
+            <a href={`${EXPLORER_URL}/address/${GUARD_ADDRESS}`} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-neon-caramel">
               {shortAddr(GUARD_ADDRESS, 4)}
             </a>
           </span>
           <span>
             Registry{" "}
-            <a href={`${EXPLORER_URL}/address/${REGISTRY_ADDRESS}`} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-neon-cyan">
+            <a href={`${EXPLORER_URL}/address/${REGISTRY_ADDRESS}`} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-neon-caramel">
               {shortAddr(REGISTRY_ADDRESS, 4)}
             </a>
           </span>
