@@ -12,6 +12,7 @@ import {
   Fingerprint,
   RefreshCw,
   Send,
+  ShieldCheck,
   Wallet,
 } from "lucide-react";
 import Link from "next/link";
@@ -20,6 +21,7 @@ import { isAddress } from "viem";
 import { useAccount, useBalance, useContractRead } from "wagmi";
 import { PanelHeader } from "@/components/ui/kit";
 import { TiltCard } from "@/components/shared/TiltCard";
+import { MiniShield } from "@/components/three/MiniShield";
 import { WalletButton } from "@/components/shared/WalletButton";
 import { shortAddr } from "@/lib/format";
 import { ERC20_ABI, REGISTRY_ABI } from "@/lib/web3/abis";
@@ -81,36 +83,24 @@ export function HomePanel() {
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        className="animate-gradient-pan relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-neon-cyan/15 via-ink-800 to-neon-violet/15 bg-[length:200%_200%] p-6 sm:p-7"
+        className="animate-gradient-pan relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-neon-cyan/15 via-ink-800 to-neon-cyan/15 bg-[length:200%_200%] p-6 sm:p-7"
       >
         {/* light sweep across the card, every few seconds */}
         <div className="animate-shine pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
         {/* decorative rings, like a card watermark */}
         <div className="pointer-events-none absolute -right-10 -top-16 h-48 w-48 rounded-full border-[22px] border-white/[0.04]" />
-        <div className="pointer-events-none absolute -bottom-20 -right-4 h-40 w-40 rounded-full border-[18px] border-neon-violet/10" />
+        <div className="pointer-events-none absolute -bottom-20 -right-4 h-40 w-40 rounded-full border-[18px] border-neon-cyan/10" />
 
         <div className="relative">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex items-center gap-4">
-              {/* avatar */}
+              {/* avatar — a self-animating 3D shield, never a letter initial */}
               <div
-                className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl font-display text-2xl font-bold ${
-                  registered
-                    ? "animate-float-y bg-gradient-to-br from-neon-cyan to-neon-violet text-ink shadow-glow-cyan"
-                    : "border border-white/10 bg-white/5 text-slate-400"
+                className={`h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-white/10 ${
+                  registered ? "bg-neon-cyan/10 shadow-glow-cyan" : "bg-white/5"
                 }`}
               >
-                {registered ? (
-                  displayName.charAt(0).toUpperCase()
-                ) : (
-                  <motion.span
-                    animate={{ scale: [1, 1.12, 1], opacity: [0.7, 1, 0.7] }}
-                    transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-                    className="flex"
-                  >
-                    <Fingerprint className="h-7 w-7" />
-                  </motion.span>
-                )}
+                <MiniShield dimmed={!registered} />
               </div>
               <div>
                 {isConnected && addr ? (
@@ -144,8 +134,8 @@ export function HomePanel() {
                         Sample identity
                       </p>
                       <div className="mt-2 flex items-center gap-3">
-                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/5 font-display text-base font-bold text-slate-400">
-                          A
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/5 text-slate-400">
+                          <ShieldCheck className="h-4 w-4" />
                         </span>
                         <span className="min-w-0 flex-1">
                           <span className="block truncate text-sm font-semibold text-slate-300">
@@ -294,7 +284,6 @@ export function HomePanel() {
             desc="Gas · native token"
             value={tqday?.value ?? 0n}
             decimals={18}
-            accent="violet"
             tokenAddr={null}
             tokenAddrLabel="Token contract"
             delay={0.08}
@@ -306,7 +295,6 @@ export function HomePanel() {
             desc="Stablecoin · ERC-20"
             value={tusd8 ?? 0n}
             decimals={6}
-            accent="cyan"
             tokenAddr={TUSD8_ADDRESS}
             tokenAddrLabel="Token contract"
             delay={0.16}
@@ -373,7 +361,6 @@ function AssetCard({
   desc,
   value,
   decimals,
-  accent,
   tokenAddr,
   tokenAddrLabel,
   delay = 0,
@@ -384,7 +371,6 @@ function AssetCard({
   desc: string;
   value: bigint;
   decimals: number;
-  accent: "cyan" | "violet";
   tokenAddr: string | null;
   tokenAddrLabel: string;
   delay?: number;
@@ -392,32 +378,19 @@ function AssetCard({
   const numeric = Number(value) / Math.pow(10, decimals);
   const animated = useCountUp(numeric);
   const valueStr = formatNumber(animated);
-  const isCyan = accent === "cyan";
   return (
     <TiltCard max={6} className="h-full rounded-3xl">
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay }}
-      className={`group relative h-full overflow-hidden rounded-3xl border bg-ink-800/60 p-6 transition hover:-translate-y-px ${
-        isCyan ? "border-neon-cyan/20 hover:border-neon-cyan/40" : "border-neon-violet/20 hover:border-neon-violet/40"
-      }`}
+      className="group relative h-full overflow-hidden rounded-3xl border border-neon-cyan/20 bg-ink-800/60 p-6 transition hover:-translate-y-px hover:border-neon-cyan/40"
     >
-      <div
-        className={`pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full blur-3xl ${
-          isCyan ? "bg-neon-cyan/15" : "bg-neon-violet/20"
-        }`}
-      />
+      <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-neon-cyan/15 blur-3xl" />
       <div className="relative">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span
-              className={`flex h-11 w-11 items-center justify-center rounded-full font-display text-base font-bold ring-1 ${
-                isCyan
-                  ? "bg-neon-cyan/15 text-neon-cyan ring-neon-cyan/30"
-                  : "bg-neon-violet/15 text-neon-violet ring-neon-violet/30"
-              }`}
-            >
+            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-neon-cyan/15 font-display text-base font-bold text-neon-cyan ring-1 ring-neon-cyan/30">
               {glyph}
             </span>
             <div>

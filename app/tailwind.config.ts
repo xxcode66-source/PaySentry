@@ -15,7 +15,6 @@ const config: Config = {
         },
         neon: {
           cyan: "#22d3ee",
-          violet: "#8b5cf6",
           green: "#34d399",
           amber: "#fbbf24",
           red: "#f87171",
@@ -27,7 +26,6 @@ const config: Config = {
       },
       boxShadow: {
         "glow-cyan": "0 0 24px rgba(34,211,238,0.25), 0 0 64px rgba(34,211,238,0.08)",
-        "glow-violet": "0 0 24px rgba(139,92,246,0.25), 0 0 64px rgba(139,92,246,0.10)",
         "glow-red": "0 0 24px rgba(248,113,113,0.3)",
         "glow-green": "0 0 24px rgba(52,211,153,0.3)",
       },

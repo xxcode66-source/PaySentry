@@ -5,7 +5,7 @@ import { Float } from "@react-three/drei";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
 
-/** ~2600 particles distributed on a jittered fibonacci sphere, cyan→violet by height. */
+/** ~2600 particles on a jittered fibonacci sphere, cyan shading by height. */
 function ParticleSphere() {
   const ref = useRef<THREE.Points>(null);
   const { positions, colors } = useMemo(() => {
@@ -13,7 +13,7 @@ function ParticleSphere() {
     const positions = new Float32Array(N * 3);
     const colors = new Float32Array(N * 3);
     const cyan = new THREE.Color("#22d3ee");
-    const violet = new THREE.Color("#8b5cf6");
+    const deep = new THREE.Color("#0e7490");
     const tmp = new THREE.Color();
     for (let i = 0; i < N; i++) {
       const t = i / (N - 1);
@@ -26,7 +26,7 @@ function ParticleSphere() {
       positions[i * 3] = x;
       positions[i * 3 + 1] = y;
       positions[i * 3 + 2] = z;
-      tmp.lerpColors(cyan, violet, (y + 2.6) / 5.2);
+      tmp.lerpColors(cyan, deep, (y + 2.6) / 5.2);
       colors[i * 3] = tmp.r;
       colors[i * 3 + 1] = tmp.g;
       colors[i * 3 + 2] = tmp.b;
@@ -84,7 +84,7 @@ function CoreGroup() {
       </mesh>
       <mesh ref={inner}>
         <icosahedronGeometry args={[0.58, 0]} />
-        <meshBasicMaterial color="#8b5cf6" wireframe transparent opacity={0.35} />
+        <meshBasicMaterial color="#22d3ee" wireframe transparent opacity={0.35} />
       </mesh>
       <group ref={ring} rotation={[1.25, 0, 0]}>
         <mesh>
@@ -97,7 +97,7 @@ function CoreGroup() {
         </mesh>
         <mesh ref={orbB}>
           <sphereGeometry args={[0.045, 12, 12]} />
-          <meshBasicMaterial color="#a78bfa" />
+          <meshBasicMaterial color="#67e8f9" />
         </mesh>
       </group>
     </group>

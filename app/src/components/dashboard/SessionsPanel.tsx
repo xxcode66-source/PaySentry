@@ -192,7 +192,7 @@ export function SessionsPanel() {
                 })}
               </div>
             </div>
-            <p className="rounded-lg border border-neon-violet/30 bg-neon-violet/5 px-3 py-2 text-[11px] leading-relaxed text-neon-violet">
+            <p className="rounded-lg border border-neon-cyan/30 bg-neon-cyan/5 px-3 py-2 text-[11px] leading-relaxed text-neon-cyan">
               CoP is <b>always enforced</b> for agent spend — the guard reverts on NO MATCH / NOT
               FOUND and records every blocked attempt on-chain.
             </p>
@@ -300,7 +300,7 @@ function SessionCard({ id }: { id: bigint }) {
       <div className="mt-3">
         <div className="h-2 overflow-hidden rounded-full bg-white/10">
           <motion.div
-            className={`h-full rounded-full ${pct > 80 ? "bg-neon-red" : "bg-gradient-to-r from-neon-cyan to-neon-violet"}`}
+            className={`h-full rounded-full ${pct > 80 ? "bg-neon-red" : "bg-gradient-to-r from-neon-cyan to-neon-cyan"}`}
             initial={{ width: 0 }}
             animate={{ width: `${Math.min(100, pct)}%` }}
             transition={{ duration: 0.8, ease: "easeOut" }}

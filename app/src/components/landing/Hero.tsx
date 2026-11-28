@@ -33,10 +33,10 @@ export function Hero() {
 
       <Stagger className="relative z-10 mx-auto w-full max-w-6xl px-4 py-28 sm:px-6">
         <StaggerItem className="flex justify-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-neon-violet/40 bg-neon-violet/10 px-4 py-1.5 text-xs font-medium text-neon-violet">
+          <span className="inline-flex items-center gap-2 rounded-full border border-neon-cyan/40 bg-neon-cyan/10 px-4 py-1.5 text-xs font-medium text-neon-cyan">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon-violet opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-neon-violet" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon-cyan opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-neon-cyan" />
             </span>
             Built for QDay Aevum Builder Challenge #1 · Confirmation of Payee track
           </span>
@@ -61,7 +61,7 @@ export function Hero() {
           <Link href="/dashboard">
             <motion.span
               whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-violet px-7 py-3.5 font-semibold text-ink shadow-glow-cyan transition hover:brightness-110"
+              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-cyan px-7 py-3.5 font-semibold text-ink shadow-glow-cyan transition hover:brightness-110"
             >
               Launch dashboard <ArrowRight className="h-4 w-4" />
             </motion.span>

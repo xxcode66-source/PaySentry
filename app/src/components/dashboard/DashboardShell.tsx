@@ -80,14 +80,14 @@ export function DashboardShell() {
                 onClick={() => setTab(t.id)}
                 className={`group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-all duration-200 ${
                   tab === t.id
-                    ? "bg-gradient-to-r from-neon-cyan/15 via-neon-violet/10 to-transparent text-white shadow-glow-cyan"
+                    ? "bg-gradient-to-r from-neon-cyan/15 via-neon-cyan/10 to-transparent text-white shadow-glow-cyan"
                     : "text-slate-400 hover:bg-white/5 hover:text-slate-200"
                 }`}
               >
                 {tab === t.id && (
                   <motion.span
                     layoutId="side-active"
-                    className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-full bg-gradient-to-b from-neon-cyan to-neon-violet shadow-glow-cyan"
+                    className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-full bg-gradient-to-b from-neon-cyan to-neon-cyan shadow-glow-cyan"
                   />
                 )}
                 <t.icon className={`h-4 w-4 ${tab === t.id ? "text-neon-cyan" : "text-slate-500 group-hover:text-slate-300"}`} />
@@ -115,7 +115,7 @@ export function DashboardShell() {
             </div>
             <a
               href="/demo"
-              className="mt-3 block rounded-xl border border-neon-violet/30 bg-neon-violet/10 px-3 py-2.5 text-center text-xs font-medium text-neon-violet transition hover:bg-neon-violet/20"
+              className="mt-3 block rounded-xl border border-neon-cyan/30 bg-neon-cyan/10 px-3 py-2.5 text-center text-xs font-medium text-neon-cyan transition hover:bg-neon-cyan/20"
             >
               Guided demo →
             </a>

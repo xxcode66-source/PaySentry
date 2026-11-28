@@ -39,7 +39,7 @@ const PROBLEMS = [
   },
   {
     icon: Bot,
-    color: "text-neon-violet",
+    color: "text-neon-cyan",
     ring: "",
     title: "AI agents pay at machine speed",
     body: "Autonomous agents act on instructions they read. Prompt-inject an invoice and an agent will happily wire out funds — with zero identity checks in its path.",
@@ -275,8 +275,8 @@ export function Features() {
       <Stagger className="mt-12 grid gap-5 md:grid-cols-3">
         {FEATURES.map((f) => (
           <StaggerItem key={f.title} className={f.span}>
-            <div className="group glass h-full rounded-2xl p-6 transition hover:border-neon-violet/40">
-              <div className="inline-flex rounded-xl border border-white/10 bg-white/5 p-3 text-neon-violet transition group-hover:shadow-glow-violet">
+            <div className="group glass h-full rounded-2xl p-6 transition hover:border-neon-cyan/40">
+              <div className="inline-flex rounded-xl border border-white/10 bg-white/5 p-3 text-neon-cyan transition group-hover:shadow-glow-cyan">
                 <f.icon className="h-6 w-6" />
               </div>
               <h3 className="font-display mt-4 text-lg font-semibold text-white">{f.title}</h3>
@@ -296,7 +296,7 @@ export function BuiltOn() {
     <section className="border-y border-white/5 bg-ink-900/40 py-20" id="qday">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-violet">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neon-cyan">
             Built on QDay Aevum
           </p>
           <h2 className="font-display mt-3 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
@@ -439,7 +439,7 @@ export function CTA() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
       <Reveal>
-        <div className="relative overflow-hidden rounded-3xl border border-neon-cyan/25 bg-gradient-to-br from-neon-cyan/10 via-transparent to-neon-violet/15 p-10 text-center sm:p-16">
+        <div className="relative overflow-hidden rounded-3xl border border-neon-cyan/25 bg-gradient-to-br from-neon-cyan/10 via-transparent to-neon-cyan/15 p-10 text-center sm:p-16">
           <div className="absolute inset-0 grid-bg opacity-40" aria-hidden />
           <div className="relative">
             <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">

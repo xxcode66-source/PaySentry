@@ -40,7 +40,7 @@ export default function DemoPage() {
       <header className="glass-strong sticky top-0 z-40 border-b border-white/5">
         <div className="mx-auto flex h-16 max-w-4xl items-center justify-between px-4 sm:px-6">
           <Link href="/" className="transition hover:opacity-85"><Logo /></Link>
-          <span className="rounded-full border border-neon-violet/40 bg-neon-violet/10 px-3 py-1 text-[11px] font-medium text-neon-violet">
+          <span className="rounded-full border border-neon-cyan/40 bg-neon-cyan/10 px-3 py-1 text-[11px] font-medium text-neon-cyan">
             Demo Day script · ~4 minutes
           </span>
         </div>
@@ -67,7 +67,7 @@ export default function DemoPage() {
             >
               <div
                 className={`h-1.5 rounded-full transition-all duration-500 ${
-                  s.id < step ? "bg-neon-green" : s.id === step ? "bg-gradient-to-r from-neon-cyan to-neon-violet" : "bg-white/10"
+                  s.id < step ? "bg-neon-green" : s.id === step ? "bg-gradient-to-r from-neon-cyan to-neon-cyan" : "bg-white/10"
                 }`}
               />
             </button>
@@ -85,7 +85,7 @@ export default function DemoPage() {
           >
             <div className="glass rounded-3xl p-6 sm:p-8">
               <div className="flex items-center gap-3">
-                <span className="font-display rounded-xl bg-gradient-to-br from-neon-cyan to-neon-violet px-3 py-1.5 text-sm font-bold text-ink">
+                <span className="font-display rounded-xl bg-gradient-to-br from-neon-cyan to-neon-cyan px-3 py-1.5 text-sm font-bold text-ink">
                   {step}/6
                 </span>
                 <h2 className="font-display text-xl font-semibold text-white">{STEPS[step - 1].title}</h2>

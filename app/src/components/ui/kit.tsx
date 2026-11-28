@@ -65,7 +65,7 @@ export function Card({
 }: {
   children: React.ReactNode;
   className?: string;
-  glow?: "cyan" | "violet" | "none";
+  glow?: "cyan" | "none";
 }) {
   return (
     <motion.div
@@ -73,7 +73,7 @@ export function Card({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       className={`glass rounded-2xl ${
-        glow === "cyan" ? "shadow-glow-cyan" : glow === "violet" ? "shadow-glow-violet" : ""
+        glow === "cyan" ? "shadow-glow-cyan" : ""
       } ${className}`}
     >
       {children}
@@ -142,7 +142,7 @@ export function LevelBadge({ level }: { level: number }) {
   const map: Record<number, { label: string; cls: string }> = {
     0: { label: "Unknown", cls: "bg-white/5 text-slate-400 border-white/10" },
     1: { label: "Self-claimed", cls: "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30" },
-    2: { label: "Attested", cls: "bg-neon-violet/10 text-neon-violet border-neon-violet/40" },
+    2: { label: "Attested", cls: "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/40" },
   };
   const m = map[level] ?? map[0];
   return (
@@ -276,7 +276,7 @@ export function PanelHeader({ title, desc }: { title: string; desc: string }) {
   return (
     <div className="mb-7 border-b border-white/10 pb-4">
       <div className="flex items-center gap-3">
-        <span className="h-7 w-1.5 shrink-0 rounded-full bg-gradient-to-b from-neon-cyan to-neon-violet" />
+        <span className="h-7 w-1.5 shrink-0 rounded-full bg-gradient-to-b from-neon-cyan to-neon-cyan" />
         <div>
           <h2 className="font-display text-xl font-semibold text-white">{title}</h2>
           <p className="mt-0.5 text-sm text-slate-300">{desc}</p>

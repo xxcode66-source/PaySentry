@@ -440,7 +440,7 @@ function AuditItem({ row, isLast }: { row: AuditRow; isLast?: boolean }) {
               : meta.tone === "info"
                 ? "bg-neon-cyan"
                 : meta.tone === "warn"
-                  ? "bg-neon-violet"
+                  ? "bg-neon-cyan"
                   : "bg-slate-500"
         }`}
       />
