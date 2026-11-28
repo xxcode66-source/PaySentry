@@ -20,7 +20,6 @@ import { useEffect, useRef, useState } from "react";
 import { isAddress } from "viem";
 import { useAccount, useBalance, useContractRead } from "wagmi";
 import { PanelHeader } from "@/components/ui/kit";
-import { OwlAvatar } from "@/components/shared/OwlAvatar";
 import { WalletButton } from "@/components/shared/WalletButton";
 import { shortAddr } from "@/lib/format";
 import { ERC20_ABI, REGISTRY_ABI } from "@/lib/web3/abis";
@@ -92,13 +91,20 @@ export function HomePanel() {
         <div className="relative">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex items-center gap-4">
-              {/* avatar — a cute animated owl, never a letter initial */}
+              {/* avatar — the PaySentry mascot, never a letter initial */}
               <div
                 className={`h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-stone-900/10 ${
                   registered ? "bg-neon-caramel/10 shadow-glow-caramel" : "bg-stone-900/5"
                 }`}
               >
-                <OwlAvatar dimmed={!registered} />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/mascot.png"
+                  alt="PaySentry mascot"
+                  className={`animate-mascot-bob h-full w-full object-cover ${
+                    registered ? "" : "opacity-60"
+                  }`}
+                />
               </div>
               <div>
                 {isConnected && addr ? (

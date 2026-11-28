@@ -94,25 +94,14 @@ body {
     transform: translateY(-5px);
   }
 }
-/* Cute owl avatar — slow bob + a blink every few seconds */
-@keyframes owl-bob {
+/* Mascot avatar — gentle bob */
+@keyframes mascot-bob {
   0%,
   100% {
     transform: translateY(0) rotate(-1.5deg);
   }
   50% {
     transform: translateY(-4px) rotate(1.5deg);
-  }
-}
-@keyframes owl-blink {
-  0%,
-  92%,
-  100% {
-    transform: scaleY(1);
-  }
-  94%,
-  96% {
-    transform: scaleY(0.08);
   }
 }
 /* Aurora background — slow-drifting color blobs */
@@ -185,13 +174,8 @@ body {
   .animate-particle-rise {
     animation: particle-rise linear infinite;
   }
-  .animate-owl-bob {
-    animation: owl-bob 3.2s ease-in-out infinite;
-  }
-  .animate-owl-blink {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: owl-blink 4.2s ease-in-out infinite;
+  .animate-mascot-bob {
+    animation: mascot-bob 3.2s ease-in-out infinite;
   }
 }
 
