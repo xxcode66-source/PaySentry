@@ -33,8 +33,10 @@ function Shield() {
   useFrame(({ clock }) => {
     const t = clock.elapsedTime;
     if (!group.current) return;
-    group.current.rotation.y = Math.sin(t * 0.5) * 0.45;
-    group.current.rotation.x = Math.sin(t * 0.35) * 0.1;
+    // Base turn of ~23° so the shield reads as 3D even in a still frame,
+    // plus a gentle sway and bob on top.
+    group.current.rotation.y = 0.4 + Math.sin(t * 0.5) * 0.35;
+    group.current.rotation.x = 0.1 + Math.sin(t * 0.35) * 0.08;
     group.current.position.y = Math.sin(t * 0.9) * 0.06;
   });
 
@@ -44,15 +46,16 @@ function Shield() {
         <meshBasicMaterial color="#22d3ee" transparent opacity={0.16} depthWrite={false} />
       </mesh>
       <mesh geometry={geo}>
-        <meshBasicMaterial color="#67e8f9" wireframe transparent opacity={0.6} />
+        <meshBasicMaterial color="#67e8f9" wireframe transparent opacity={0.75} />
       </mesh>
-      {/* Check mark: short arm down-right, long arm up-right */}
+      {/* Check mark: short arm down-right, long arm up-right — bold enough
+          to read clearly at 64px */}
       <mesh position={[-0.135, -0.06, 0.12]} rotation={[0, 0, -0.75]}>
-        <boxGeometry args={[0.22, 0.055, 0.03]} />
+        <boxGeometry args={[0.24, 0.08, 0.05]} />
         <meshBasicMaterial color="#34d399" />
       </mesh>
       <mesh position={[0.095, 0.01, 0.12]} rotation={[0, 0, 0.8]}>
-        <boxGeometry args={[0.42, 0.055, 0.03]} />
+        <boxGeometry args={[0.44, 0.08, 0.05]} />
         <meshBasicMaterial color="#34d399" />
       </mesh>
     </group>
@@ -67,6 +70,7 @@ export function MiniShield({ dimmed = false }: { dimmed?: boolean }) {
       <Canvas
         camera={{ position: [0, 0, 3.1], fov: 40 }}
         dpr={[1, 1.75]}
+        frameloop="always"
         gl={{ antialias: true, alpha: true }}
         style={{ width: "100%", height: "100%" }}
       >
